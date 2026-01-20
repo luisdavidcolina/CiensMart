@@ -57,31 +57,31 @@ interface blogProps {
 const blogsList = [
   {
     img1: "/images/layout-5/blog/2.jpg",
-    title1: "Latest News Post",
-    date: "12/2/2021",
-    subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend a massa rhoncus gravida.",
-    btn: "read more",
+    title1: "Tendencias Tecnológicas 2026",
+    date: "15/01/2026",
+    subTitle: "Exploramos los avances en domótica y dispositivos inteligentes que están redefiniendo el concepto de hogar moderno este año.",
+    btn: "leer más",
   },
   {
     img1: "/images/layout-5/blog/3.jpg",
-    title1: "Latest News Post",
-    date: "12/2/2021",
-    subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend a massa rhoncus gravida.",
-    btn: "read more",
+    title1: "IA y Divulgación Científica",
+    date: "10/01/2026",
+    subTitle: "Un análisis profundo sobre las limitaciones de los modelos de lenguaje actuales en la comunicación de hallazgos científicos.",
+    btn: "leer más",
   },
   {
     img1: "/images/layout-5/blog/5.jpg",
-    title1: "Latest News Post",
-    date: "12/2/2021",
-    subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend a massa rhoncus gravida.",
-    btn: "read more",
+    title1: "Guía de Eficiencia Energética",
+    date: "05/01/2026",
+    subTitle: "Todo lo que debes considerar al elegir electrodomésticos de línea blanca para reducir el consumo eléctrico en casa.",
+    btn: "leer más",
   },
   {
     img1: "/images/layout-5/blog/2.jpg",
-    title1: "Latest News Post",
-    date: "12/2/2021",
-    subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend a massa rhoncus gravida.",
-    btn: "read more",
+    title1: "El Futuro del E-commerce en la UCV",
+    date: "01/01/2026",
+    subTitle: "Cómo la transformación digital está permitiendo que proyectos académicos como CiensMart se conviertan en soluciones reales.",
+    btn: "leer más",
   },
 ];
 
@@ -108,30 +108,30 @@ const BlogList: React.FC<blogProps> = ({ blog }) => {
 };
 
 const Blogs: NextPage = () => {
-    return (
-        <>
-            <section className="blog">
-                <div className="custom-container">
-                    <Row>
-                        <Col xs="12">
-                            <div className="title3">
-                                <h4>recent blog post</h4>
-                            </div>
-                        </Col>
-                        <Col xs="12">
-                            <div className="blog-slide-4 no-arrow">
-                                <Slider {...settings}>
-                                    {blogsList.map((blog, i) =>
-                                        <BlogList blog={blog} key={i} />,
-                                    )}
-                                </Slider>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            </section>
-        </>
-    );
+  return (
+    <>
+      <section className="blog">
+        <div className="custom-container">
+          <Row>
+            <Col xs="12">
+              <div className="title3">
+                <h4>entradas recientes del blog</h4>
+              </div>
+            </Col>
+            <Col xs="12">
+              <div className="blog-slide-4 no-arrow">
+                <Slider {...settings}>
+                  {blogsList.map((blog, i) =>
+                    <BlogList blog={blog} key={i} />,
+                  )}
+                </Slider>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default Blogs;

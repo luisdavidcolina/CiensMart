@@ -202,7 +202,7 @@ const OrderSuccess2: NextPage = () => (
                   <td style={{ padding: "30px" }}>
                     <div>
                       <h4 className="title" style={{ margin: "0", textAlign: "center" }}>
-                        FOLLOW US
+                        síguenos
                       </h4>
                     </div>
                     <Table cellPadding="0" cellSpacing="0" className="footer-social-icon text-center" align="center" style={{ marginTop: "20px" }}>

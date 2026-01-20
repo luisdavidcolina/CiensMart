@@ -117,11 +117,11 @@ const HotDeal: NextPage = () => {
       <div className="custom-container">
         <Row className="hot-2">
           <Col lg="12">
-            {/* <!--title start--> */}
+            {/* */}
             <div className="title3 b-g-white text-center">
-              <h4>today&#39;s hot deal</h4>
+              <h4>oferta destacada de hoy</h4>
             </div>
-            {/* <!--titel end--> */}
+            {/* */}
           </Col>
           <Col lg="9">
             <div className="slide-1 no-arrow">
@@ -135,7 +135,7 @@ const HotDeal: NextPage = () => {
                             dataR.collection[0].images.map((img: any, i: any) => {
                               return (
                                 <div key={i}>
-                                  <Media src={`/images/${img.src}`} alt="hot-deal" className="img-fluid  " />
+                                  <Media src={`/images/${img.src}`} alt="oferta-dia" className="img-fluid" />
                                 </div>
                               );
                             })}
@@ -146,7 +146,7 @@ const HotDeal: NextPage = () => {
                       <div className="hot-deal-center">
                         <div>
                           <div>
-                            <h5>Simply dummy text of the printing. </h5>
+                            <h5>Lo mejor en tecnología y hogar para la comunidad UCV</h5>
                           </div>
                           <div className="rating">
                             <i className="fa fa-star"></i>
@@ -156,7 +156,7 @@ const HotDeal: NextPage = () => {
                             <i className="fa fa-star"></i>
                           </div>
                           <div>
-                            <p>It is a long established fact that a reader. It is a long established fact that a reader.It is a long established fact that a reader. It is a long established fact that a reader.</p>
+                            <p>En CiensMart seleccionamos cuidadosamente cada artículo para garantizarte la máxima calidad y durabilidad en todas tus compras departamentales.</p>
                             {dataR && !loading ? (
                               <div className="price">
                                 <span>
@@ -184,7 +184,7 @@ const HotDeal: NextPage = () => {
                             dataR.collection[0].images.map((img: any, i: any) => {
                               return (
                                 <div key={i}>
-                                  <Media src={`/images/${img.src}`} alt="hot-deal" className="img-fluid  " />
+                                  <Media src={`/images/${img.src}`} alt="miniatura-oferta" className="img-fluid" />
                                 </div>
                               );
                             })}
@@ -198,16 +198,17 @@ const HotDeal: NextPage = () => {
           </Col>
           <Col lg="3">
             <Slider className="bg-light h-100" {...bestSellerSetting}>
+              {/* Panel: Nuevos Productos */}
               <div>
                 <div className="media-banner border-0">
                   <div className="media-banner-box">
                     <div className="media-heading">
-                      <h5>New Products</h5>
+                      <h5>nuevos ingresos</h5>
                     </div>
                   </div>
                   <div className="media-banner-box">
                     <div className="media">
-                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid  " alt="banner" />
+                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid" alt="banner" />
                       <div className="media-body">
                         <div className="media-contant">
                           <div>
@@ -218,36 +219,28 @@ const HotDeal: NextPage = () => {
                               <i className="fa fa-star"></i>
                               <i className="fa fa-star"></i>
                             </div>
-                            <p>Generator on Internet.</p>
+                            <p>Tecnología de punta</p>
                             <h6>$153.00</h6>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  {/* Repetir estructura para otros productos... */}
+                </div>
+              </div>
+
+              {/* Panel: Oferta Especial */}
+              <div>
+                <div className="media-banner border-0">
                   <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/2.jpg" className="img-fluid  " alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Generator on Internet.</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="media-heading">
+                      <h5>oferta especial</h5>
                     </div>
                   </div>
                   <div className="media-banner-box">
                     <div className="media">
-                      <Media src="/images/layout-1/media-banner/2.jpg" className="img-fluid  " alt="banner" />
+                      <Media src="/images/layout-1/media-banner/3.jpg" className="img-fluid" alt="banner" />
                       <div className="media-body">
                         <div className="media-contant">
                           <div>
@@ -258,7 +251,7 @@ const HotDeal: NextPage = () => {
                               <i className="fa fa-star"></i>
                               <i className="fa fa-star"></i>
                             </div>
-                            <p>Generator on Internet.</p>
+                            <p>Hogar inteligente</p>
                             <h6>$153.00</h6>
                           </div>
                         </div>
@@ -267,16 +260,18 @@ const HotDeal: NextPage = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Panel: Más Vendidos */}
               <div>
-                <div className="media-banner  border-0">
+                <div className="media-banner border-0">
                   <div className="media-banner-box">
                     <div className="media-heading">
-                      <h5>Hot deal</h5>
+                      <h5>más vendidos</h5>
                     </div>
                   </div>
                   <div className="media-banner-box">
                     <div className="media">
-                      <Media src="/images/layout-1/media-banner/3.jpg" className="img-fluid  " alt="banner" />
+                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid" alt="banner" />
                       <div className="media-body">
                         <div className="media-contant">
                           <div>
@@ -287,116 +282,7 @@ const HotDeal: NextPage = () => {
                               <i className="fa fa-star"></i>
                               <i className="fa fa-star"></i>
                             </div>
-                            <p>Generator on Internet.</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/4.jpg" className="img-fluid  " alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Generator on Internet.</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/3.jpg" className="img-fluid  " alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Generator on Internet.</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="media-banner  border-0">
-                  <div className="media-banner-box">
-                    <div className="media-heading">
-                      <h5>Best Sellers</h5>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid  " alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Generator on Internet.</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/2.jpg" className="img-fluid  " alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Generator on Internet.</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid  " alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Generator on Internet.</p>
+                            <p>Línea blanca esencial</p>
                             <h6>$153.00</h6>
                           </div>
                         </div>

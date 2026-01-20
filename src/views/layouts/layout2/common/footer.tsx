@@ -18,7 +18,7 @@ const Footer: NextPage = () => (
             </div>
             <div className="app-item-group ">
               <div className="social-block">
-                <h6>follow us</h6>
+                <h6>síguenos</h6>
                 <ul className="social">
                   <li>
                     <a href="#">

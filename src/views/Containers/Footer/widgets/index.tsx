@@ -61,7 +61,8 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
                             <div className="col-md-5 ">
                               <div className="subscribe-block">
                                 <div className="subscrib-contant ">
-                                  <h4>subscribe to newsletter</h4>
+                                  {/* Texto traducido: subscribe to newsletter */}
+                                  <h4>suscríbete a nuestro boletín</h4>
                                 </div>
                               </div>
                             </div>
@@ -74,7 +75,8 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
                                         <i className="fa fa-envelope-o"></i>
                                       </span>
                                     </div>
-                                    <Input type="text" className="form-control" placeholder="your email" />
+                                    {/* Placeholder traducido: your email */}
+                                    <Input type="text" className="form-control" placeholder="tu correo electrónico" />
                                     <div className="input-group-prepend">
                                       <span className="input-group-text telly">
                                         <i className="fa fa-telegram"></i>
@@ -201,7 +203,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
               </div>
               <div className="app-item-group ">
                 <div className="social-block">
-                  <h6>follow us</h6>
+                  <h6>síguenos</h6>
                   <ul className="social">
                     <li>
                       <a href="#">

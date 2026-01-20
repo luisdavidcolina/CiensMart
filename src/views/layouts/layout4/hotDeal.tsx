@@ -211,7 +211,8 @@ const HotDeal: NextPage = () => {
                           <div className="hot-deal-center">
                             <div>
                               <div>
-                                <h5>Simply dummy text of the printing. </h5>
+                                {/* Título atractivo para una oferta destacada */}
+                                <h5>¡Oferta Relámpago de Temporada!</h5>
                               </div>
                               <div className="rating">
                                 <i className="fa fa-star"></i>
@@ -222,8 +223,9 @@ const HotDeal: NextPage = () => {
                               </div>
                               <div>
                                 <p>
-                                  It is a long established fact that a reader. It is a long established fact that a reader.It is a long established fact that a reader. It is a long established fact
-                                  that a reader.
+                                  Aprovecha nuestros descuentos exclusivos en productos seleccionados para el hogar y tecnología.
+                                  Calidad garantizada con el respaldo de CiensMart y la mejor atención para la comunidad universitaria.
+                                  ¡No dejes pasar esta oportunidad!
                                 </p>
                                 {dataR && !loading ? (
                                   <div className="price">

@@ -250,7 +250,7 @@ const EmailTemplate2 = () => (
                   <td style={{ padding: "30px" }}>
                     <div>
                       <h4 className="title" style={{ margin: "0" }}>
-                        Follow us
+                        síguenos
                       </h4>
                     </div>
                     <Table bordered cellPadding="0" cellSpacing="0" className="footer-social-icon text-center" align="center" style={{ marginTop: "20px" }}>

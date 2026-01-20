@@ -30,17 +30,17 @@ const CountDownComponent: React.FC = () => {
   return (
     <Fragment>
       {countdowns.completed ? (
-        <span>You are good to go!</span>
+        <span>¡La oferta ya está disponible!</span>
       ) : (
         <div className="timer">
           <p className="demo">
             <span>
               {countdowns.days}
-              <span>days</span>
+              <span>días</span>
             </span>
             <span>
               {countdowns.hrs}
-              <span>hrs</span>
+              <span>horas</span>
             </span>
             <span>
               {countdowns.mins}
@@ -48,7 +48,7 @@ const CountDownComponent: React.FC = () => {
             </span>
             <span>
               {countdowns.sec}
-              <span>sec</span>
+              <span>seg</span>
             </span>
           </p>
         </div>

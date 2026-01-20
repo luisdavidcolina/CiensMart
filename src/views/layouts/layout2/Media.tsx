@@ -192,7 +192,8 @@ const MediaSection: NextPage = () => {
                   <div>
                     <div className="hot-deal-contain1 hot-deal-banner-1">
                       <div className="hot-deal-heading">
-                        <h5>today’s hot deal</h5>
+                        {/* Traducción: today’s hot deal */}
+                        <h5>¡oferta imperdible de hoy!</h5>
                       </div>
                       <Row className="hot-deal-subcontain">
                         <Col lg="4" sm="4" xs="12">
@@ -201,7 +202,7 @@ const MediaSection: NextPage = () => {
                               dataR.collection[0].images.map((img: any, i: any) => {
                                 return (
                                   <div key={i}>
-                                    <Media src={`/images/${img.src}`} alt="hot-deal" className="img-fluid  " />
+                                    <Media src={`/images/${img.src}`} alt="oferta-destacada" className="img-fluid" />
                                   </div>
                                 );
                               })}
@@ -218,10 +219,12 @@ const MediaSection: NextPage = () => {
                                 <i className="fa fa-star"></i>
                               </div>
                               <div>
-                                <h5>simply dummy text of the printing</h5>
+                                {/* Texto descriptivo: simplemente dummy text... */}
+                                <h5>Tecnología y Hogar al mejor precio</h5>
                               </div>
                               <div>
-                                <p>it is a long established fact that a reader.</p>
+                                {/* Texto descriptivo: it is a long established fact... */}
+                                <p>En CiensMart seleccionamos los mejores productos para la comunidad de la UCV y el público general, garantizando calidad en cada compra.</p>
                                 {dataR && !loading ? (
                                   <div className="price">
                                     <span>
@@ -241,12 +244,12 @@ const MediaSection: NextPage = () => {
                           </div>
                         </Col>
                         <Col lg="2" sm="2" md="0">
-                          <Slider {...setting1}asNavFor={nav1!} ref={(slider1) => setNav2(slider1)} vertical={true} slidesToShow={2} swipeToSlide={true} focusOnSelect={true} verticalSwiping={true}>
+                          <Slider {...setting1} asNavFor={nav1!} ref={(slider1) => setNav2(slider1)} vertical={true} slidesToShow={2} swipeToSlide={true} focusOnSelect={true} verticalSwiping={true}>
                             {dataR &&
                               dataR.collection[0].images.map((img: any, i: any) => {
                                 return (
                                   <div key={i}>
-                                    <Media src={`/images/${img.src}`} alt="hot-deal" className="img-fluid" />
+                                    <Media src={`/images/${img.src}`} alt="miniaturas-oferta" className="img-fluid" />
                                   </div>
                                 );
                               })}
