@@ -5,7 +5,6 @@ import { CurrencyContextProvider } from "@/helpers/currency/CurrencyContext";
 import { FilterProvider } from "@/helpers/filter/filter.provider";
 import { MenuContextProvider } from "@/helpers/menu/MenuContext";
 import { WishlistProvider } from "@/helpers/wishlist/wish.provider";
-import Customizer from "@/views/Containers/customizer";
 import TaptoTop from "@/views/Containers/TapTop";
 import { ToastContainer } from "react-toastify";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -32,7 +31,6 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         </CurrencyContextProvider>
         <ToastContainer />
         <TaptoTop />
-        <Customizer />
       </div>
     </ApolloProvider>
   );
