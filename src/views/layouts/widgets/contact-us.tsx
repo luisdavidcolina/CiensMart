@@ -13,7 +13,7 @@ const ContactUS: NextPage = () => {
                   <Media src="/images/layout-1/call-img.png" className="img-fluid" alt="call-banner" />
                 </div>
                 <div>
-                  <h3>if you have any question please call us</h3>
+                  <h3>¿Tienes alguna duda? Llámanos</h3>
                 </div>
                 <div>
                   <h2>123-456-7890</h2>
