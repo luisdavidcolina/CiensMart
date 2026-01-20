@@ -4,7 +4,7 @@ import "../../src/index.scss";
 import { I18nProvider } from "./i18n/i18n-context";
 import { detectLanguage } from "./i18n/server";
 export const metadata: Metadata = {
-  title: "Bigdeal - React Next Ecommerce Graphql",
+  title: "CiensMart",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
