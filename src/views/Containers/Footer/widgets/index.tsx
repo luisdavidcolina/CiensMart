@@ -20,33 +20,32 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
                     </div>
                     <div className="footer-detail">
                       <p>
-                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard
-                        McClintock,
+                        CiensMart es tu tienda departamental de confianza, dedicada a ofrecer una amplia variedad de productos en tecnología, hogar y mucho más. Innovamos para brindarte calidad y excelencia desde la Escuela de Computación de la Facultad de Ciencias - UCV.
                       </p>
                       <ul className="paymant-bottom">
                         <li>
                           <a href="#">
-                            <Media src="/images/layout-1/pay/1.png" className="img-fluid" alt="pay" />
+                            <Media src="/images/layout-1/pay/1.png" className="img-fluid" alt="pago" />
                           </a>
                         </li>
                         <li>
                           <a href="#">
-                            <Media src="/images/layout-1/pay/2.png" className="img-fluid" alt="pay" />
+                            <Media src="/images/layout-1/pay/2.png" className="img-fluid" alt="pago" />
                           </a>
                         </li>
                         <li>
                           <a href="#">
-                            <Media src="/images/layout-1/pay/3.png" className="img-fluid" alt="pay" />
+                            <Media src="/images/layout-1/pay/3.png" className="img-fluid" alt="pago" />
                           </a>
                         </li>
                         <li>
                           <a href="#">
-                            <Media src="/images/layout-1/pay/4.png" className="img-fluid" alt="pay" />
+                            <Media src="/images/layout-1/pay/4.png" className="img-fluid" alt="pago" />
                           </a>
                         </li>
                         <li>
                           <a href="#">
-                            <Media src="/images/layout-1/pay/5.png" className="img-fluid" alt="pay" />
+                            <Media src="/images/layout-1/pay/5.png" className="img-fluid" alt="pago" />
                           </a>
                         </li>
                       </ul>
@@ -91,82 +90,87 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
                       <Col md="12">
                         <div className="account-right">
                           <div className="row">
+                            {/* Columna: Mi Cuenta */}
                             <div className="col-md-4">
                               <div className="footer-box">
                                 <div className="footer-title">
-                                  <h5>my account</h5>
+                                  <h5>mi cuenta</h5>
                                 </div>
                                 <div className="footer-contant">
                                   <ul>
                                     <li>
-                                      <a href="#">about usss</a>
+                                      <a href="#">quiénes somos</a>
                                     </li>
                                     <li>
-                                      <a href="#">contact us</a>
+                                      <a href="#">contáctanos</a>
                                     </li>
                                     <li>
-                                      <a href="#">terms & conditions</a>
+                                      <a href="#">términos y condiciones</a>
                                     </li>
                                     <li>
-                                      <a href="#">returns & exchanges</a>
+                                      <a href="#">cambios y devoluciones</a>
                                     </li>
                                     <li>
-                                      <a href="#">shipping & delivery</a>
+                                      <a href="#">envío y entrega</a>
                                     </li>
                                   </ul>
                                 </div>
                               </div>
                             </div>
+
+                            {/* Columna: Enlaces Rápidos */}
                             <div className="col-md-3">
                               <div className="footer-box">
                                 <div className="footer-title">
-                                  <h5>quick link</h5>
+                                  <h5>enlaces rápidos</h5>
                                 </div>
                                 <div className="footer-contant">
                                   <ul>
                                     <li>
-                                      <a href="#">store location</a>
+                                      <a href="#">ubicación de la tienda</a>
                                     </li>
                                     <li>
-                                      <a href="#"> my account</a>
+                                      <a href="#">mi cuenta</a>
                                     </li>
                                     <li>
-                                      <a href="#"> orders tracking</a>
+                                      <a href="#">rastreo de pedidos</a>
                                     </li>
                                     <li>
-                                      <a href="#"> size guide</a>
+                                      <a href="#">guía de tallas</a>
                                     </li>
                                     <li>
-                                      <a href="#">FAQ </a>
+                                      <a href="#">preguntas frecuentes (FAQ)</a>
                                     </li>
                                   </ul>
                                 </div>
                               </div>
                             </div>
+
+                            {/* Columna: Información de Contacto */}
                             <div className="col-md-5">
                               <div className="footer-box footer-contact-box">
                                 <div className="footer-title">
-                                  <h5>contact us</h5>
+                                  <h5>contáctanos</h5>
                                 </div>
                                 <div className="footer-contant">
                                   <ul className="contact-list">
                                     <li>
                                       <i className="fa fa-map-marker"></i>
                                       <span>
-                                        big deal store demo store <br /> <span> india-3654123</span>
+                                        CiensMart Store - Facultad de Ciencias <br /> <span> UCV, Caracas - 1041</span>
                                       </span>
                                     </li>
                                     <li>
                                       <i className="fa fa-phone"></i>
-                                      <span>call us: 123-456-7898</span>
+                                      <span>Llámanos: 0212-555-0199</span>
                                     </li>
                                     <li>
                                       <i className="fa fa-envelope-o"></i>
-                                      <span>email us: support@bigdeal.com</span>
+                                      <span>Email: soporte@ciensmart.ucv.ve</span>
                                     </li>
                                     <li>
                                       <i className="fa fa-fax"></i>
-                                      <span>fax 123456</span>
+                                      <span>Fax: 0212-555-0200</span>
                                     </li>
                                   </ul>
                                 </div>
@@ -237,7 +241,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
             <Col xs="12">
               <div className="sub-footer-contain">
                 <p>
-                  <span>2022 - 23 </span>copy right by themeforest powered by pixelstrap
+                  <span>2025 - 26 </span> © Todos los derechos reservados por CiensMart - Escuela de Computación UCV
                 </p>
               </div>
             </Col>
