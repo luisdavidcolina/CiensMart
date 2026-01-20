@@ -99,7 +99,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
                                 <div className="footer-contant">
                                   <ul>
                                     <li>
-                                      <a href="#">about us</a>
+                                      <a href="#">about usss</a>
                                     </li>
                                     <li>
                                       <a href="#">contact us</a>

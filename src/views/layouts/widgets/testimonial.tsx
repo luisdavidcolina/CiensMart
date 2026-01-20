@@ -10,20 +10,21 @@ var settings = {
 const Review = [
   {
     img: "/images/testimonial/1.jpg",
-    user: "mark jecno",
-    review: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.",
+    user: "Carlos Rodríguez",
+    review: "Excelente servicio. Compré una nevera para mi hogar y el proceso de entrega fue impecable. La atención al cliente resolvió todas mis dudas de inmediato. ¡Totalmente recomendados!",
   },
   {
     img: "/images/testimonial/2.jpg",
-    user: "mark jecno",
-    review: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.",
+    user: "Elena Martínez",
+    review: "Me encanta la variedad de productos que tienen. Conseguí todo lo que necesitaba para remodelar mi cocina en un solo lugar y a precios muy competitivos. Una experiencia de compra 10/10.",
   },
   {
     img: "/images/testimonial/3.jpg",
-    user: "mark jecno",
-    review: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.",
+    user: "Ricardo Gómez",
+    review: "La plataforma es muy intuitiva y rápida. Como usuario frecuente de tiendas online, valoro mucho la facilidad para encontrar ofertas y la seguridad en los métodos de pago. Sin duda volveré a comprar.",
   },
 ];
+
 const Testimonial: NextPage = () => {
   return (
     <>
