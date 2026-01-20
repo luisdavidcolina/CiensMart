@@ -92,7 +92,7 @@ const AccordianForm: React.FC<ProductRightProps> = ({ item, changeColorVar }) =>
         </div>
         <div className="product-buttons">
           <a href="#" data-toggle="modal" data-target="#addtocart" className="btn btn-normal" onClick={() => addToCart(item)}>
-            add to cart
+            agregar al carrito
           </a>{" "}
           <a href="/pages/account/checkout" className="btn btn-normal">
             buy now

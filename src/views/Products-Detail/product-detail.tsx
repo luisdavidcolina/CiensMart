@@ -163,7 +163,7 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
             e.preventDefault();
             addToCart(item);
           }}>
-          add to cart
+          agregar al carrito
         </a>
         <a href="/pages/account/checkout" className="btn btn-normal">
           buy now

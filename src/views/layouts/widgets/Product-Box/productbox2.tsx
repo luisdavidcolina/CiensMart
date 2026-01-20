@@ -137,11 +137,11 @@ const ProductBox2: React.FC<productType> = (data) => {
           <div className="addtocart_btn">
             <button
               className="add-button add_cart"
-              title="Add to cart"
+              title="Agregar al carrito"
               onClick={() => {
                 data.stock > 0 ? (setOpenQty(true), updateQty(data, quantity)) : "";
               }}>
-              add to cart
+              agregar al carrito
             </button>
             <div className={`qty-box cart_qty ${openQty ? "open" : ""}`}>
               <div className="input-group">
@@ -217,7 +217,7 @@ const ProductBox2: React.FC<productType> = (data) => {
                 </div>
                 <div className="product-buttons">
                   <a href="#" className="btn btn-normal" onClick={() => data.addCart()}>
-                    add to cart
+                    agregar al carrito
                   </a>
                   <a href="#" className="btn btn-normal" onClick={() => clickProductDetail()}>
                     view detail

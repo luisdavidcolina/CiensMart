@@ -347,7 +347,7 @@ const RatioSquare: NextPage = () => {
                                       <div className="product-buttons">
                                         s
                                         <a href="#" className="btn btn-normal" onClick={() => addToCart(item, quantity)}>
-                                          add to cart
+                                          agregar al carrito
                                         </a>
                                         <a href="#" className="btn btn-normal" onClick={() => clickProductDetail(item)}>
                                           view detail

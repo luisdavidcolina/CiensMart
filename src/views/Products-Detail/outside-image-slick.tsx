@@ -164,7 +164,7 @@ const OutsideImageSlick: React.FC<OutsideImageSlickProps> = ({ item }) => {
                       onClick={() => {
                         addToCart(item);
                       }}>
-                      add to cart
+                      agregar al carrito
                     </a>
                     <a href="/pages/account/checkout" className="btn btn-normal">
                       buy now

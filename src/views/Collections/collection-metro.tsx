@@ -85,7 +85,7 @@ const ProductList: React.FC<productProps> = ({ product }) => {
               <Media src={product.img} className="img-fluid  " alt="product" />
             </div>
             <div className="product-icon">
-              <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+              <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                 <i className="ti-bag"></i>
               </button>
               <a href="#" title="Add to Wishlist">

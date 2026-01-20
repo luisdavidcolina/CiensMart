@@ -109,7 +109,7 @@ const TrendingOffer: NextPage<trendingProps> = ({ type }) => {
     <>
       <div className="title4 section-my-space">
         <h4>
-          trending <span>product</span>
+          productos <span>tendencia</span>
         </h4>
       </div>
       <section className=" product  section-big-pb-space">

@@ -18,15 +18,29 @@ const NewsLatter: NextPage = () => {
           <div className="modal-bg">
             <div className="offer-content">
               <div>
-                <h2>newsletter</h2>
+                <h2>boletín informativo</h2>
                 <p>
-                  Subscribe to our website mailling list <br /> and get a Offer, Just for you!
+                  Suscríbete a nuestra lista de correos <br /> ¡y recibe una oferta especial solo para ti!
                 </p>
-                <Form action="https://pixelstrap.us19.list-manage.com/subscribe/post?u=5a128856334b598b395f1fc9b&amp;id=082f74cbda" className="auth-form needs-validation" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+                <Form
+                  action="https://pixelstrap.us19.list-manage.com/subscribe/post?u=5a128856334b598b395f1fc9b&amp;id=082f74cbda"
+                  className="auth-form needs-validation"
+                  method="post"
+                  id="mc-embedded-subscribe-form"
+                  name="mc-embedded-subscribe-form"
+                  target="_blank"
+                >
                   <div className="form-group mx-sm-3">
-                    <Input type="email" className="form-control" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required />
+                    <Input
+                      type="email"
+                      className="form-control"
+                      name="EMAIL"
+                      id="mce-EMAIL"
+                      placeholder="Ingresa tu correo electrónico"
+                      required
+                    />
                     <Button className="btn btn-theme btn-normal btn-sm " id="mc-submit">
-                      subscribe
+                      suscribirse
                     </Button>
                   </div>
                 </Form>

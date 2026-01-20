@@ -78,7 +78,7 @@ const ImageRatioPage: NextPage = () => {
                           </div>
                         </div>
                         <div className="icon-detail">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -123,7 +123,7 @@ const ImageRatioPage: NextPage = () => {
                           </div>
                         </div>
                         <div className="icon-detail">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -168,7 +168,7 @@ const ImageRatioPage: NextPage = () => {
                           </div>
                         </div>
                         <div className="icon-detail">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -213,7 +213,7 @@ const ImageRatioPage: NextPage = () => {
                           </div>
                         </div>
                         <div className="icon-detail">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -251,7 +251,7 @@ const ImageRatioPage: NextPage = () => {
                         </div>
                         <div className="product-icon icon-center">
                           <div>
-                            <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                            <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                               <i className="ti-bag"></i>
                             </button>
                             <a href="javascript" title="Add to Wishlist">
@@ -300,7 +300,7 @@ const ImageRatioPage: NextPage = () => {
                         </div>
                         <div className="product-icon icon-center">
                           <div>
-                            <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                            <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                               <i className="ti-bag"></i>
                             </button>
                             <a href="javascript" title="Add to Wishlist">
@@ -349,7 +349,7 @@ const ImageRatioPage: NextPage = () => {
                         </div>
                         <div className="product-icon icon-center">
                           <div>
-                            <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                            <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                               <i className="ti-bag"></i>
                             </button>
                             <a href="javascript" title="Add to Wishlist">
@@ -398,7 +398,7 @@ const ImageRatioPage: NextPage = () => {
                         </div>
                         <div className="product-icon icon-center">
                           <div>
-                            <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                            <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                               <i className="ti-bag"></i>
                             </button>
                             <a href="javascript" title="Add to Wishlist">
@@ -461,7 +461,7 @@ const ImageRatioPage: NextPage = () => {
                           <Img src="/images/img-ratio/13.jpg" className="img-fluid bg-img" alt="product" />
                         </div>
                         <div className="product-icon">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -507,7 +507,7 @@ const ImageRatioPage: NextPage = () => {
                           <Img src="/images/img-ratio/15.jpg" className="img-fluid bg-img" alt="product" />
                         </div>
                         <div className="product-icon">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -553,7 +553,7 @@ const ImageRatioPage: NextPage = () => {
                           <Img src="/images/img-ratio/17.jpg" className="img-fluid bg-img" alt="product" />
                         </div>
                         <div className="product-icon">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">
@@ -599,7 +599,7 @@ const ImageRatioPage: NextPage = () => {
                           <Img src="/images/img-ratio/19.jpg" className="img-fluid  bg-img" alt="product" />
                         </div>
                         <div className="product-icon">
-                          <button data-toggle="modal" data-target="#addtocart" title="Add to cart">
+                          <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
                             <i className="ti-bag"></i>
                           </button>
                           <a href="javascript" title="Add to Wishlist">

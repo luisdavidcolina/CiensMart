@@ -18,9 +18,9 @@ const NewsLatter: NextPage = () => {
                   <span aria-hidden="true">x</span>
                 </Button>
                 <div>
-                  <h2>newsletter</h2>
+                  <h2>boletín informativo</h2>
                   <p>
-                    Subscribe to our website mailling list <br /> and get a Offer, Just for you!
+                    Suscríbete a nuestra lista de correos <br /> ¡y recibe una oferta especial solo para ti!
                   </p>
                   <form
                     action="https://pixelstrap.us19.list-manage.com/subscribe/post?u=5a128856334b598b395f1fc9b&amp;id=082f74cbda"
@@ -30,9 +30,16 @@ const NewsLatter: NextPage = () => {
                     name="mc-embedded-subscribe-form"
                     target="_blank">
                     <div className="form-group mx-sm-3">
-                      <input type="email" className="form-control" name="EMAIL" id="mce-EMAIL" placeholder="Enter your email" required />
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="EMAIL"
+                        id="mce-EMAIL"
+                        placeholder="Ingresa tu correo electrónico"
+                        required
+                      />
                       <button type="submit" className="btn btn-theme btn-normal btn-sm " id="mc-submit">
-                        subscribe
+                        suscribirse
                       </button>
                     </div>
                   </form>
