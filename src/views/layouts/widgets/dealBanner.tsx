@@ -18,7 +18,7 @@ const DealBanner: NextPage = () => {
           <Col md="12" lg="4">
             <div className="deal-banner-containe">
               <div className="deal-btn">
-                <a className="btn-white">View more</a>
+                <a className="btn-white">{t("viewMore")}</a>
               </div>
             </div>
           </Col>

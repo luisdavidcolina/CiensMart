@@ -44,13 +44,13 @@ var settings = {
 };
 
 const CategoryList = [
-  { img: "/images/layout-1/rounded-cat/1.png", category: "Flower" },
-  { img: "/images/layout-1/rounded-cat/2.png", category: "Furniture" },
-  { img: "/images/layout-1/rounded-cat/3.png", category: "Bag" },
-  { img: "/images/layout-1/rounded-cat/4.png", category: "Tools" },
-  { img: "/images/layout-1/rounded-cat/5.png", category: "Grocery" },
-  { img: "/images/layout-1/rounded-cat/6.png", category: "Camera" },
-  { img: "/images/layout-1/rounded-cat/7.png", category: "cardigans" },
+  { img: "/images/layout-1/rounded-cat/1.png", category: "Flores" },
+  { img: "/images/layout-1/rounded-cat/2.png", category: "Muebles" },
+  { img: "/images/layout-1/rounded-cat/3.png", category: "Bolsos" },
+  { img: "/images/layout-1/rounded-cat/4.png", category: "Herramientas" },
+  { img: "/images/layout-1/rounded-cat/5.png", category: "Comestibles" },
+  { img: "/images/layout-1/rounded-cat/6.png", category: "Cámaras" },
+  { img: "/images/layout-1/rounded-cat/7.png", category: "Moda" },
 ];
 const Category: NextPage = () => {
   return (

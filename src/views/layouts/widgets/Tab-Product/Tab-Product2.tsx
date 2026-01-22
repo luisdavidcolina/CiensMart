@@ -101,6 +101,15 @@ interface tabProduct2Props {
   type: Array<string>;
 }
 
+const collectionTranslations: { [key: string]: string } = {
+  "new products": "nuevos productos",
+  "special products": "productos especiales",
+  "feature products": "productos destacados",
+  "best sellers": "más vendidos",
+  "electronics": "electrónica",
+  "furniture": "muebles",
+};
+
 const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
   const { addToWish } = React.useContext(WishlistContext);
   const { addToCart } = React.useContext(CartContext);
@@ -148,7 +157,7 @@ const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
               {collection.map((c, i) => (
                 <NavItem key={i}>
                   <NavLink className={activeTab === c ? "active" : ""} onClick={() => setActiveTab(c)}>
-                    {c}
+                    {collectionTranslations[c] || c}
                   </NavLink>
                 </NavItem>
               ))}
