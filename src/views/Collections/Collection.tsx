@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { CompareContext } from "@/helpers/compare/compare.context";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useLocalQuery } from "../../hooks/useLocalQuery"; // Replaced useQuery
 import { NextPage } from "next";
 import React, { useContext, useState } from "react";
 import { Button, Col, Row, Spinner } from "reactstrap";
@@ -61,7 +62,7 @@ const Collection: NextPage<CollectionProps> = ({ cols, layoutList }) => {
   const [layout, setLayout] = useState(layoutList);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data, loading, fetchMore } = useQuery(GET_PRODUCTS, {
+  const { data, loading, fetchMore } = useLocalQuery(GET_PRODUCTS, {
     variables: {
       type: selectedCategory,
       color: selectedColor,
@@ -82,7 +83,7 @@ const Collection: NextPage<CollectionProps> = ({ cols, layoutList }) => {
           variables: {
             indexFrom: data.products.items.length,
           },
-          updateQuery: (prev: any, { fetchMoreResult }) => {
+          updateQuery: (prev: any, { fetchMoreResult }: { fetchMoreResult: any }) => {
             if (!fetchMoreResult) return prev;
             setIsLoading(false);
             return {

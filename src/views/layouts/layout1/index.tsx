@@ -16,15 +16,15 @@ const Layout1: NextPage<Props> = ({ children }) => {
   const path = usePathname();
   const pathMatch = ["Layouts", "/"];
   useEffect(() => {
-    document.documentElement.classList.remove(localStorage.getItem("color")|| "''");
+    document.documentElement.classList.remove(localStorage.getItem("color") || "''");
     localStorage.setItem("color", "color-1");
-    document.documentElement.classList.add(localStorage.getItem("color")|| "''");
+    document.documentElement.classList.add(localStorage.getItem("color") || "''");
   }, []);
   return (
     <Loader>
       <div>
         <CartProvider>
-          <HeaderContainer category={false} cartPopupPosition="top" display="d-none" layoutLogo="layout-2" />
+          <HeaderContainer category={false} cartPopupPosition="top" display="d-none" layoutLogo="layout-5" />
           {pathMatch.includes(path) && (
             <section className="brand-panel">
               <div className="brand-panel-box">
@@ -33,7 +33,7 @@ const Layout1: NextPage<Props> = ({ children }) => {
             </section>
           )}
           <FilterProvider>{children}</FilterProvider>
-          <Footer layoutLogo="layout-2" />
+          <Footer layoutLogo="layout-5" />
         </CartProvider>
       </div>
     </Loader>

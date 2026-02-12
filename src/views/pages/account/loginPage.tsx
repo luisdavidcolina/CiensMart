@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { authService } from "../../../services/auth.service";
 import { toast } from "react-toastify";
 import { Col, Input, Label, Row } from "reactstrap";
 import Breadcrumb from "../../Containers/Breadcrumb";
@@ -11,11 +12,11 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState("test@123");
 
   const loginAuth = async (email: string, password: string) => {
-    if (email === "test@gmail.com" && password === "test@123") {
-      localStorage.setItem("Login", email);
+    const success = authService.login(email, password);
+    if (success) {
       setTimeout(() => router.push(`/pages/account/checkout`), 200);
     } else {
-      setTimeout(() => toast.error("Login Failed"), 200);
+      // toast handled in service or here? service does it.
     }
   };
 

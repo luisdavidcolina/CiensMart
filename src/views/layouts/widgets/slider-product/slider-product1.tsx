@@ -1,4 +1,5 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useLocalQuery } from "../../../../hooks/useLocalQuery";
 import React from "react";
 import Slider from "react-slick";
 import { Skeleton } from "../../../../common/skeleton";
@@ -90,7 +91,7 @@ const ProductBox1: React.FC<ProductBox1Props> = ({ hoverEffect }) => {
   const { addToCart } = React.useContext(CartContext);
   const { addToCompare } = React.useContext(CompareContext);
 
-  var { loading: specialLoading, data: dataR } = useQuery(GET_COLLECTION, {
+  var { loading: specialLoading, data: dataR } = useLocalQuery(GET_COLLECTION, {
     variables: {
       collection: "special products",
     },

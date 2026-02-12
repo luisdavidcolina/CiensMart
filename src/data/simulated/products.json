@@ -1,0 +1,121 @@
+[
+    {
+        "id": 1,
+        "title": "CiensMart T-Shirt",
+        "description": "High quality cotton t-shirt",
+        "type": "fashion",
+        "brand": "CiensMart",
+        "category": "Men",
+        "price": 25,
+        "new": true,
+        "sale": false,
+        "discount": 0,
+        "stock": 100,
+        "variants": [
+            {
+                "variant_id": 101,
+                "id": 1,
+                "sku": "CMS-TS-001",
+                "size": "M",
+                "color": "white",
+                "image_id": 11
+            }
+        ],
+        "images": [
+            {
+                "image_id": 11,
+                "id": 1,
+                "alt": "T-Shirt Front",
+                "src": "/images/layout-2/product/1.jpg"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Summer Dress",
+        "description": "Floral summer dress",
+        "type": "fashion",
+        "brand": "Zara",
+        "category": "Women",
+        "price": 45,
+        "new": true,
+        "sale": true,
+        "discount": 10,
+        "stock": 50,
+        "variants": [],
+        "images": [
+            {
+                "image_id": 21,
+                "id": 2,
+                "alt": "Dress",
+                "src": "/images/layout-2/product/2.jpg"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Running Shoes",
+        "description": "Comfortable running shoes",
+        "type": "fashion",
+        "brand": "Nike",
+        "category": "Shoes",
+        "price": 80,
+        "new": false,
+        "sale": false,
+        "discount": 0,
+        "stock": 20,
+        "variants": [],
+        "images": [
+            {
+                "image_id": 31,
+                "id": 3,
+                "alt": "Shoes",
+                "src": "/images/layout-2/product/3.jpg"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Classic Handbag",
+        "description": "Leather handbag",
+        "type": "fashion",
+        "brand": "Gucci",
+        "category": "Bags",
+        "price": 150,
+        "new": false,
+        "sale": true,
+        "discount": 20,
+        "stock": 15,
+        "variants": [],
+        "images": [
+            {
+                "image_id": 41,
+                "id": 4,
+                "alt": "Handbag",
+                "src": "/images/layout-2/product/4.jpg"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Denim Packet",
+        "description": "Stylish denim jacket",
+        "type": "fashion",
+        "brand": "Levi's",
+        "category": "Men",
+        "price": 60,
+        "new": true,
+        "sale": false,
+        "discount": 0,
+        "stock": 30,
+        "variants": [],
+        "images": [
+            {
+                "image_id": 51,
+                "id": 5,
+                "alt": "Jacket",
+                "src": "/images/layout-2/product/5.jpg"
+            }
+        ]
+    }
+]

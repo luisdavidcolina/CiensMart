@@ -1,6 +1,6 @@
 import React from "react";
 import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import Slider from "react-slick";
 import { Row, Col } from "reactstrap";
@@ -86,7 +86,7 @@ const RelatedProducts: NextPage = () => {
   const { addToWish } = React.useContext(WishlistContext);
   const { addToCart } = React.useContext(CartContext);
   const { addToCompare } = React.useContext(CompareContext);
-  var { loading, data } = useQuery(GET_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_PRODUCTS, {
     variables: {
       type: "fashion",
       id: 1,

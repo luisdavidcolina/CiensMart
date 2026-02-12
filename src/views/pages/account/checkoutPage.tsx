@@ -1,32 +1,38 @@
 import React, { useState } from "react";
 import { NextPage } from "next";
-import { Input, Label, Form, Row, Col, FormGroup } from "reactstrap";
+import { Input, Label, Form, Row, Col, FormGroup, Button, Spinner } from "reactstrap";
 import { CartContext } from "../../../helpers/cart/cart.context";
 import Breadcrumb from "../../../views/Containers/Breadcrumb";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from "react-toastify";
+import { authService } from "../../../services/auth.service";
+import { orderService } from "../../../services/order.service";
+import { paymentService } from "../../../services/payment.service";
 
 interface formType {
   firstName: string;
   lastName: string;
   phone: any;
-  country: any;
   email: string;
-  state: string;
   address: string;
-  city: string;
-  pincode: number;
 }
 
 const CheckoutPage: NextPage = () => {
   const { cartItems, cartTotal, emptyCart } = React.useContext(CartContext);
   const { selectedCurr } = React.useContext(CurrencyContext);
   const { symbol, value } = selectedCurr;
-  const [obj, setObj] = useState<any>({});
-  const [payment, setPayment] = useState("stripe");
+  const [loading, setLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+
+  // Payment Form State
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: "",
+    expiry: "",
+    cvv: ""
+  });
+
   const {
     register,
     handleSubmit,
@@ -35,44 +41,67 @@ const CheckoutPage: NextPage = () => {
 
   const router = useRouter();
 
-  const checkhandle = (value: any) => {
-    setPayment(value);
+  const handleCardChange = (e: any) => {
+    setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
   };
 
-  const onSuccess = (data: any, actions: any) => {
-    return actions.order.capture().then(() => {
-      alert("Order success");
-      router.push("/page/order-success");
-    });
+  const processOrder = (data: formType, paymentStatus: string, transactionId?: string) => {
+    const user = authService.getCurrentUser();
+    const order = {
+      ...data,
+      cartItems,
+      total: cartTotal,
+      userId: user ? user.id : 'guest',
+      status: 'Pending',
+      paymentStatus: paymentStatus,
+      transactionId: transactionId || `txn_${Date.now()}` // Fallback ID
+    };
+
+    const newOrder = orderService.createOrder(order);
+    localStorage.setItem("order-sucess-items", JSON.stringify(cartItems));
+    // Save ID for the success page to retrieve
+    if (newOrder && newOrder.id) {
+      localStorage.setItem("last_order_id", newOrder.id);
+    }
+    emptyCart();
+    router.push("/pages/order-success");
   };
 
-  const onSubmit = (data: formType) => {
+  const onSubmit = async (data: formType) => {
     if (data !== null) {
-      alert("You submitted the form and stuff!");
-      localStorage.setItem("order-sucess-items", JSON.stringify(cartItems));
-      emptyCart();
-      router.push("/pages/order-success");
+      setLoading(true);
+      setPaymentError(null);
+
+      // Simple validation
+      if (!cardDetails.cardNumber || !cardDetails.expiry || !cardDetails.cvv) {
+        toast.error("Please enter card details");
+        setLoading(false);
+        return;
+      }
+
+      // 1. Attempt Payment
+      const response = await paymentService.processTransaction(
+        cardDetails,
+        cartTotal,
+        `Order for ${data.firstName} ${data.lastName}`
+      );
+
+      if (response.success) {
+        toast.success("Payment Successful!");
+        processOrder(data, "Paid", response.data?.transaction_id);
+      } else {
+        setPaymentError(response.error || "Payment failed");
+        setLoading(false);
+        toast.error("Payment Failed. You can try again or order without paying.");
+      }
     } else {
       console.log(errors);
     }
   };
 
-  const setStateFromInput = (event: any) => {
-    obj[event.target.name] = event.target.value;
-    setObj(obj);
-  };
-
-  const onCancel = (data: any) => {
-    toast.error("The payment was cancelled!", data);
-  };
-
-  const onError = (err: any) => {
-    console.error("Error!", err);
-  };
-
-  const paypalOptions = {
-    clientId: "AZ4S98zFa01vym7NVeo_qthZyOnBhtNvQDsjhaZSMH-2_Y9IAJFbSD3HPueErYqN8Sa8WYRbjP7wWtd_",
-  };
+  const handleBuyAnyway = handleSubmit((data: formType) => {
+    processOrder(data, "Payment Failed/Pending");
+  });
 
   return (
     <>
@@ -92,17 +121,17 @@ const CheckoutPage: NextPage = () => {
                       <Row className="check-out ">
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label>First Name</Label>
-                          <input type="text" {...register("firstName", { required: true })} name="firstName" defaultValue="" placeholder="" className={`${errors.firstName ? "error_border" : ""}`} id="firstName" />
+                          <input type="text" {...register("firstName", { required: true })} name="firstName" className={`${errors.firstName ? "error_border" : ""}`} placeholder="" />
                           <span className="error-message">{errors.firstName && "First name is required"}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label>Last Name</Label>
-                          <input type="text" className={`${errors.lastName ? "error_border" : ""}`} id="lastName" defaultValue="" placeholder="" {...register("lastName", { required: true })} />
+                          <input type="text" className={`${errors.lastName ? "error_border" : ""}`} placeholder="" {...register("lastName", { required: true })} />
                           <span className="error-message">{errors.lastName && "Last name is required"}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label className="field-label">Phone</Label>
-                          <input type="text" className={`${errors.phone ? "error_border" : ""}`} id="phone" defaultValue="" placeholder="" {...register("phone", { pattern: /\d+/ })} />
+                          <input type="text" className={`${errors.phone ? "error_border" : ""}`} placeholder="" {...register("phone", { pattern: /\d+/ })} />
                           <span className="error-message">{errors.phone && "Please enter number for phone."}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
@@ -110,7 +139,6 @@ const CheckoutPage: NextPage = () => {
                           <input
                             type="text"
                             className={`${errors.email ? "error_border" : ""}`}
-                            defaultValue=""
                             placeholder=""
                             {...register("email", {
                               required: true,
@@ -120,20 +148,9 @@ const CheckoutPage: NextPage = () => {
                           <span className="error-message">{errors.email && "Please enter proper email address ."}</span>
                         </FormGroup>
                         <FormGroup className="col-md-12 col-sm-12 col-xs-12">
-                          <Label className="field-label">Country</Label>
-                          <select id="country" {...register("country", { required: true })}>
-                            <option>India</option>
-                            <option>South Africa</option>
-                            <option>United State</option>
-                            <option>Australia</option>
-                          </select>
-                        </FormGroup>
-                        <FormGroup className="col-md-12 col-sm-12 col-xs-12">
                           <Label className="field-label">Address</Label>
                           <input
                             type="text"
-                            id="address"
-                            defaultValue=""
                             placeholder="Street address"
                             className={`${errors.address ? "error_border" : ""}`}
                             {...register("address", {
@@ -144,21 +161,6 @@ const CheckoutPage: NextPage = () => {
                           />
                           <span className="error-message">{errors.address && "Please right your address ."}</span>
                         </FormGroup>
-                        <FormGroup className="col-md-12 col-sm-12 col-xs-12">
-                          <Label className="field-label">Town/City</Label>
-                          <input type="text" className={`${errors.city ? "error_border" : ""}`} id="city" defaultValue="" {...register("city", { required: true })} placeholder="" onChange={setStateFromInput} />
-                          <span className="error-message">{errors.city && "select one city"}</span>
-                        </FormGroup>
-                        <FormGroup className="col-md-12 col-sm-6 col-xs-12">
-                          <Label className="field-label">State / County</Label>
-                          <input type="text" className={`${errors.state ? "error_border" : ""}`} {...register("state", { required: true })} onChange={setStateFromInput} id="state" defaultValue="" placeholder="" />
-                          <span className="error-message">{errors.state && "select one state"}</span>
-                        </FormGroup>
-                        <FormGroup className="col-md-12 col-sm-6 col-xs-12">
-                          <Label className="field-label">Postal Code</Label>
-                          <input type="text" className={`${errors.pincode ? "error_border" : ""}`} {...register("pincode", { pattern: /\d+/ })} id="pincode" defaultValue="" placeholder="" />
-                          <span className="error-message">{errors.pincode && "Required integer"}</span>
-                        </FormGroup>
                         <FormGroup className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <Input type="checkbox" name="shipping-option" id="account-option" /> &ensp;
                           <Label htmlFor="account-option">Create An Account?</Label>
@@ -166,9 +168,10 @@ const CheckoutPage: NextPage = () => {
                       </Row>
                     </div>
                   </Col>
+
                   <Col lg="6" sm="12" xs="12">
-                    <div className="checkout-details theme-form  section-big-mt-space">
-                      {cartItems && cartItems.length > 0 ? (
+                    <div className="checkout-details theme-form section-big-mt-space">
+                      {cartItems && cartItems.length > 0 && (
                         <div className="order-box">
                           <div className="title-box">
                             <div>
@@ -194,19 +197,6 @@ const CheckoutPage: NextPage = () => {
                                 {(cartTotal * value).toFixed(2)}
                               </span>
                             </li>
-                            <li>
-                              Shipping
-                              <div className="shipping">
-                                <div className="shopping-option">
-                                  <input type="checkbox" name="free-shipping" id="free-shipping" />
-                                  <label htmlFor="free-shipping">Free Shipping</label>
-                                </div>
-                                <div className="shopping-option">
-                                  <input type="checkbox" name="local-pickup" id="local-pickup" />
-                                  <label htmlFor="local-pickup">Local Pickup</label>
-                                </div>
-                              </div>
-                            </li>
                           </ul>
                           <ul className="total">
                             <li>
@@ -218,58 +208,47 @@ const CheckoutPage: NextPage = () => {
                             </li>
                           </ul>
                         </div>
-                      ) : (
-                        ""
                       )}
+
                       <div className="payment-box">
                         <div className="upper-box">
                           <div className="payment-options">
-                            <ul>
-                              <li>
-                                <div className="radio-option">
-                                  <input type="radio" name="payment-group" id="payment-1" defaultChecked={true} onClick={() => checkhandle("stripe")} />
-                                  <label htmlFor="payment-1">
-                                    Check Payments<span className="small-text">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</span>
-                                  </label>
-                                </div>
-                              </li>
-                              <li>
-                                <div className="radio-option">
-                                  <input type="radio" name="payment-group" id="payment-2" onClick={() => checkhandle("stripe")} />
-                                  <label htmlFor="payment-2">
-                                    Cash On Delivery<span className="small-text">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</span>
-                                  </label>
-                                </div>
-                              </li>
-                              <li>
-                                <div className="radio-option paypal">
-                                  <input type="radio" name="payment-group" id="payment-3" onClick={() => checkhandle("paypal")} />
-                                  <label htmlFor="payment-3">PayPal</label>
-                                </div>
-                              </li>
-                            </ul>
+                            <h4 className="mb-3">Credit Card Payment</h4>
+                            <Row>
+                              <Col md="12" className="mb-3">
+                                <Label>Card Number</Label>
+                                <Input type="text" name="cardNumber" value={cardDetails.cardNumber} onChange={handleCardChange} placeholder="0000 0000 0000 0000" />
+                              </Col>
+                              <Col md="6" className="mb-3">
+                                <Label>Expiry (MM/YY)</Label>
+                                <Input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardChange} placeholder="MM/YY" />
+                              </Col>
+                              <Col md="6" className="mb-3">
+                                <Label>CVV</Label>
+                                <Input type="text" name="cvv" value={cardDetails.cvv} onChange={handleCardChange} placeholder="123" />
+                              </Col>
+                            </Row>
                           </div>
                         </div>
 
-                        {cartTotal !== 0 && (
-                          <div className="text-right">
-                            {payment === "stripe" ? (
-                              <button type="submit" className="btn-normal btn">
-                                Place Order
-                              </button>
-                            ) : (
-                              <PayPalScriptProvider                             
-                              options={{
-                                "client-id": paypalOptions.clientId,
-                                clientId: paypalOptions.clientId,
-                                components: "buttons",
-                              }}
-                              >
-                                <PayPalButtons forceReRender={[cartTotal]} onInit={onSuccess} onError={onError} onApprove={onSuccess} onCancel={onCancel} />
-                              </PayPalScriptProvider>
-                            )}
+                        {paymentError && (
+                          <div className="alert alert-danger mt-3">
+                            <p>{paymentError}</p>
+                            <Button type="button" color="warning" className="mt-2 text-white" onClick={handleBuyAnyway}>
+                              Buy anyway (Pay Later)
+                            </Button>
                           </div>
                         )}
+
+                        <div className="text-right mt-4">
+                          {cartTotal === 0 ? (
+                            <div className="alert alert-warning">Your cart is empty</div>
+                          ) : (
+                            <Button type="submit" className="btn-normal btn" disabled={loading}>
+                              {loading ? <Spinner size="sm" /> : "Place Order & Pay"}
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </Col>
