@@ -1,78 +1,128 @@
-# CiensMart - E-commerce Application
+# CiensMart - Aplicación de Comercio Electrónico 🛒
 
-CiensMart is a modern e-commerce application built with Next.js, React, and TypeScript. It features a fully simulated local backend and integration with a custom payment gateway.
+**CiensMart** es un Producto Mínimo Viable (MVP) de comercio electrónico moderno y completamente funcional desarrollado para la Facultad de Ciencias de la UCV. Ofrece una experiencia de compra fluida desde la navegación de productos hasta el pago seguro, construido con servicios backend locales simulados e integración de pagos en tiempo real.
 
-## Features
+## 🚀 Características Principales
 
--   **Product Browsing**: Browse products with filtering (Price, Brand, Color) and sorting.
--   **Local Backend Simulation**:
-    -   Uses `localStorage` to simulate a persistent database for Products, Users, and Orders.
-    -   No external backend dependencies for core functionality.
-    -   Mock data stored in `src/data/simulated/products.json`.
--   **Authentication**:
-    -   Register and Login functionality (Simulated).
-    -   User sessions persisted locally.
--   **Shopping Cart**: Fully functional cart with persistent state.
--   **Checkout & Payment**:
-    -   Simplified checkout process.
-    -   **Credit Card Integration**: Integrated with Bancobsidiana payment gateway.
-    -   **Fallback Mechanism**: If payment fails, users can choose to "Buy anyway" to save the order for later processing.
+### 🛍️ Experiencia de Compra
+-   **Catálogo de Productos**: Navega por una amplia gama de productos con filtrado avanzado (Categoría, Precio, Marca, Color).
+-   **Búsqueda Inteligente**: Funcionalidad de búsqueda de productos en tiempo real.
+-   **Carrito de Compras**: Gestión de carrito persistente con cálculos de totales instantáneos.
+-   **Lista de Deseos**: Guarda tus artículos favoritos para más tarde.
 
-## Getting Started
+### 💳 Proceso de Pago y Facturación
+-   **Checkout Simplificado**: Proceso de pago optimizado en una sola página.
+-   **Integración de Pasarela de Pagos**: Procesamiento seguro de tarjetas de crédito a través de la API de **Bancobsidiana**.
+-   **Diseño Resiliente**: Opción de respaldo "Comprar ahora, Pagar después" si los servicios de pago no están disponibles.
+-   **Rastreo de Pedidos**: Confirmación inmediata del pedido con IDs de Transacción únicos.
 
-### Prerequisites
+### 👤 Gestión de Cuentas de Usuario
+-   **Panel de Control Dinámico**: Vista general visual del perfil y actividades del usuario.
+-   **Historial de Pedidos**: Lista completa de pedidos anteriores con seguimiento de estado (Pendiente/Pagado).
+-   **Autenticación**: Flujo simulado de Inicio de Sesión/Registro con persistencia de sesión.
 
--   Node.js (v14 or higher)
--   npm or yarn
+### 🛠️ Aspectos Técnicos Destacados
+-   **Simulación de Backend Local**: Emulación completa de base de datos usando `localStorage` (No requiere BD externa para la demostración).
+-   **Hooks Personalizados**: Hooks especializados como `useLocalQuery` para la obtención eficiente de datos.
+-   **Diseño Responsivo**: Arquitectura mobile-first asegurando usabilidad en todos los dispositivos.
+-   **Marca Consistente**: Uso unificado de logo y tema en todas las vistas de la aplicación.
 
-### Installation
+---
 
-1.  Clone the repository:
+## 🛠️ Stack Tecnológico
+
+-   **Framework**: [Next.js](https://nextjs.org/) (Framework de React)
+-   **Lenguaje**: [TypeScript](https://www.typescriptlang.org/)
+-   **Estilos**: SCSS / Reactstrap
+-   **Gestión de Estado**: React Context API
+-   **Formularios**: React Hook Form
+-   **Notificaciones**: React Toastify
+
+---
+
+## ⚙️ Comenzando
+
+Sigue estos pasos para configurar el proyecto localmente:
+
+### Prerrequisitos
+-   Node.js (v14 o superior)
+-   npm o yarn
+
+### Instalación
+
+1.  **Clonar el repositorio**:
     ```bash
     git clone <repository-url>
+    cd CiensMart
     ```
-2.  Install dependencies:
+
+2.  **Instalar dependencias**:
     ```bash
     npm install
-    # or
+    # o
     yarn install
     ```
 
-### Running the Application
-
-1.  Start the development server:
+3.  **Ejecutar el servidor de desarrollo**:
     ```bash
     npm run dev
-    # or
+    # o
     yarn dev
     ```
-2.  Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+4.  **Abrir la aplicación**:
+    Navega a [http://localhost:3000](http://localhost:3000) en tu navegador.
 
--   `src/components`: Reusable UI components.
--   `src/views`: Page layouts and views.
--   `src/services`: Service layer for business logic.
-    -   `localData.service.ts`: Manages simulated database operations.
-    -   `auth.service.ts`: Manages user authentication.
-    -   `order.service.ts`: Manages order creation.
-    -   `payment.service.ts`: Handles communication with the payment gateway.
--   `src/hooks`: Custom React hooks.
-    -   `useLocalQuery.ts`: A drop-in replacement for Apollo's `useQuery` to fetch local data.
--   `src/data/simulated`: Contains mock JSON data.
+---
 
-## Payment Integration
+## 💳 Detalles de Integración de Pagos
 
-The application integrates with the Bancobsidiana API for processing transactions.
+La aplicación está integrada con la **Pasarela de Pagos Bancobsidiana**.
 
--   **Endpoint**: `https://ecommerce-bancobsidiana-team5-production.up.railway.app/API/v1/transaction/process`
--   **Merchant ID**: `ciens-mart`
+-   **Endpoint de la API**: `https://ecommerce-bancobsidiana-team5-production.up.railway.app/api/v1/transaction/process`
+-   **Método**: `POST`
+-   **ID de Comerciante**: `ciens-mart`
 
-### Test Cards
+### 🧪 Credenciales de Prueba
 
-You can use the following test card (or any random valid format for simulation):
--   **Card Number**: `0572818983980488`
--   **Expiry**: `05/27`
--   **CVV**: `881`
+Usa los siguientes detalles de tarjeta de prueba para simular una transacción exitosa:
 
-If the API is down or rejects the card, an error message will be displayed, and a "Buy anyway (Pay Later)" option will appear to allow completing the order flow.
+| Campo | Valor |
+| :--- | :--- |
+| **Número de Tarjeta** | `0572818983980488` |
+| **Fecha de Expiración** | `05/27` |
+| **CVV** | `881` |
+| **Monto** | (Calculado automáticamente) |
+
+> **Nota**: Si la pasarela de pagos devuelve un error, la aplicación lo maneja elegantemente, permitiendo al usuario completar el pedido con un estado de "Pago Pendiente".
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
+src/
+├── app/              # Páginas del App Router de Next.js
+├── components/       # Componentes de UI reutilizables
+├── views/            # Layouts y contenedores de páginas
+├── services/         # Lógica de negocio y adaptadores de API
+│   ├── auth.service.ts      # Autenticación de usuario
+│   ├── localData.service.ts # Base de datos simulada (LocalStorage)
+│   ├── order.service.ts     # Gestión de pedidos
+│   └── payment.service.ts   # Integración de pasarela de pagos
+├── hooks/            # Hooks de React personalizados (ej. useLocalQuery)
+└── data/             # Datos simulados (Mock data)
+```
+
+---
+
+## 👥 Colaboradores
+
+Desarrollado por el **Equipo 5** para la Escuela de Computación, Facultad de Ciencias - UCV.
+
+-   **Luisdavid Colina**
+-   *(Añadir otros miembros del equipo aquí)*
+
+---
+
+© 2026 CiensMart. Todos los derechos reservados.
