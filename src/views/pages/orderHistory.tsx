@@ -21,7 +21,7 @@ const OrderHistoryPage: NextPage = () => {
   return (
     <div className="bg-light">
       {/* <!-- breadcrumb start --> */}
-      <Breadcrumb title="order history" parent="home" />
+      <Breadcrumb title="historial de pedidos" parent="inicio" />
       {/* <!-- breadcrumb End --> */}
 
       {/* <!--section start--> */}
@@ -32,10 +32,10 @@ const OrderHistoryPage: NextPage = () => {
               <table className="table cart-table table-responsive-xs">
                 <thead>
                   <tr className="table-head">
-                    <th scope="col">product</th>
-                    <th scope="col">description</th>
-                    <th scope="col">price</th>
-                    <th scope="col">status</th>
+                    <th scope="col">producto</th>
+                    <th scope="col">descripción</th>
+                    <th scope="col">precio</th>
+                    <th scope="col">estado</th>
                   </tr>
                 </thead>
                 {orders.map((order, index) => (
@@ -49,7 +49,7 @@ const OrderHistoryPage: NextPage = () => {
                         </td>
                         <td>
                           <a href="#">
-                            order no: <span className="dark-data">{order.id}</span> <br />
+                            nro pedido: <span className="dark-data">{order.id}</span> <br />
                             {item.title}
                           </a>
                           <div className="mobile-cart-content row">
@@ -64,7 +64,7 @@ const OrderHistoryPage: NextPage = () => {
                         <td>
                           <div className="responsive-data">
                             <h4 className="price">{symbol}{(item.price * value).toFixed(2)}</h4>
-                            <span>Size: {item.size || 'N/A'}</span>|<span>Quntity: {item.qty}</span>
+                            <span>Talla: {item.size || 'N/A'}</span>|<span>Cantidad: {item.qty}</span>
                           </div>
                           <span className="dark-data">{order.status}</span> ({order.paymentStatus})
                         </td>
@@ -73,7 +73,7 @@ const OrderHistoryPage: NextPage = () => {
                   </tbody>
                 ))}
               </table>
-              {orders.length === 0 && <div className="text-center">No orders found.</div>}
+              {orders.length === 0 && <div className="text-center">No se encontraron pedidos.</div>}
             </Col>
           </Row>
         </div>

@@ -46,8 +46,8 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
             </ul>
           </div>
           <div className={`cart-item ${cartDisplay}`}>
-            <h5>{t("shopping")}</h5>
-            <h5>{t("cart")}</h5>
+            <h5>{t("compras")}</h5>
+            <h5>{t("carrito")}</h5>
           </div>
         </div>
       )}
@@ -63,7 +63,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
         ></a>
         <div className="cart-inner">
           <div className="cart_top">
-            <h3>my cart</h3>
+            <h3>mi carrito</h3>
             <div
               className="close-cart"
               onClick={() => {
@@ -104,7 +104,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
                   </li>
                 ))
               ) : (
-                <h2>No item in cart</h2>
+                <h2>No hay artículos en el carrito</h2>
               )}
             </ul>
             {!!cartItems.length && (
@@ -128,7 +128,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
                         document.body.style.overflow = "visible";
                       }}
                     >
-                      view cart
+                      ver carrito
                     </Link>
                     <Link
                       href="/pages/account/checkout"
@@ -137,7 +137,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
                         document.body.style.overflow = "visible";
                       }}
                     >
-                      checkout
+                      pagar
                     </Link>
                   </div>
                 </li>

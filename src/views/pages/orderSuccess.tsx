@@ -34,11 +34,11 @@ const OrderSuccessPage: NextPage = () => {
   if (!order) {
     return (
       <>
-        <Breadcrumb title="order-success" parent="home" />
+        <Breadcrumb title="Pedido Exitoso" parent="inicio" />
         <section className="section-big-py-space mt--5 bg-light">
           <div className="custom-container">
             <div className="col-sm-12 empty-cart-cls text-center">
-              <h3 className="mb-3"><strong>Loading Order Details...</strong></h3>
+              <h3 className="mb-3"><strong>Cargando detalles del pedido...</strong></h3>
             </div>
           </div>
         </section>
@@ -59,7 +59,7 @@ const OrderSuccessPage: NextPage = () => {
   return (
     <>
       {/* <!-- thank-you section start --> */}
-      <Breadcrumb title="order-success" parent="home" />
+      <Breadcrumb title="Pedido Exitoso" parent="inicio" />
       {/* <!-- Section ends --> */}
 
       {/* <!-- order-detail section start --> */}
@@ -68,7 +68,7 @@ const OrderSuccessPage: NextPage = () => {
           <Row>
             <Col lg="6">
               <div className="product-order">
-                <h3>your order details</h3>
+                <h3>detalles de tu pedido</h3>
                 <Row className="product-order-detail g-3">
                   {items && items.map((item: any, i: number) => {
                     return (
@@ -78,19 +78,19 @@ const OrderSuccessPage: NextPage = () => {
                         </Col>
                         <Col xs="3" className="order_detail">
                           <div>
-                            <h4>product name</h4>
+                            <h4>producto</h4>
                             <h5>{item.title}</h5>
                           </div>
                         </Col>
                         <Col xs="3" className="order_detail">
                           <div>
-                            <h4>quantity</h4>
+                            <h4>cantidad</h4>
                             <h5>{item.qty}</h5>
                           </div>
                         </Col>
                         <Col xs="3" className="order_detail">
                           <div>
-                            <h4>price</h4>
+                            <h4>precio</h4>
                             <h5>
                               {symbol}
                               {(item.price * value).toFixed(2)}
@@ -126,15 +126,15 @@ const OrderSuccessPage: NextPage = () => {
             <Col lg="6">
               <div className="row order-success-sec">
                 <div className="col-sm-6">
-                  <h4>summary</h4>
+                  <h4>resumen</h4>
                   <ul className="order-detail">
-                    <li>Payment ID: {order.transactionId || 'N/A'}</li>
-                    <li>Order ID: {order.id || 'N/A'}</li>
-                    <li>Order Total: {symbol}{(grandTotal * value).toFixed(2)}</li>
+                    <li>ID de Pago: {order.transactionId || 'N/A'}</li>
+                    <li>ID de Pedido: {order.id || 'N/A'}</li>
+                    <li>Total del Pedido: {symbol}{(grandTotal * value).toFixed(2)}</li>
                   </ul>
                 </div>
                 <div className="col-sm-6">
-                  <h4>shipping address</h4>
+                  <h4>dirección de envío</h4>
                   <ul className="order-detail">
                     <li>{order.firstName} {order.lastName}</li>
                     <li>{order.address}</li>
@@ -142,14 +142,14 @@ const OrderSuccessPage: NextPage = () => {
                   </ul>
                 </div>
                 <div className="col-sm-12 payment-mode">
-                  <h4>payment status</h4>
+                  <h4>estado del pago</h4>
                   <p style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>
-                    {order.paymentStatus || 'Pending'}
+                    {order.paymentStatus || 'Pendiente'}
                   </p>
                 </div>
                 <div className="col-md-12">
                   <div className="delivery-sec">
-                    <h3>expected date of delivery</h3>
+                    <h3>fecha estimada de entrega</h3>
                     <h2>{new Date(Date.now() + 86400000).toLocaleDateString()}</h2>
                   </div>
                 </div>

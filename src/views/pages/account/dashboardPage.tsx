@@ -13,13 +13,13 @@ const Dashboard: NextPage = () => {
   }, []);
 
   if (!user) {
-    return (<div>Please login to view dashboard</div>);
+    return (<div>Por favor inicia sesión para ver el panel</div>);
   }
 
   return (
     <>
       {/* <!-- breadcrumb start --> */}
-      <Breadcrumb title="Dashboard" parent="home" />
+      <Breadcrumb title="Panel de Control" parent="inicio" />
       {/* <!-- breadcrumb End --> */}
 
       {/* <!-- section start --> */}
@@ -33,7 +33,7 @@ const Dashboard: NextPage = () => {
                   setIsOpen(true);
                 }}
               >
-                <a className="popup-btn">my account</a>
+                <a className="popup-btn">mi cuenta</a>
               </div>
               <div
                 className={`dashboard-left`}
@@ -48,19 +48,19 @@ const Dashboard: NextPage = () => {
                       setIsOpen(false);
                     }}
                   >
-                    <i className="fa fa-angle-left" aria-hidden="true"></i> back
+                    <i className="fa fa-angle-left" aria-hidden="true"></i> volver
                   </span>
                 </div>
                 <div className="block-content ">
                   <ul>
                     <li className="active">
-                      <a href="#">Account Info</a>
+                      <a href="#">Información de la Cuenta</a>
                     </li>
                     <li>
-                      <a href="/pages/account/order-history">My Orders</a>
+                      <a href="/pages/account/order-history">Mis Pedidos</a>
                     </li>
                     <li>
-                      <a href="#" onClick={() => authService.logout()}>Logout</a>
+                      <a href="#" onClick={() => authService.logout()}>Cerrar Sesión</a>
                     </li>
                   </ul>
                 </div>
@@ -70,22 +70,22 @@ const Dashboard: NextPage = () => {
               <div className="dashboard-right">
                 <div className="dashboard">
                   <div className="page-title">
-                    <h2>My Dashboard</h2>
+                    <h2>Mi Panel</h2>
                   </div>
                   <div className="welcome-msg">
-                    <p>Hello, {user.firstName} {user.lastName} !</p>
-                    <p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity and update your account information. Select a link below to view or edit information.</p>
+                    <p>Hola, {user.firstName} {user.lastName} !</p>
+                    <p>Desde el Panel de tu Cuenta tienes la capacidad de ver una instantánea de tu actividad reciente y actualizar la información de tu cuenta. Selecciona un enlace a continuación para ver o editar la información.</p>
                   </div>
                   <div className="box-account box-info">
                     <div className="box-head">
-                      <h2>Account Information</h2>
+                      <h2>Información de la Cuenta</h2>
                     </div>
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="box">
                           <div className="box-title">
-                            <h3>Contact Information</h3>
-                            <a href="#">Edit</a>
+                            <h3>Información de Contacto</h3>
+                            <a href="#">Editar</a>
                           </div>
                           <div className="box-content">
                             <h6>{user.firstName} {user.lastName}</h6>

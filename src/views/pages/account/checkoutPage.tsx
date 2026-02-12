@@ -74,7 +74,7 @@ const CheckoutPage: NextPage = () => {
 
       // Simple validation
       if (!cardDetails.cardNumber || !cardDetails.expiry || !cardDetails.cvv) {
-        toast.error("Please enter card details");
+        toast.error("Por favor ingrese los detalles de la tarjeta");
         setLoading(false);
         return;
       }
@@ -83,16 +83,16 @@ const CheckoutPage: NextPage = () => {
       const response = await paymentService.processTransaction(
         cardDetails,
         cartTotal,
-        `Order for ${data.firstName} ${data.lastName}`
+        `Pedido de ${data.firstName} ${data.lastName}`
       );
 
       if (response.success) {
-        toast.success("Payment Successful!");
-        processOrder(data, "Paid", response.data?.transaction_id);
+        toast.success("¡Pago Exitoso!");
+        processOrder(data, "Pagado", response.data?.transaction_id);
       } else {
-        setPaymentError(response.error || "Payment failed");
+        setPaymentError(response.error || "Pago fallido");
         setLoading(false);
-        toast.error("Payment Failed. You can try again or order without paying.");
+        toast.error("Pago fallido. Puedes intentar de nuevo o pedir sin pagar.");
       }
     } else {
       console.log(errors);
@@ -105,7 +105,7 @@ const CheckoutPage: NextPage = () => {
 
   return (
     <>
-      <Breadcrumb title="checkout" parent="home" />
+      <Breadcrumb title="Finalizar Pedido" parent="inicio" />
       {/* <!-- section start --> */}
       <section className="section-big-py-space bg-light">
         <div className="custom-container">
@@ -115,27 +115,27 @@ const CheckoutPage: NextPage = () => {
                 <Row>
                   <Col lg="6" sm="12" xs="12">
                     <div className="checkout-title">
-                      <h3>Billing Details</h3>
+                      <h3>Detalles de Facturación</h3>
                     </div>
                     <div className="theme-form">
                       <Row className="check-out ">
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label>First Name</Label>
+                          <Label>Nombre</Label>
                           <input type="text" {...register("firstName", { required: true })} name="firstName" className={`${errors.firstName ? "error_border" : ""}`} placeholder="" />
-                          <span className="error-message">{errors.firstName && "First name is required"}</span>
+                          <span className="error-message">{errors.firstName && "El nombre es obligatorio"}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label>Last Name</Label>
+                          <Label>Apellido</Label>
                           <input type="text" className={`${errors.lastName ? "error_border" : ""}`} placeholder="" {...register("lastName", { required: true })} />
-                          <span className="error-message">{errors.lastName && "Last name is required"}</span>
+                          <span className="error-message">{errors.lastName && "El apellido es obligatorio"}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label className="field-label">Phone</Label>
+                          <Label className="field-label">Teléfono</Label>
                           <input type="text" className={`${errors.phone ? "error_border" : ""}`} placeholder="" {...register("phone", { pattern: /\d+/ })} />
-                          <span className="error-message">{errors.phone && "Please enter number for phone."}</span>
+                          <span className="error-message">{errors.phone && "Por favor ingrese un número de teléfono válido."}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label className="field-label">Email Address</Label>
+                          <Label className="field-label">Correo Electrónico</Label>
                           <input
                             type="text"
                             className={`${errors.email ? "error_border" : ""}`}
@@ -145,13 +145,13 @@ const CheckoutPage: NextPage = () => {
                               pattern: /^\S+@\S+$/i,
                             })}
                           />
-                          <span className="error-message">{errors.email && "Please enter proper email address ."}</span>
+                          <span className="error-message">{errors.email && "Por favor ingrese un correo válido."}</span>
                         </FormGroup>
                         <FormGroup className="col-md-12 col-sm-12 col-xs-12">
-                          <Label className="field-label">Address</Label>
+                          <Label className="field-label">Dirección</Label>
                           <input
                             type="text"
-                            placeholder="Street address"
+                            placeholder="Dirección de calle"
                             className={`${errors.address ? "error_border" : ""}`}
                             {...register("address", {
                               required: true,
@@ -159,11 +159,11 @@ const CheckoutPage: NextPage = () => {
                               max: 120,
                             })}
                           />
-                          <span className="error-message">{errors.address && "Please right your address ."}</span>
+                          <span className="error-message">{errors.address && "Por favor ingrese su dirección."}</span>
                         </FormGroup>
                         <FormGroup className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <Input type="checkbox" name="shipping-option" id="account-option" /> &ensp;
-                          <Label htmlFor="account-option">Create An Account?</Label>
+                          <Label htmlFor="account-option">¿Crear una cuenta?</Label>
                         </FormGroup>
                       </Row>
                     </div>
@@ -175,7 +175,7 @@ const CheckoutPage: NextPage = () => {
                         <div className="order-box">
                           <div className="title-box">
                             <div>
-                              Product <span>Total</span>
+                              Producto <span>Total</span>
                             </div>
                           </div>
                           <ul className="qty">
@@ -213,14 +213,14 @@ const CheckoutPage: NextPage = () => {
                       <div className="payment-box">
                         <div className="upper-box">
                           <div className="payment-options">
-                            <h4 className="mb-3">Credit Card Payment</h4>
+                            <h4 className="mb-3">Pago con Tarjeta de Crédito</h4>
                             <Row>
                               <Col md="12" className="mb-3">
-                                <Label>Card Number</Label>
+                                <Label>Número de Tarjeta</Label>
                                 <Input type="text" name="cardNumber" value={cardDetails.cardNumber} onChange={handleCardChange} placeholder="0000 0000 0000 0000" />
                               </Col>
                               <Col md="6" className="mb-3">
-                                <Label>Expiry (MM/YY)</Label>
+                                <Label>Vencimiento (MM/AA)</Label>
                                 <Input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardChange} placeholder="MM/YY" />
                               </Col>
                               <Col md="6" className="mb-3">
@@ -235,17 +235,17 @@ const CheckoutPage: NextPage = () => {
                           <div className="alert alert-danger mt-3">
                             <p>{paymentError}</p>
                             <Button type="button" color="warning" className="mt-2 text-white" onClick={handleBuyAnyway}>
-                              Buy anyway (Pay Later)
+                              Comprar de todos modos (Pagar después)
                             </Button>
                           </div>
                         )}
 
                         <div className="text-right mt-4">
                           {cartTotal === 0 ? (
-                            <div className="alert alert-warning">Your cart is empty</div>
+                            <div className="alert alert-warning">Tu carrito está vacío</div>
                           ) : (
                             <Button type="submit" className="btn-normal btn" disabled={loading}>
-                              {loading ? <Spinner size="sm" /> : "Place Order & Pay"}
+                              {loading ? <Spinner size="sm" /> : "Realizar Pedido y Pagar"}
                             </Button>
                           )}
                         </div>

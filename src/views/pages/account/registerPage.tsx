@@ -31,50 +31,50 @@ const RegisterPage: NextPage = () => {
 
   return (
     <>
-      <Breadcrumb title="Register" parent="home" />
+      <Breadcrumb title="Registro" parent="inicio" />
       {/* <!--section start--> */}
       <section className="login-page section-big-py-space bg-light">
         <div className="custom-container">
           <Row className="row">
             <Col lg="4" className="offset-lg-4">
               <div className="theme-card">
-                <h3 className="text-center">Create account</h3>
+                <h3 className="text-center">Crear cuenta</h3>
                 <Form className="theme-form" onSubmit={handleRegister}>
                   <div className="form-row row">
                     <FormGroup className="col-md-12">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input type="text" name="firstName" onChange={handleChange} className="form-control" placeholder="First Name" required />
+                      <Label htmlFor="firstName">Nombre</Label>
+                      <Input type="text" name="firstName" onChange={handleChange} className="form-control" placeholder="Nombre" required />
                     </FormGroup>
                     <FormGroup className="col-md-12">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input type="text" name="lastName" onChange={handleChange} className="form-control" placeholder="Last Name" required />
+                      <Label htmlFor="lastName">Apellido</Label>
+                      <Input type="text" name="lastName" onChange={handleChange} className="form-control" placeholder="Apellido" required />
                     </FormGroup>
                   </div>
                   <div className="form-row row">
                     <FormGroup className="col-md-12">
-                      <Label htmlFor="email">email</Label>
-                      <Input type="text" name="email" onChange={handleChange} className="form-control" placeholder="Email" required />
+                      <Label htmlFor="email">Correo Electrónico</Label>
+                      <Input type="text" name="email" onChange={handleChange} className="form-control" placeholder="Correo Electrónico" required />
                     </FormGroup>
                     <FormGroup className="col-md-12">
-                      <Label htmlFor="password">Password</Label>
-                      <Input type="password" name="password" onChange={handleChange} className="form-control" autoComplete="" placeholder="Enter your password" required />
+                      <Label htmlFor="password">Contraseña</Label>
+                      <Input type="password" name="password" onChange={handleChange} className="form-control" autoComplete="" placeholder="Introduce tu contraseña" required />
                     </FormGroup>
                     <FormGroup className="col-md-12">
                       <button type="submit" className="btn btn-normal">
-                        create Account
+                        Crear Cuenta
                       </button>
                     </FormGroup>
                   </div>
                   <div className="form-row row">
                     <Col md="12">
                       <p>
-                        Have you already account?
+                        ¿Ya tienes una cuenta?
                         <a href="/pages/account/login" className="txt-default">
-                          click
+                          haz clic
                         </a>
-                        here to &nbsp;
+                        aquí para &nbsp;
                         <a href="/pages/account/login" className="txt-default">
-                          Login
+                          Iniciar Sesión
                         </a>
                       </p>
                     </Col>

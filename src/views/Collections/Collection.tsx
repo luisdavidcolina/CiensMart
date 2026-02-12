@@ -118,158 +118,137 @@ const Collection: NextPage<CollectionProps> = ({ cols, layoutList }) => {
             <div className="collection-product-wrapper">
               <Row>
                 <Col xs="12">
-                  <ul className="product-tags">
-                    {!!selectedBrands?.length &&
-                      selectedBrands.map((brand: any, i: number) => (
-                        <li className="me-1" key={i}>
-                          <a className="filter_tag">
-                            {brand}
-                            <i className="ti-close" onClick={() => removeBrand(brand)}></i>
-                          </a>
-                        </li>
-                      ))}
-                    {!!selectedColor.length && (
-                      <li className="me-1">
-                        {selectedColor && (
-                          <a className="filter_tag">
-                            {selectedColor}
-                            <i className="ti-close" onClick={removeColor}></i>
-                          </a>
-                        )}
-                      </li>
-                    )}
-                  </ul>
-                </Col>
-              </Row>
-              <div className="product-top-filter">
-                <Row>
-                  <Col xs="12">
-                    <div className="filter-main-btn">
-                      <span
-                        className="filter-btn"
-                        onClick={() => {
-                          setLeftSidebarOpen(!leftSidebarOpen);
-                        }}
-                      >
-                        <i className="fa fa-filter" aria-hidden="true"></i> Filter
-                      </span>
-                    </div>
-                  </Col>
-                  <Col xs="12">
-                    <div className="product-filter-content">
-                      <div className="search-count">
-                        <h5>{data ? `Showing Products 1-${data.products.items.length} of ${data.products.total}` : "loading"} Result</h5>
-                      </div>
-                      <div className="collection-view">
-                        <ul>
-                          <li
-                            onClick={() => {
-                              setLayout("");
-                              setGrid(cols);
-                            }}
-                          >
-                            <i className="fa fa-th grid-layout-view"></i>
-                          </li>
-                          <li
-                            onClick={() => {
-                              setLayout("list-view");
-                              setGrid("col-lg-12");
-                            }}
-                          >
-                            <i className="fa fa-list-ul list-layout-view"></i>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="collection-grid-view" style={layout === "list-view" ? { opacity: 0 } : { opacity: 1 }}>
-                        <ul>
-                          <li onClick={() => setGrid("col-lg-6")}>
-                            <img src="/images/category/icon/2.png" alt="" className="product-2-layout-view" />
-                          </li>
-                          <li onClick={() => setGrid("col-lg-4")}>
-                            <img src="/images/category/icon/3.png" alt="" className="product-3-layout-view" />
-                          </li>
-                          <li onClick={() => setGrid("col-lg-3")}>
-                            <img src="/images/category/icon/4.png" alt="" className="product-4-layout-view" />
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product-page-per-view">
-                        <select onChange={(e) => setPageLimit(parseInt(e.target.value))}>
-                          <option value="10">10 Products Par Page</option>
-                          <option value="15">15 Products Par Page</option>
-                          <option value="20">20 Products Par Page</option>
-                        </select>
-                      </div>
-                      <div className="product-page-filter">
-                        <select onChange={(e) => setSortBy(e.target.value)}>
-                          <option value="ASC_ORDER">Sorting items</option>
-                          <option value="HIGH_TO_LOW">High To Low</option>
-                          <option value="LOW_TO_HIGH">Low To High</option>
-                          <option value="NEWEST">Newest</option>
-                          <option value="ASC_ORDER">Asc Order</option>
-                          <option value="DESC_ORDER">Desc Order</option>
-                        </select>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-
-              {/* Product Grid */}
-              <div className={`product-wrapper-grid ${layout}`}>
-                <Row>
-                  {/* Product Box */}
-                  {!data || !data.products || !data.products.items || data.products.items.length === 0 || loading ? (
-                    data && data.products && data.products.items && data.products.items.length === 0 ? (
+                  <div className="product-top-filter">
+                    <Row>
                       <Col xs="12">
-                        <div>
-                          <div className="col-sm-12 empty-cart-cls text-center">
-                            <img src={`/images/empty-search.jpg`} className="img-fluid mb-4" alt="" />
-                            <h3>
-                              <strong>Your Cart is Empty</strong>
-                            </h3>
-                            <h4>Explore more shortlist some items.</h4>
+                        <div className="filter-main-btn">
+                          <span
+                            className="filter-btn"
+                            onClick={() => {
+                              setLeftSidebarOpen(!leftSidebarOpen);
+                            }}
+                          >
+                            <i className="fa fa-filter" aria-hidden="true"></i> Filtrar
+                          </span>
+                        </div>
+                      </Col>
+                      <Col xs="12">
+                        <div className="product-filter-content">
+                          <div className="search-count">
+                            <h5>{data ? `Mostrando Productos 1-${data.products.items.length} de ${data.products.total}` : "cargando"} Resultados</h5>
+                          </div>
+                          <div className="collection-view">
+                            <ul>
+                              <li
+                                onClick={() => {
+                                  setLayout("");
+                                  setGrid(cols);
+                                }}
+                              >
+                                <i className="fa fa-th grid-layout-view"></i>
+                              </li>
+                              <li
+                                onClick={() => {
+                                  setLayout("list-view");
+                                  setGrid("col-lg-12");
+                                }}
+                              >
+                                <i className="fa fa-list-ul list-layout-view"></i>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="collection-grid-view" style={layout === "list-view" ? { opacity: 0 } : { opacity: 1 }}>
+                            <ul>
+                              <li onClick={() => setGrid("col-lg-6")}>
+                                <img src="/images/category/icon/2.png" alt="" className="product-2-layout-view" />
+                              </li>
+                              <li onClick={() => setGrid("col-lg-4")}>
+                                <img src="/images/category/icon/3.png" alt="" className="product-3-layout-view" />
+                              </li>
+                              <li onClick={() => setGrid("col-lg-3")}>
+                                <img src="/images/category/icon/4.png" alt="" className="product-4-layout-view" />
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="product-page-per-view">
+                            <select onChange={(e) => setPageLimit(parseInt(e.target.value))}>
+                              <option value="10">10 Productos Por Página</option>
+                              <option value="15">15 Productos Por Página</option>
+                              <option value="20">20 Productos Por Página</option>
+                            </select>
+                          </div>
+                          <div className="product-page-filter">
+                            <select onChange={(e) => setSortBy(e.target.value)}>
+                              <option value="ASC_ORDER">Ordenar artículos</option>
+                              <option value="HIGH_TO_LOW">Mayor a Menor</option>
+                              <option value="LOW_TO_HIGH">Menor a Mayor</option>
+                              <option value="NEWEST">Más Nuevos</option>
+                              <option value="ASC_ORDER">Ascendente</option>
+                              <option value="DESC_ORDER">Descendente</option>
+                            </select>
                           </div>
                         </div>
                       </Col>
-                    ) : (
-                      <>
-                        <Skeleton />
-                      </>
-                    )
-                  ) : (
-                    data &&
-                    data.products.items.map((item: any, i: any) => (
-                      <div className={grid} key={i}>
-                        <div className="product">
-                          <div>
-                            <ProductBox newLabel={item.new} {...item} layout={layout} item={item} addCompare={() => addToCompare(item)} addWish={() => addToWish(item)} addCart={() => addToCart(item)} />
+                    </Row>
+                  </div>
+
+                  {/* Product Grid */}
+                  <div className={`product-wrapper-grid ${layout}`}>
+                    <Row>
+                      {/* Product Box */}
+                      {!data || !data.products || !data.products.items || data.products.items.length === 0 || loading ? (
+                        data && data.products && data.products.items && data.products.items.length === 0 ? (
+                          <Col xs="12">
+                            <div>
+                              <div className="col-sm-12 empty-cart-cls text-center">
+                                <img src={`/images/empty-search.jpg`} className="img-fluid mb-4" alt="" />
+                                <h3>
+                                  <strong>Tu Carrito está Vacío</strong>
+                                </h3>
+                                <h4>Explora y agrega artículos.</h4>
+                              </div>
+                            </div>
+                          </Col>
+                        ) : (
+                          <>
+                            <Skeleton />
+                          </>
+                        )
+                      ) : (
+                        data &&
+                        data.products.items.map((item: any, i: any) => (
+                          <div className={grid} key={i}>
+                            <div className="product">
+                              <div>
+                                <ProductBox newLabel={item.new} {...item} layout={layout} item={item} addCompare={() => addToCompare(item)} addWish={() => addToWish(item)} addCart={() => addToCart(item)} />
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </Row>
-              </div>
-              {/* Pagination */}
-              <div className="product-pagination loadmore-pagination">
-                <div className="theme-paggination-block">
-                  <Row>
-                    <Col xl="12" md="12" sm="12">
-                      {data && data.products.hasMore && (
-                        <Button onClick={() => handlePagination()}>
-                          {isLoading && (
-                            <Spinner size="sm" color="light">
-                              {" "}
-                            </Spinner>
-                          )}
-                          Load More
-                        </Button>
+                        ))
                       )}
-                    </Col>
-                  </Row>
-                </div>
-              </div>
+                    </Row>
+                  </div>
+                  {/* Pagination */}
+                  <div className="product-pagination loadmore-pagination">
+                    <div className="theme-paggination-block">
+                      <Row>
+                        <Col xl="12" md="12" sm="12">
+                          {data && data.products.hasMore && (
+                            <Button onClick={() => handlePagination()}>
+                              {isLoading && (
+                                <Spinner size="sm" color="light">
+                                  {" "}
+                                </Spinner>
+                              )}
+                              Cargar Más
+                            </Button>
+                          )}
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
             </div>
           </Col>
         </Row>
