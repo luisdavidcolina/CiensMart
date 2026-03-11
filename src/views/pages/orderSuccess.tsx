@@ -13,22 +13,26 @@ const OrderSuccessPage: NextPage = () => {
   const { symbol, value } = selectedCurr;
 
   useEffect(() => {
-    // Attempt to get the specific order we just created
-    const lastOrderId = localStorage.getItem("last_order_id");
+    const fetchOrder = async () => {
+      const lastOrderId = localStorage.getItem("last_order_id");
 
-    if (lastOrderId) {
-      const foundOrder = orderService.getOrderById(lastOrderId);
-      setOrder(foundOrder);
-    } else {
-      // Fallback to history if no specific ID found (legacy behavior)
-      const user = authService.getCurrentUser();
-      const userId = user ? user.id : 'guest';
-      // Note: getOrdersByUser now checks userId too, but might still be flaky if guest and no email match
-      const orders = orderService.getOrderHistory(userId);
-      if (orders && orders.length > 0) {
-        setOrder(orders[orders.length - 1]);
+      if (lastOrderId) {
+        const foundOrder = await orderService.getOrderById(lastOrderId);
+        if (foundOrder) {
+          setOrder({ ...foundOrder, id: foundOrder.fireId });
+        }
+      } else {
+        const user = authService.getCurrentUser();
+        if (user && user.email) {
+          const orders = await orderService.getOrderHistory(user.email);
+          if (orders && orders.length > 0) {
+            const lastOrder = orders[0]; // orders are sorted desc by createdAt
+            setOrder({ ...lastOrder, id: lastOrder.fireId });
+          }
+        }
       }
-    }
+    };
+    fetchOrder();
   }, []);
 
   if (!order) {

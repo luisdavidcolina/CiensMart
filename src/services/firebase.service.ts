@@ -138,14 +138,34 @@ export const firebaseService = {
         }
     },
 
+    getOrderById: async (id: string) => {
+        try {
+            const docRef = doc(db, COLLECTIONS.ORDERS, id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                return { fireId: docSnap.id, ...docSnap.data() };
+            }
+            return null;
+        } catch (e) {
+            console.error("Error fetching order: ", e);
+            return null;
+        }
+    },
+
     getOrdersByUser: async (email: string) => {
         const q = query(
             collection(db, COLLECTIONS.ORDERS),
-            where("email", "==", email),
-            orderBy("createdAt", "desc")
+            where("email", "==", email)
         );
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => ({ fireId: doc.id, ...doc.data() }));
+        const orders = querySnapshot.docs.map(doc => ({ fireId: doc.id, ...doc.data() as any }));
+
+        // Sort in memory to avoid mandatory composite index
+        return orders.sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0).getTime();
+            const dateB = new Date(b.createdAt || 0).getTime();
+            return dateB - dateA; // Descending
+        });
     },
 
     // Perfiles de Usuario

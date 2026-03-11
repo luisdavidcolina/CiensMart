@@ -11,6 +11,6 @@ export const orderService = {
     },
 
     getOrderById: async (id: any) => {
-        return await firebaseService.getProductById(id); // Using the general getById for now
+        return await firebaseService.getOrderById(id);
     }
 }

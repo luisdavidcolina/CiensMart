@@ -7,32 +7,101 @@ export interface PaymentResponse {
 
 const BANK_ENDPOINTS = {
     OBSIDIANA: "https://ecommerce-bancobsidiana-team5-production.up.railway.app/api/v1/transaction/process",
-    CREDITBANK: "https://core-banking-service-6pup.onrender.com/payments/card"
+    CREDITBANK: "https://core-banking-service-6pup.onrender.com/payments/card",
+    CIENSPAY: "http://3.144.142.161/api/transactions/simulate/"
 };
 
 export const paymentService = {
     async processTransaction(cardDetails: any, amount: number, description: string): Promise<PaymentResponse> {
-        const fullCardNumber = cardDetails.cardNumber.replace(/\s/g, "");
-        const bin = fullCardNumber.slice(0, 4);
+        const cleanCardNumber = cardDetails.cardNumber.replace(/\D/g, "");
+        const bin = cleanCardNumber.slice(0, 4);
 
-        console.log(`💳 [Payment Router] Detecting Bank for BIN: ${bin}`);
+        console.log(`💳 [Payment Router] Routing transaction for BIN: ${bin}`);
 
-        if (bin === "0572") {
-            return await this.payWithObsidiana(fullCardNumber, cardDetails, amount, description);
+        // Routing based on BIN to specific bank APIs
+        if (bin === "4651") {
+            return await this.payWithCiensPay(cardDetails.cardNumber, cardDetails, amount, description);
+        } else if (bin === "0572" || bin === "0506") {
+            return await this.payWithObsidiana(cardDetails.cardNumber, cardDetails, amount, description);
         } else if (bin === "5297") {
-            return await this.payWithCreditBank(fullCardNumber, cardDetails, amount, description);
+            return await this.payWithCreditBank(cardDetails.cardNumber, cardDetails, amount, description);
         } else {
             return {
                 success: false,
-                error: "Banco no soportado. Use tarjetas de Bancobsidiana (0572) o CreditBank (5297)."
+                error: `Banco no soportado (BIN: ${bin}).`
             };
         }
     },
 
-    async payWithObsidiana(cardNumber: string, details: any, amount: number, description: string): Promise<PaymentResponse> {
+    /**
+     * Specific payment logic for Ciens Pay (uses simulation API)
+     */
+    async payWithCiensPay(cardNumber: string, details: any, amount: number, description: string): Promise<PaymentResponse> {
+        try {
+            const payload = {
+                button_bank_external: false,
+                bank_identifier: "cienspay",
+                card_number: cardNumber,
+                expiry_date: details.expiry,
+                cvv: details.cvv,
+                amount: String(amount),
+                description: description
+            };
+
+            const response = await fetch(BANK_ENDPOINTS.CIENSPAY, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+
+            const data = await response.json();
+            return { success: true, data, bankName: "Ciens Pay" };
+        } catch (error: any) {
+            console.error("Ciens Pay Error:", error);
+            return { success: false, error: "Error en Ciens Pay. Intente más tarde.", bankName: "Ciens Pay" };
+        }
+    },
+
+    /**
+     * Specific payment logic for CreditBank (Direct Endpoint)
+     */
+    async payWithCreditBank(cardNumber: string, details: any, amount: number, description: string): Promise<PaymentResponse> {
         try {
             const payload = {
                 card_number: cardNumber,
+                expiry: details.expiry, // CreditBank uses 'expiry'
+                cvv: details.cvv,
+                amount: amount, // Number according to specific docs
+                description: description,
+                destination_account: "9368398521",
+                bank_identifier: "creditbank" // Included just in case if using shared tunnel
+            };
+
+            const response = await fetch(BANK_ENDPOINTS.CREDITBANK, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+
+            const data = await response.json();
+            return { success: true, data, bankName: "CreditBank" };
+        } catch (error: any) {
+            console.error("CreditBank Error:", error);
+            return { success: false, error: "Error en CreditBank. Verifique sus datos.", bankName: "CreditBank" };
+        }
+    },
+
+    /**
+     * Specific payment logic for Bancobsidiana (Direct Endpoint)
+     */
+    async payWithObsidiana(cardNumber: string, details: any, amount: number, description: string): Promise<PaymentResponse> {
+        try {
+            const payload = {
+                card_number: cardNumber.replace(/\s/g, ""), // Obsidiana usually wants clean numbers
                 expiry: details.expiry,
                 cvv: details.cvv,
                 amount: amount,
@@ -47,43 +116,13 @@ export const paymentService = {
             });
 
             const data = await response.json();
-            if (response.ok && data.status === "APPROVED") {
-                return { success: true, data: data, bankName: "Bancobsidiana" };
+            if (response.ok && (data.status === "APPROVED" || data.success)) {
+                return { success: true, data, bankName: "Bancobsidiana" };
             }
-            return { success: false, error: data.message || "Transacción Declinada por Obsidiana", bankName: "Bancobsidiana" };
-        } catch (error) {
-            return { success: false, error: "Error de conexión con Bancobsidiana" };
-        }
-    },
-
-    async payWithCreditBank(cardNumber: string, details: any, amount: number, description: string): Promise<PaymentResponse> {
-        try {
-            const payload = {
-                card_number: cardNumber,
-                expiry: details.expiry,
-                cvv: details.cvv,
-                amount: Number(amount),
-                description: description,
-                destination_account: "1234567890" // Cuenta de CiensMart en CreditBank
-            };
-
-            const response = await fetch(BANK_ENDPOINTS.CREDITBANK, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
-
-            const data = await response.json();
-
-            // Note: CreditBank might have a different success criteria (e.g. data.status === "SUCCESS")
-            // Assuming standard fetch ok check if not specified
-            if (response.ok) {
-                return { success: true, data: data, bankName: "CreditBank" };
-            }
-            return { success: false, error: data.error || data.message || "Transacción Fallida en CreditBank", bankName: "CreditBank" };
-        } catch (error) {
-            console.error("CreditBank Error:", error);
-            return { success: false, error: "Error de conexión con CreditBank" };
+            return { success: false, error: data.message || "Declinada por Obsidiana", bankName: "Bancobsidiana" };
+        } catch (error: any) {
+            console.error("Obsidiana Error:", error);
+            return { success: false, error: "Error de conexión con Obsidiana", bankName: "Bancobsidiana" };
         }
     }
 };

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { NextPage } from "next";
-import { Input, Label, Form, Row, Col, FormGroup, Button, Spinner } from "reactstrap";
+import { Input, Label, Form, Row, Col, FormGroup, Button, Spinner, Card, CardBody } from "reactstrap";
 import { CartContext } from "../../../helpers/cart/cart.context";
 import Breadcrumb from "../../../views/Containers/Breadcrumb";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
 import { toast } from "react-toastify";
-import { authService } from "../../../services/auth.service";
 import { orderService } from "../../../services/order.service";
 import { paymentService } from "../../../services/payment.service";
 import { useAuth } from "@/helpers/auth/auth.context";
+import { userStorageService } from "@/services/user-storage.service";
 
 interface formType {
   firstName: string;
@@ -27,6 +27,8 @@ const CheckoutPage: NextPage = () => {
   const { symbol, value } = selectedCurr;
   const [loading, setLoading] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [savedCards, setSavedCards] = useState<any[]>([]);
+  const [rememberCard, setRememberCard] = useState(false);
 
   // Payment Form State
   const [cardDetails, setCardDetails] = useState({
@@ -44,6 +46,17 @@ const CheckoutPage: NextPage = () => {
 
   const router = useRouter();
 
+  // Load saved cards
+  React.useEffect(() => {
+    const fetchCards = async () => {
+      if (currentUser) {
+        const cards = await userStorageService.getSavedCards(currentUser.uid);
+        setSavedCards(cards);
+      }
+    };
+    fetchCards();
+  }, [currentUser]);
+
   // Auto-fill form if user is logged in
   React.useEffect(() => {
     if (userProfile) {
@@ -59,6 +72,15 @@ const CheckoutPage: NextPage = () => {
     setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
   };
 
+  const handleSelectCard = (card: any) => {
+    setCardDetails({
+      cardNumber: card.cardNumber,
+      expiry: card.expiry,
+      cvv: card.cvv
+    });
+    toast.info(`Tarjeta terminada en ${card.last4} seleccionada`);
+  };
+
   const processOrder = async (data: formType, paymentStatus: string, transactionId?: string, bankName?: string) => {
     const order = {
       ...data,
@@ -67,14 +89,13 @@ const CheckoutPage: NextPage = () => {
       userId: currentUser ? currentUser.uid : 'guest',
       status: 'Pending',
       paymentStatus: paymentStatus,
-      transactionId: transactionId || `txn_${Date.now()}`, // Fallback ID
+      transactionId: transactionId || `txn_${Date.now()}`,
       paymentBank: bankName || "Unknown"
     };
 
     const newOrder = await orderService.createOrder(order);
     localStorage.setItem("order-sucess-items", JSON.stringify(cartItems));
 
-    // Save ID for the success page to retrieve
     if (newOrder && newOrder.fireId) {
       localStorage.setItem("last_order_id", newOrder.fireId);
     }
@@ -87,14 +108,12 @@ const CheckoutPage: NextPage = () => {
       setLoading(true);
       setPaymentError(null);
 
-      // Simple validation
       if (!cardDetails.cardNumber || !cardDetails.expiry || !cardDetails.cvv) {
         toast.error("Por favor ingrese los detalles de la tarjeta");
         setLoading(false);
         return;
       }
 
-      // 1. Attempt Payment
       const response = await paymentService.processTransaction(
         cardDetails,
         cartTotal,
@@ -103,14 +122,17 @@ const CheckoutPage: NextPage = () => {
 
       if (response.success) {
         toast.success("¡Pago Exitoso!");
+
+        if (rememberCard && currentUser) {
+          await userStorageService.saveCard(currentUser.uid, cardDetails);
+        }
+
         await processOrder(data, "Pagado", response.data?.transaction_id, response.bankName);
       } else {
         setPaymentError(response.error || "Pago fallido");
         setLoading(false);
         toast.error("Pago fallido. Puedes intentar de nuevo o pedir sin pagar.");
       }
-    } else {
-      console.log(errors);
     }
   };
 
@@ -121,7 +143,6 @@ const CheckoutPage: NextPage = () => {
   return (
     <>
       <Breadcrumb title="Finalizar Pedido" parent="inicio" />
-      {/* <!-- section start --> */}
       <section className="section-big-py-space bg-light">
         <div className="custom-container">
           <div className="checkout-page contact-page">
@@ -136,50 +157,32 @@ const CheckoutPage: NextPage = () => {
                       <Row className="check-out ">
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label>Nombre</Label>
-                          <input type="text" {...register("firstName", { required: true })} name="firstName" className={`${errors.firstName ? "error_border" : ""}`} placeholder="" />
+                          <input type="text" {...register("firstName", { required: true })} name="firstName" className={`${errors.firstName ? "error_border" : ""}`} />
                           <span className="error-message">{errors.firstName && "El nombre es obligatorio"}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label>Apellido</Label>
-                          <input type="text" className={`${errors.lastName ? "error_border" : ""}`} placeholder="" {...register("lastName", { required: true })} />
+                          <input type="text" className={`${errors.lastName ? "error_border" : ""}`} {...register("lastName", { required: true })} />
                           <span className="error-message">{errors.lastName && "El apellido es obligatorio"}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label className="field-label">Teléfono</Label>
-                          <input type="text" className={`${errors.phone ? "error_border" : ""}`} placeholder="" {...register("phone", { pattern: /\d+/ })} />
-                          <span className="error-message">{errors.phone && "Por favor ingrese un número de teléfono válido."}</span>
+                          <input type="text" className={`${errors.phone ? "error_border" : ""}`} {...register("phone", { pattern: /\d+/ })} />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
                           <Label className="field-label">Correo Electrónico</Label>
-                          <input
-                            type="text"
-                            className={`${errors.email ? "error_border" : ""}`}
-                            placeholder=""
-                            {...register("email", {
-                              required: true,
-                              pattern: /^\S+@\S+$/i,
-                            })}
-                          />
-                          <span className="error-message">{errors.email && "Por favor ingrese un correo válido."}</span>
+                          <input type="text" className={`${errors.email ? "error_border" : ""}`} {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
                         </FormGroup>
                         <FormGroup className="col-md-12 col-sm-12 col-xs-12">
                           <Label className="field-label">Dirección</Label>
-                          <input
-                            type="text"
-                            placeholder="Dirección de calle"
-                            className={`${errors.address ? "error_border" : ""}`}
-                            {...register("address", {
-                              required: true,
-                              min: 20,
-                              max: 120,
-                            })}
-                          />
-                          <span className="error-message">{errors.address && "Por favor ingrese su dirección."}</span>
+                          <input type="text" placeholder="Dirección de calle" className={`${errors.address ? "error_border" : ""}`} {...register("address", { required: true })} />
                         </FormGroup>
-                        <FormGroup className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <Input type="checkbox" name="shipping-option" id="account-option" /> &ensp;
-                          <Label htmlFor="account-option">¿Crear una cuenta?</Label>
-                        </FormGroup>
+                        {!currentUser && (
+                          <FormGroup className="col-lg-12">
+                            <Input type="checkbox" id="account-option" /> &ensp;
+                            <Label htmlFor="account-option">¿Crear una cuenta?</Label>
+                          </FormGroup>
+                        )}
                       </Row>
                     </div>
                   </Col>
@@ -189,38 +192,18 @@ const CheckoutPage: NextPage = () => {
                       {cartItems && cartItems.length > 0 && (
                         <div className="order-box">
                           <div className="title-box">
-                            <div>
-                              Producto <span>Total</span>
-                            </div>
+                            <div>Producto <span>Total</span></div>
                           </div>
                           <ul className="qty">
                             {cartItems.map((item: any, index: number) => (
-                              <li key={index}>
-                                {item.title} × {item.qty}{" "}
-                                <span>
-                                  {symbol}
-                                  {item.total * value}
-                                </span>
-                              </li>
+                              <li key={index}>{item.title} × {item.qty} <span>{symbol}{item.total * value}</span></li>
                             ))}
                           </ul>
                           <ul className="sub-total">
-                            <li>
-                              Subtotal{" "}
-                              <span className="count">
-                                {symbol}
-                                {(cartTotal * value).toFixed(2)}
-                              </span>
-                            </li>
+                            <li>Subtotal <span className="count">{symbol}{(cartTotal * value).toFixed(2)}</span></li>
                           </ul>
                           <ul className="total">
-                            <li>
-                              Total{" "}
-                              <span className="count">
-                                {symbol}
-                                {(cartTotal * value).toFixed(2)}
-                              </span>
-                            </li>
+                            <li>Total <span className="count">{symbol}{(cartTotal * value).toFixed(2)}</span></li>
                           </ul>
                         </div>
                       )}
@@ -229,6 +212,32 @@ const CheckoutPage: NextPage = () => {
                         <div className="upper-box">
                           <div className="payment-options">
                             <h4 className="mb-3">Pago con Tarjeta de Crédito</h4>
+
+                            {/* Saved Cards Selection */}
+                            {savedCards.length > 0 && (
+                              <div className="saved-cards-section mb-4">
+                                <Label className="font-weight-bold">Tarjetas Guardadas:</Label>
+                                <Row className="g-2">
+                                  {savedCards.map((card) => (
+                                    <Col md="6" key={card.id}>
+                                      <Card
+                                        className={`cursor-pointer mb-2 ${cardDetails.cardNumber === card.cardNumber ? 'border-primary' : ''}`}
+                                        onClick={() => handleSelectCard(card)}
+                                        style={{ cursor: 'pointer' }}
+                                      >
+                                        <CardBody className="p-2">
+                                          <div className="d-flex justify-content-between align-items-center">
+                                            <span>**** {card.last4}</span>
+                                            <small className="text-muted">{card.expiry}</small>
+                                          </div>
+                                        </CardBody>
+                                      </Card>
+                                    </Col>
+                                  ))}
+                                </Row>
+                              </div>
+                            )}
+
                             <Row>
                               <Col md="12" className="mb-3">
                                 <Label>Número de Tarjeta</Label>
@@ -242,6 +251,17 @@ const CheckoutPage: NextPage = () => {
                                 <Label>CVV</Label>
                                 <Input type="text" name="cvv" value={cardDetails.cvv} onChange={handleCardChange} placeholder="123" />
                               </Col>
+
+                              {currentUser && (
+                                <Col md="12" className="mt-2">
+                                  <FormGroup check>
+                                    <Label check>
+                                      <Input type="checkbox" checked={rememberCard} onChange={(e) => setRememberCard(e.target.checked)} />
+                                      Recordar esta tarjeta para futuras compras
+                                    </Label>
+                                  </FormGroup>
+                                </Col>
+                              )}
                             </Row>
                           </div>
                         </div>
@@ -273,7 +293,6 @@ const CheckoutPage: NextPage = () => {
           </div>
         </div>
       </section>
-      {/* <!-- section end --> */}
     </>
   );
 };

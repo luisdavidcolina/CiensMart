@@ -61,6 +61,15 @@ const UserProfile: NextPage = () => {
                 <div className="text-center mb-3">
                   <h5>HOLA,</h5>
                   <p>{currentUser.email}</p>
+                  <hr />
+                  <div className="user-links text-left">
+                    <a href="/pages/account/dashboard" className="d-block mb-2 text-dark" onClick={() => setOpenAccount(false)}>
+                      <i className="fa fa-dashboard mr-2"></i> Mi Panel
+                    </a>
+                    <a href="/pages/account/order-history" className="d-block mb-2 text-dark" onClick={() => setOpenAccount(false)}>
+                      <i className="fa fa-history mr-2"></i> Mis Pedidos
+                    </a>
+                  </div>
                 </div>
               )}
               <FormGroup>
@@ -69,7 +78,7 @@ const UserProfile: NextPage = () => {
                     Ingresar
                   </a>
                 ) : (
-                  <a href="#" className="btn btn-rounded btn-block" onClick={signout}>
+                  <a href="#" className="btn btn-rounded btn-block mt-3" onClick={signout}>
                     Cerrar Sesión
                   </a>
                 )}
