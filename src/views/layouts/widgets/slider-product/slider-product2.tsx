@@ -1,7 +1,6 @@
 import React from "react";
-import { gql } from "@apollo/client";
 import { NextPage } from "next";
-import { useLocalQuery } from "../../../../hooks/useLocalQuery";
+import { useLocalQuery, gql } from "../../../../hooks/useLocalQuery";
 import ProductBox from "../Product-Box/productbox2";
 import Slider from "react-slick";
 import { CartContext } from "../../../../helpers/cart/cart.context";

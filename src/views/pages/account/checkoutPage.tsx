@@ -18,6 +18,7 @@ interface formType {
   phone: any;
   email: string;
   address: string;
+  city: string;
 }
 
 const CheckoutPage: NextPage = () => {
@@ -29,6 +30,7 @@ const CheckoutPage: NextPage = () => {
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [savedCards, setSavedCards] = useState<any[]>([]);
   const [rememberCard, setRememberCard] = useState(false);
+  const [manualBank, setManualBank] = useState(""); // manual bank selection
 
   // Payment Form State
   const [cardDetails, setCardDetails] = useState({
@@ -63,8 +65,14 @@ const CheckoutPage: NextPage = () => {
       setValue("firstName", userProfile.firstName || "");
       setValue("lastName", userProfile.lastName || "");
       setValue("email", userProfile.email || "");
-    } else if (currentUser) {
-      setValue("email", currentUser.email || "");
+      setValue("phone", userProfile.phone || "0");
+      setValue("city", userProfile.city || "Caracas");
+    } else {
+      setValue("phone", "0");
+      setValue("city", "Caracas");
+      if (currentUser) {
+        setValue("email", currentUser.email || "");
+      }
     }
   }, [userProfile, currentUser, setValue]);
 
@@ -78,6 +86,9 @@ const CheckoutPage: NextPage = () => {
       expiry: card.expiry,
       cvv: card.cvv
     });
+    if (card.bankIdentifier) {
+      setManualBank(card.bankIdentifier);
+    }
     toast.info(`Tarjeta terminada en ${card.last4} seleccionada`);
   };
 
@@ -117,14 +128,15 @@ const CheckoutPage: NextPage = () => {
       const response = await paymentService.processTransaction(
         cardDetails,
         cartTotal,
-        `Pedido de ${data.firstName} ${data.lastName}`
+        `Pedido de ${data.firstName} ${data.lastName}`,
+        manualBank // Pass manual selection if any
       );
 
       if (response.success) {
         toast.success("¡Pago Exitoso!");
 
         if (rememberCard && currentUser) {
-          await userStorageService.saveCard(currentUser.uid, cardDetails);
+          await userStorageService.saveCard(currentUser.uid, cardDetails, manualBank || response.bankName?.toLowerCase().replace(/\s/g, ""));
         }
 
         await processOrder(data, "Pagado", response.data?.transaction_id, response.bankName);
@@ -176,6 +188,10 @@ const CheckoutPage: NextPage = () => {
                         <FormGroup className="col-md-12 col-sm-12 col-xs-12">
                           <Label className="field-label">Dirección</Label>
                           <input type="text" placeholder="Dirección de calle" className={`${errors.address ? "error_border" : ""}`} {...register("address", { required: true })} />
+                        </FormGroup>
+                        <FormGroup className="col-md-12 col-sm-12 col-xs-12">
+                          <Label className="field-label">Ciudad</Label>
+                          <input type="text" className={`${errors.city ? "error_border" : ""}`} {...register("city", { required: true })} />
                         </FormGroup>
                         {!currentUser && (
                           <FormGroup className="col-lg-12">
@@ -239,6 +255,16 @@ const CheckoutPage: NextPage = () => {
                             )}
 
                             <Row>
+                              <Col md="12" className="mb-3">
+                                <Label>Seleccionar Banco (Opcional)</Label>
+                                <Input type="select" name="manualBank" value={manualBank} onChange={(e) => setManualBank(e.target.value)}>
+                                  <option value="">Detección Automática (por BIN)</option>
+                                  <option value="cienspay">Ciens Pay</option>
+                                  <option value="bancobsidiana">Bancobsidiana</option>
+                                  <option value="creditbank">CreditBank</option>
+                                </Input>
+                                <small className="text-muted">Si no seleccionas ninguno, detectaremos tu banco automáticamente.</small>
+                              </Col>
                               <Col md="12" className="mb-3">
                                 <Label>Número de Tarjeta</Label>
                                 <Input type="text" name="cardNumber" value={cardDetails.cardNumber} onChange={handleCardChange} placeholder="0000 0000 0000 0000" />

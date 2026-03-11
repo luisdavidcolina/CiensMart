@@ -12,13 +12,22 @@ const BANK_ENDPOINTS = {
 };
 
 export const paymentService = {
-    async processTransaction(cardDetails: any, amount: number, description: string): Promise<PaymentResponse> {
+    async processTransaction(cardDetails: any, amount: number, description: string, manualBank?: string): Promise<PaymentResponse> {
         const cleanCardNumber = cardDetails.cardNumber.replace(/\D/g, "");
         const bin = cleanCardNumber.slice(0, 4);
 
-        console.log(`💳 [Payment Router] Routing transaction for BIN: ${bin}`);
+        console.log(`💳 [Payment Router] Routing transaction. Manual: ${manualBank || 'None'}, BIN: ${bin}`);
 
-        // Routing based on BIN to specific bank APIs
+        // 1. Priority: Manual Selection
+        if (manualBank === "cienspay") {
+            return await this.payWithCiensPay(cardDetails.cardNumber, cardDetails, amount, description);
+        } else if (manualBank === "bancobsidiana") {
+            return await this.payWithObsidiana(cardDetails.cardNumber, cardDetails, amount, description);
+        } else if (manualBank === "creditbank") {
+            return await this.payWithCreditBank(cardDetails.cardNumber, cardDetails, amount, description);
+        }
+
+        // 2. Fallback: Routing based on BIN
         if (bin === "4651") {
             return await this.payWithCiensPay(cardDetails.cardNumber, cardDetails, amount, description);
         } else if (bin === "0572" || bin === "0506") {
@@ -28,7 +37,7 @@ export const paymentService = {
         } else {
             return {
                 success: false,
-                error: `Banco no soportado (BIN: ${bin}).`
+                error: `Banco no soportado (BIN: ${bin}). Intente seleccionando el banco manualmente.`
             };
         }
     },

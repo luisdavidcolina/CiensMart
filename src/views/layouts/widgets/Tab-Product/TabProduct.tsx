@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { gql } from "@apollo/client";
+import { useLocalQuery as useQuery, gql } from "@/hooks/useLocalQuery";
 import { NextPage } from "next";
-import { useQuery } from "@apollo/client";
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from "reactstrap";
 import ProductBox from "../Product-Box/productbox";
 import Slider from "react-slick";

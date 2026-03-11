@@ -41,7 +41,7 @@ export const userStorageService = {
     /**
      * Saves a payment card to the user's vault.
      */
-    saveCard: async (uid: string, card: any) => {
+    saveCard: async (uid: string, card: any, bankIdentifier?: string) => {
         try {
             const userDoc = doc(db, COLLECTIONS.USER_DATA, uid);
             const docSnap = await getDoc(userDoc);
@@ -52,24 +52,31 @@ export const userStorageService = {
             }
 
             // Simple check to avoid duplicates by last 4 digits
-            const last4 = card.cardNumber.slice(-4);
-            const exists = cards.find((c: any) => c.last4 === last4);
+            const last4 = card.cardNumber.replace(/\s/g, "").slice(-4);
+            const existsIndex = cards.findIndex((c: any) => c.last4 === last4);
 
-            if (!exists) {
-                cards.push({
-                    ...card,
-                    last4,
-                    id: Date.now(),
-                    addedAt: new Date().toISOString()
-                });
+            const cardData = {
+                ...card,
+                last4,
+                bankIdentifier, // Save the bank associated with this card
+                id: existsIndex >= 0 ? cards[existsIndex].id : Date.now(),
+                addedAt: existsIndex >= 0 ? cards[existsIndex].addedAt : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
 
-                await setDoc(userDoc, {
-                    cards: cards,
-                    updatedAt: new Date().toISOString()
-                }, { merge: true });
-                return true;
+            if (existsIndex >= 0) {
+                // Update existing card preference
+                cards[existsIndex] = cardData;
+            } else {
+                // Add new card
+                cards.push(cardData);
             }
-            return false;
+
+            await setDoc(userDoc, {
+                cards: cards,
+                updatedAt: new Date().toISOString()
+            }, { merge: true });
+            return true;
         } catch (e) {
             console.error("Error saving card: ", e);
             return false;

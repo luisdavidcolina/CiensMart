@@ -3,7 +3,7 @@ import { CartContext } from "@/helpers/cart/cart.context";
 import { CompareContext } from "@/helpers/compare/compare.context";
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
 import { WishlistContext } from "@/helpers/wishlist/wish.context";
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery as useQuery, gql } from "@/hooks/useLocalQuery";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -99,7 +99,7 @@ const RatioSquare: NextPage = () => {
   const uniqueSize: any[] = [];
   const uniqueColor: any[] = [];
   const [nav1, setNav1] = useState<Slider | null>();
-  const slider2 = useRef<Slider |null>(null);
+  const slider2 = useRef<Slider | null>(null);
   const collection: any[] = [];
 
   const changeColorVar = (img_id: number) => {
@@ -171,7 +171,7 @@ const RatioSquare: NextPage = () => {
                   <TabPane tabId={activeTab}>
                     <Slider {...settings}>
                       {dataR &&
-                        dataR.collection.map((item: any,i:number) => (
+                        dataR.collection.map((item: any, i: number) => (
                           <div key={i}>
                             <div className="media-banner media-banner-1 border-0">
                               <div className="media-banner-box">

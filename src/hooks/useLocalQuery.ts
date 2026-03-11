@@ -1,6 +1,30 @@
 import { useState, useEffect } from 'react';
 import { firebaseService } from '../services/firebase.service';
 
+/**
+ * Lightweight mock for gql tag to avoid @apollo/client dependency.
+ * Extracts the first selection name from the query string.
+ */
+export const gql = (strings: any, ...values: any) => {
+    const queryStr = typeof strings === 'string' ? strings : strings[0];
+    // Very simple regex to find the first field name after '{'
+    const match = queryStr.match(/{\s*(\w+)/);
+    const selection = match ? match[1] : "unknown";
+
+    return {
+        isMockGql: true,
+        selection: selection,
+        // Legacy path support for useLocalQuery
+        definitions: [{
+            selectionSet: {
+                selections: [{
+                    name: { value: selection }
+                }]
+            }
+        }]
+    };
+};
+
 export const useLocalQuery = (query: any, options: any) => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<any>(null);
@@ -9,8 +33,10 @@ export const useLocalQuery = (query: any, options: any) => {
     const fetchData = async (queryVariables: any) => {
         setLoading(true);
         try {
-            const selection = query.definitions[0].selectionSet.selections[0].name.value;
+            const selection = query.selection || query.definitions[0].selectionSet.selections[0].name.value;
             let result = null;
+
+            console.log(`📡 [useLocalQuery] intercepted: ${selection}`, queryVariables);
 
             // We use Firebase service instead of localDataService
             switch (selection) {
