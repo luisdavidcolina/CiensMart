@@ -2,7 +2,8 @@ import { Skeleton } from "@/common/skeleton";
 import { CartContext } from "@/helpers/cart/cart.context";
 import { CompareContext } from "@/helpers/compare/compare.context";
 import { WishlistContext } from "@/helpers/wishlist/wish.context";
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery } from "../../../../hooks/useLocalQuery";
+import { gql } from "@apollo/client";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import Slider from "react-slick";
@@ -102,12 +103,9 @@ interface tabProduct2Props {
 }
 
 const collectionTranslations: { [key: string]: string } = {
-  "new products": "nuevos productos",
-  "special products": "productos especiales",
-  "feature products": "productos destacados",
-  "best sellers": "más vendidos",
-  "electronics": "electrónica",
-  "furniture": "muebles",
+  "NEW PRODUCTS": "NUEVOS PRODUCTOS",
+  "FEATURED PRODUCTS": "PRODUCTOS DESTACADOS",
+  "ON SALE": "EN OFERTA",
 };
 
 const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
@@ -115,49 +113,40 @@ const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
   const { addToCart } = React.useContext(CartContext);
   const { addToCompare } = React.useContext(CompareContext);
 
-  const [activeTab, setActiveTab] = useState("new products");
+  const [activeTab, setActiveTab] = useState("NEW PRODUCTS");
   const collection: any[] = [];
 
-  var { loading, data } = useQuery(GET_PRODUCTS, {
+  const { loading, data } = useLocalQuery(GET_PRODUCTS, {
     variables: {
-      limit: 235,
+      type: type[0], // Fetch by the first type requested
+      source: "ciensmart", // Only fetch official products
+      limit: 50, // Fetch more to allow for better client-side filtering
     },
   });
 
-  var { data: dataR } = useQuery(GET_COLLECTION, {
-    variables: {
-      collection: activeTab,
-    },
+  const allProd = data?.products?.items || [];
+
+  // Dynamic filtering based on active tab
+  const prod = allProd.filter((item: any) => {
+    if (activeTab === "NEW PRODUCTS") return item.new === true;
+    if (activeTab === "FEATURED PRODUCTS") return item.featured === true;
+    if (activeTab === "ON SALE") return item.sale === true;
+    return true;
   });
 
-  const prod: any[] = [];
-  type.map((typ) => {
-    if (dataR && !loading) {
-      prod.push(dataR?.collection.filter((x: any) => x.type === typ));
-    }
-  });
+  console.log(`📦 [TabProduct2] ActiveTab: ${activeTab}, TotalItems: ${allProd.length}, FilteredItems: ${prod.length}`);
 
   return (
     <>
-      {data &&
-        data.products.items.map((item: any) => {
-          type.map((typ) => {
-            if (item.type === typ) {
-              item.collection.map((i: any) => {
-                const index = collection.indexOf(i.collectionName);
-                if (index === -1 && i.collectionName !== "special products") collection.push(i.collectionName);
-              });
-            }
-          });
-        })}
+      <div style={{ display: 'none' }} id="debug-check">VERSION: FIREBASE_TAB_2</div>
       <section className="section-pt-space">
         <div className="tab-product-main">
           <div className="tab-prodcut-contain">
             <Nav tabs>
-              {collection.map((c, i) => (
+              {["NEW PRODUCTS", "FEATURED PRODUCTS", "ON SALE"].map((c, i) => (
                 <NavItem key={i}>
                   <NavLink className={activeTab === c ? "active" : ""} onClick={() => setActiveTab(c)}>
-                    {collectionTranslations[c] || c}
+                    {c}
                   </NavLink>
                 </NavItem>
               ))}
@@ -173,20 +162,17 @@ const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
                 <TabPane tabId={activeTab}>
                   <div className="product product-slide-6 product-m no-arrow">
                     <div>
-                      {!data || !data.products.items || data.products.items.length === 0 || loading ? (
+                      {loading ? (
                         <Skeleton />
                       ) : (
                         <Slider {...settings}>
-                          {dataR &&
-                            prod.map((item: any) =>
-                              item.map((itm: any, i: any) => {
-                                return (
-                                  <div key={i}>
-                                    <ProductBox newLabel={itm.new} {...itm} item={itm} addCart={() => addToCart(itm)} addWish={() => addToWish(itm)} addCompare={() => addToCompare(itm)} />
-                                  </div>
-                                );
-                              })
-                            )}
+                          {prod.map((itm: any, i: any) => {
+                            return (
+                              <div key={itm.id || i}>
+                                <ProductBox newLabel={itm.new} {...itm} item={itm} addCart={() => addToCart(itm)} addWish={() => addToWish(itm)} addCompare={() => addToCompare(itm)} />
+                              </div>
+                            );
+                          })}
                         </Slider>
                       )}
                     </div>

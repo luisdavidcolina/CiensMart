@@ -1,5 +1,7 @@
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
-import { gql, useQuery } from "@apollo/client";
+import { getImagePath } from "@/utils/imagePath";
+import { useLocalQuery } from "../../../hooks/useLocalQuery";
+import { gql } from "@apollo/client";
 import { NextPage } from "next";
 import { useContext, useState } from "react";
 import Slider from "react-slick";
@@ -81,11 +83,15 @@ const HotDeal: NextPage = () => {
 
   const currencyContext = useContext(CurrencyContext);
   const { selectedCurr } = currencyContext;
-  var { loading, data: dataR } = useQuery(GET_COLLECTION, {
+  var { loading, data: dataR } = useLocalQuery(GET_COLLECTION, {
     variables: {
-      collection: "hotdeal",
+      type: "electronics", // Use a valid type from our seed
+      source: "ciensmart",
+      limit: 1
     },
   });
+
+  const hotDealItem = dataR?.collection?.[0];
   const [nav1, setNav1] = useState<Slider | null>();
   const [nav2, setNav2] = useState<Slider | null>();
 
@@ -131,11 +137,11 @@ const HotDeal: NextPage = () => {
                     <Col lg="4" md="4">
                       <div className="hotdeal-right-slick border-0">
                         <Slider asNavFor={nav2!} ref={(slider1) => setNav1(slider1)} {...settings}>
-                          {dataR &&
-                            dataR.collection[0].images.map((img: any, i: any) => {
+                          {hotDealItem &&
+                            hotDealItem.images.map((img: any, i: any) => {
                               return (
                                 <div key={i}>
-                                  <Media src={`/images/${img.src}`} alt="oferta-dia" className="img-fluid" />
+                                  <Media src={getImagePath(img.src)} alt="oferta-dia" className="img-fluid" />
                                 </div>
                               );
                             })}
@@ -157,16 +163,16 @@ const HotDeal: NextPage = () => {
                           </div>
                           <div>
                             <p>En CiensMart seleccionamos cuidadosamente cada artículo para garantizarte la máxima calidad y durabilidad en todas tus compras departamentales.</p>
-                            {dataR && !loading ? (
+                            {hotDealItem && !loading ? (
                               <div className="price">
                                 <span>
                                   {selectedCurr.symbol}
-                                  {(dataR && dataR.collection[0].price * selectedCurr.value).toFixed(2)}
+                                  {(hotDealItem.price * selectedCurr.value).toFixed(2)}
                                 </span>
                                 <span>
                                   {" "}
                                   {selectedCurr.symbol}
-                                  {((dataR && dataR.collection[0].price - (dataR && dataR.collection[0].price * (dataR && dataR.collection[0].discount / 100))) * selectedCurr.value).toFixed(2)}
+                                  {(hotDealItem.price * (1 - hotDealItem.discount / 100) * selectedCurr.value).toFixed(2)}
                                 </span>
                               </div>
                             ) : (
@@ -180,11 +186,11 @@ const HotDeal: NextPage = () => {
                     <Col md="2">
                       <div className="hotdeal-right-nav">
                         <Slider asNavFor={nav1!} ref={(slider1) => setNav2(slider1)} vertical={true} {...setting1} slidesToShow={2} swipeToSlide={true} focusOnSelect={true} verticalSwiping={true}>
-                          {dataR &&
-                            dataR.collection[0].images.map((img: any, i: any) => {
+                          {hotDealItem &&
+                            hotDealItem.images.map((img: any, i: any) => {
                               return (
                                 <div key={i}>
-                                  <Media src={`/images/${img.src}`} alt="miniatura-oferta" className="img-fluid" />
+                                  <Media src={getImagePath(img.src)} alt="miniatura-oferta" className="img-fluid" />
                                 </div>
                               );
                             })}

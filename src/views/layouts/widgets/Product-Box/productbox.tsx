@@ -1,4 +1,5 @@
 import Img from "@/utils/BgImgRatio";
+import { getImagePath } from "@/utils/imagePath";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -75,14 +76,14 @@ const ProductBox: NextPage<productType> = ({ layout, id, item, title, newLabel, 
       <div className="product-box">
         <div className="product-imgbox">
           <div className="product-front" onClick={clickProductDetail}>
-            <Img src={`/images/${imgsrc || images[0].src}`} className="img-fluid" alt="product" />
+            <Img src={getImagePath(imgsrc || images[0].src)} className="img-fluid" alt="product" />
           </div>
           <ul className="product-thumb-list">
             {images.map((pic: { src: string }, i: React.Key | null | undefined) => (
               <li className={`grid_thumb_img ${pic.src === imgsrc ? "active" : ""}`} key={i}>
                 <a>
                   <Img
-                    src={`/images/${pic.src}`}
+                    src={getImagePath(pic.src)}
                     className="img-fluid"
                     onMouseEnter={() => imgChange(pic.src)}
                     alt={pic.src}
@@ -157,7 +158,7 @@ const ProductBox: NextPage<productType> = ({ layout, id, item, title, newLabel, 
                   item.images.map((img: any, i: any) => {
                     return (
                       <div key={i}>
-                        <Media src={`/images/${img.src}`} alt="" className="img-fluid  image_zoom_cls-0" />
+                        <Media src={getImagePath(img.src)} alt="" className="img-fluid  image_zoom_cls-0" />
                       </div>
                     );
                   })}

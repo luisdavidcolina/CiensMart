@@ -1,7 +1,7 @@
 import React from "react";
 import { gql } from "@apollo/client";
 import { NextPage } from "next";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery } from "../../../../hooks/useLocalQuery";
 import ProductBox from "../Product-Box/productbox2";
 import Slider from "react-slick";
 import { CartContext } from "../../../../helpers/cart/cart.context";
@@ -93,17 +93,15 @@ const TrendingOffer: NextPage<trendingProps> = ({ type }) => {
   const { addToCart } = React.useContext(CartContext);
   const { addToCompare } = React.useContext(CompareContext);
 
-  var { loading: specialLoading, data: dataR } = useQuery(GET_COLLECTION, {
+  var { loading: specialLoading, data: dataR } = useLocalQuery(GET_COLLECTION, {
     variables: {
-      collection: "special products",
+      type: type,
+      source: "ciensmart",
+      limit: 12,
     },
   });
 
-  var prod = [];
-
-  if (dataR && dataR.collection && dataR.collection.length > 0 && !specialLoading) {
-    prod.push(dataR.collection.filter((item:any) => item.type === type));
-  }
+  const prod = dataR?.collection || [];
 
   return (
     <>
@@ -117,20 +115,17 @@ const TrendingOffer: NextPage<trendingProps> = ({ type }) => {
           <Row>
             <Col className="pe-0">
               <div className="product-slide-6 no-arrow">
-                {!dataR || !dataR.collection || dataR.collection.length === 0 || specialLoading ? (
+                {specialLoading ? (
                   <Skeleton />
                 ) : (
                   <Slider {...settings}>
-                    {dataR &&
-                      prod.map((item: any) =>
-                        item.map((itm: any, i: any) => {
-                          return (
-                            <div key={i}>
-                              <ProductBox newLabel={itm.new} {...itm} item={itm} addCart={() => addToCart(itm)} addCompare={() => addToCompare(itm)} addWish={() => addToWish(itm)} />
-                            </div>
-                          );
-                        }),
-                      )}
+                    {prod.map((itm: any, i: any) => {
+                      return (
+                        <div key={i}>
+                          <ProductBox newLabel={itm.new} {...itm} item={itm} addCart={() => addToCart(itm)} addCompare={() => addToCompare(itm)} addWish={() => addToWish(itm)} />
+                        </div>
+                      );
+                    })}
                   </Slider>
                 )}
               </div>

@@ -21,11 +21,15 @@ const RegisterPage: NextPage = () => {
     });
   };
 
-  const handleRegister = (e: any) => {
+  const handleRegister = async (e: any) => {
     e.preventDefault();
-    const success = authService.register(formData);
-    if (success) {
-      setTimeout(() => router.push(`/pages/account/checkout`), 200);
+    try {
+      const user = await authService.register(formData);
+      if (user) {
+        router.push(`/`);
+      }
+    } catch (error) {
+      // Error is handled with toast in service
     }
   };
 

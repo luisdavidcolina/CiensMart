@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Slider from "react-slick";
 import { Col, Media, Row } from "reactstrap";
 import ProductDetail from "./product-detail";
+import { getImagePath } from "@/utils/imagePath";
 
 interface ProductSlickProps {
   item: any;
@@ -37,19 +38,19 @@ const ProductSlick: React.FC<ProductSlickProps> = ({ item, bundle, swatch }) => 
             item.images.map((img: any, i: any) => {
               return (
                 <div key={i}>
-                  <Media src={`/images/${img.src}`} alt="" className="img-fluid  image_zoom_cls-0" />
+                  <Media src={getImagePath(img.src)} alt="" className="img-fluid  image_zoom_cls-0" />
                 </div>
               );
             })}
         </Slider>
         <Row>
           <Col>
-            <Slider {...setting1} className="slider-nav" asNavFor={nav1!} ref={(slider2) => setNav2(slider2)} slidesToShow={item.images.length >= 3 ? 3 :item.images.length} >
+            <Slider {...setting1} className="slider-nav" asNavFor={nav1!} ref={(slider2) => setNav2(slider2)} slidesToShow={item.images.length >= 3 ? 3 : item.images.length} >
               {item &&
                 item.images.map((img: any, i: any) => {
                   return (
                     <div key={i}>
-                      <Media src={`/images/${img.src}`} alt="" className="img-fluid  image_zoom_cls-0" />
+                      <Media src={getImagePath(img.src)} alt="" className="img-fluid  image_zoom_cls-0" />
                     </div>
                   );
                 })}

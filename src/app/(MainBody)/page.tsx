@@ -1,5 +1,4 @@
 "use client";
-import { seedDatabase } from "@/utils/seed";
 import NewsLatter from "@/views/Containers/news-letter";
 import HotDeal from "@/views/layouts/layout1/hot-deal";
 import Layout5Section from "@/views/layouts/layout5";
@@ -20,7 +19,6 @@ import { useEffect } from "react";
 
 const Layout5 = () => {
   useEffect(() => {
-    seedDatabase();
     document.documentElement.classList.remove(localStorage.getItem("color") || "''");
     localStorage.setItem("color", "color-5");
     document.documentElement.classList.add(localStorage.getItem("color") || "''");

@@ -1,5 +1,6 @@
 import { db } from "../config/firebase";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { purgeProducts } from "./db-utils";
 
 const categories = [
     {
@@ -36,8 +37,14 @@ const categories = [
     }
 ];
 
+
+
 export const seedDatabase = async () => {
     console.log("🚀 Starting Massive Seeding Process with External AI/Stock Images...");
+
+    // Step 1: Purge existing products to ensure a clean state
+    await purgeProducts();
+
     const productsCol = collection(db, "products");
     let globalIdCount = 200; // Reset id counter
     let totalAdded = 0;
@@ -67,8 +74,11 @@ export const seedDatabase = async () => {
                 price: price,
                 new: Math.random() > 0.5,
                 sale: Math.random() > 0.7,
+                featured: Math.random() > 0.6,
+                bestSeller: Math.random() > 0.8,
                 discount: Math.random() > 0.7 ? 15 : 0,
                 stock: Math.floor(Math.random() * 100) + 10,
+                source: "ciensmart",
                 variants: [],
                 images: [
                     {

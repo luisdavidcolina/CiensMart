@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { authService } from "../../../services/auth.service";
 import { orderService } from "../../../services/order.service";
 import { paymentService } from "../../../services/payment.service";
+import { useAuth } from "@/helpers/auth/auth.context";
 
 interface formType {
   firstName: string;
@@ -20,6 +21,7 @@ interface formType {
 }
 
 const CheckoutPage: NextPage = () => {
+  const { currentUser, userProfile } = useAuth();
   const { cartItems, cartTotal, emptyCart } = React.useContext(CartContext);
   const { selectedCurr } = React.useContext(CurrencyContext);
   const { symbol, value } = selectedCurr;
@@ -36,32 +38,44 @@ const CheckoutPage: NextPage = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<formType>();
 
   const router = useRouter();
 
+  // Auto-fill form if user is logged in
+  React.useEffect(() => {
+    if (userProfile) {
+      setValue("firstName", userProfile.firstName || "");
+      setValue("lastName", userProfile.lastName || "");
+      setValue("email", userProfile.email || "");
+    } else if (currentUser) {
+      setValue("email", currentUser.email || "");
+    }
+  }, [userProfile, currentUser, setValue]);
+
   const handleCardChange = (e: any) => {
     setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
   };
 
-  const processOrder = (data: formType, paymentStatus: string, transactionId?: string) => {
-    const user = authService.getCurrentUser();
+  const processOrder = async (data: formType, paymentStatus: string, transactionId?: string) => {
     const order = {
       ...data,
       cartItems,
       total: cartTotal,
-      userId: user ? user.id : 'guest',
+      userId: currentUser ? currentUser.uid : 'guest',
       status: 'Pending',
       paymentStatus: paymentStatus,
       transactionId: transactionId || `txn_${Date.now()}` // Fallback ID
     };
 
-    const newOrder = orderService.createOrder(order);
+    const newOrder = await orderService.createOrder(order);
     localStorage.setItem("order-sucess-items", JSON.stringify(cartItems));
+
     // Save ID for the success page to retrieve
-    if (newOrder && newOrder.id) {
-      localStorage.setItem("last_order_id", newOrder.id);
+    if (newOrder && newOrder.fireId) {
+      localStorage.setItem("last_order_id", newOrder.fireId);
     }
     emptyCart();
     router.push("/pages/order-success");
@@ -88,7 +102,7 @@ const CheckoutPage: NextPage = () => {
 
       if (response.success) {
         toast.success("¡Pago Exitoso!");
-        processOrder(data, "Pagado", response.data?.transaction_id);
+        await processOrder(data, "Pagado", response.data?.transaction_id);
       } else {
         setPaymentError(response.error || "Pago fallido");
         setLoading(false);

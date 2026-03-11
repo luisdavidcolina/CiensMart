@@ -12,11 +12,13 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState("test@123");
 
   const loginAuth = async (email: string, password: string) => {
-    const success = authService.login(email, password);
-    if (success) {
-      setTimeout(() => router.push(`/pages/account/checkout`), 200);
-    } else {
-      // toast handled in service or here? service does it.
+    try {
+      const user = await authService.login(email, password);
+      if (user) {
+        router.push(`/`);
+      }
+    } catch (error) {
+      // Error is handled with toast in service
     }
   };
 

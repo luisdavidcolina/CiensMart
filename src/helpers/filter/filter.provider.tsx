@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FilterContext } from "./filter.context";
 
 export const FilterProvider = (props: any) => {
@@ -17,6 +17,12 @@ export const FilterProvider = (props: any) => {
   const [selectedColor, setSelectedColor] = useState<String>(color || "");
   const [selectedPrice, setSelectedPrice] = useState({ min: parseInt(pricemin) || 0, max: parseInt(pricemax) || 500 });
   const [sidebarpopup, setSidebarpopup] = useState(false);
+
+  useEffect(() => {
+    if (category) {
+      setSelectedCategory(category.toUpperCase());
+    }
+  }, [category]);
   const handleBrands = (brand: String) => {
     var index = selectedBrands.indexOf(brand);
     if (index > -1) {

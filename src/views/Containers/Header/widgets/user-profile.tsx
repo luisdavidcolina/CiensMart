@@ -2,27 +2,26 @@ import { NextPage } from "next";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Form, FormGroup, Input, Label } from "reactstrap";
+import { useAuth } from "@/helpers/auth/auth.context";
+import { authService } from "@/services/auth.service";
 
 const UserProfile: NextPage = () => {
+  const { currentUser, logout } = useAuth();
   const [openAccount, setOpenAccount] = useState(false);
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("test@123");
-  const [user, setUser] = useState("");
-  const signout = () => {
-    setUser("");
-    localStorage.removeItem("Login");
-    setOpenAccount(!openAccount);
-    setTimeout(() => toast.success("Success Fully Signed Out"), 200);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signout = async () => {
+    await logout();
+    setOpenAccount(false);
   };
 
-  const loginAuth = (email: string, password: string) => {
-    if (email === "test@gmail.com" && password === "test@123") {
-      setUser(email);
-      localStorage.setItem("Login", email);
-      setOpenAccount(!openAccount);
-      setTimeout(() => toast.success("Success Fully Login"), 200);
-    } else {
-      setTimeout(() => toast.error("Login Failed"), 200);
+  const loginAuth = async (email: string, password: string) => {
+    try {
+      await authService.login(email, password);
+      setOpenAccount(false);
+    } catch (error) {
+      // toast handled in service
     }
   };
 
@@ -46,35 +45,45 @@ const UserProfile: NextPage = () => {
               </div>
             </div>
             <Form className="userForm">
+              {!currentUser && (
+                <>
+                  <FormGroup>
+                    <Label htmlFor="email">Correo Electrónico</Label>
+                    <Input type="text" className="form-control d-inherit" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="review">Contraseña</Label>
+                    <Input type="password" className="form-control d-inherit" placeholder="Introduce tu contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  </FormGroup>
+                </>
+              )}
+              {currentUser && (
+                <div className="text-center mb-3">
+                  <h5>HOLA,</h5>
+                  <p>{currentUser.email}</p>
+                </div>
+              )}
               <FormGroup>
-                <Label htmlFor="email">Email</Label>
-                <Input type="text" disabled={user ? true : false} className="form-control d-inherit" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              </FormGroup>
-              <FormGroup>
-                <Label htmlFor="review">Password</Label>
-                <Input type="password" disabled={user ? true : false} className="form-control d-inherit" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-              </FormGroup>
-              <FormGroup>
-                {!user ? (
+                {!currentUser ? (
                   <a href="#" className="btn btn-rounded btn-block" onClick={() => loginAuth(email, password)}>
-                    Login
+                    Ingresar
                   </a>
                 ) : (
                   <a href="#" className="btn btn-rounded btn-block" onClick={signout}>
-                    Logout
+                    Cerrar Sesión
                   </a>
                 )}
               </FormGroup>
-              {!user && (
+              {!currentUser && (
                 <FormGroup>
                   <h5 className="forget-class">
                     <a href="/pages/account/forget-password" className="d-block">
-                      forget password?
+                      ¿olvidaste tu contraseña?
                     </a>
                   </h5>
                   <h6 className="forget-class">
-                    <a href="/pages/account/register" className="d-block">
-                      new to store? Signup now
+                    <a href="/pages/account/register" className="d-block" onClick={() => setOpenAccount(false)}>
+                      ¿nuevo aquí? Regístrate
                     </a>
                   </h6>
                 </FormGroup>

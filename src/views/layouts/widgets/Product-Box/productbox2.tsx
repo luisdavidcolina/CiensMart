@@ -7,6 +7,7 @@ import { CurrencyContext } from "../../../../helpers/currency/CurrencyContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Img from "@/utils/BgImgRatio";
+import { getImagePath } from "@/utils/imagePath";
 
 interface productType {
   id: number;
@@ -68,7 +69,7 @@ const ProductBox2: React.FC<productType> = (data) => {
   };
 
   useEffect(() => {
-    cartItems.filter((elem:any) => {
+    cartItems.filter((elem: any) => {
       elem.id === data.item.id && setQuantity(elem.qty);
     });
   });
@@ -78,7 +79,7 @@ const ProductBox2: React.FC<productType> = (data) => {
         <div className="product-box">
           <div className="product-imgbox">
             <div className="product-front" onClick={clickProductDetail}>
-              <Img src={`/images/${data.images[0].src}`} className="img-fluid" alt="product" />
+              <Img src={getImagePath(data.images[0].src)} className="img-fluid" alt="product" />
             </div>
             <div className="product-icon">
               <button onClick={() => data.addCart()}>
@@ -148,7 +149,7 @@ const ProductBox2: React.FC<productType> = (data) => {
                 <button type="button" className="btn quantity-left-minus" data-type="minus" data-field="" onClick={minusQty}>
                   <i className="fa fa-minus" aria-hidden="true"></i>
                 </button>
-                <Input type="text" name="quantity" value={quantity} className="form-control input-number qty-input" onChange={() => {}} />
+                <Input type="text" name="quantity" value={quantity} className="form-control input-number qty-input" onChange={() => { }} />
                 <button type="button" className="btn quantity-right-plus" data-type="plus" data-field="" onClick={plusQty}>
                   <i className="fa fa-plus" aria-hidden="true"></i>
                 </button>
@@ -158,7 +159,7 @@ const ProductBox2: React.FC<productType> = (data) => {
         </div>
       </Masonry>
       {data.item.variants &&
-        data.item.variants.map((vari:any) => {
+        data.item.variants.map((vari: any) => {
           var findItemSize = uniqueSize.find((x) => x === vari.size);
           if (!findItemSize && vari.size) uniqueSize.push(vari.size);
         })}
@@ -170,7 +171,7 @@ const ProductBox2: React.FC<productType> = (data) => {
           <div className="row">
             <div className="col-lg-6 col-xs-12">
               <div className="quick-view-img">
-                <img src={`/images/${data?.item?.variants ? data?.item?.images[0].src : data?.item?.images[0].src}`} alt="" className="img-fluid" />
+                <img src={getImagePath(data?.item?.variants ? data?.item?.images[0].src : data?.item?.images[0].src)} alt="" className="img-fluid" />
               </div>
             </div>
             <div className="col-lg-6 rtl-text">

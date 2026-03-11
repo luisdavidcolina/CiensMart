@@ -1,4 +1,5 @@
 import React from "react";
+import { getImagePath } from "../../utils/imagePath";
 import { gql } from "@apollo/client";
 import { useLocalQuery } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";

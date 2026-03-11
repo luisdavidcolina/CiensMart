@@ -1,69 +1,78 @@
+import { auth } from "../config/firebase";
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    User
+} from "firebase/auth";
 import { toast } from "react-toastify";
-
-const KEYS = {
-    USERS: "simulated_users",
-    CURRENT_USER: "simulated_current_user"
-};
+import { firebaseService } from "./firebase.service";
 
 export const authService = {
-    getUsers: () => {
-        if (typeof window === "undefined") return [];
-        return JSON.parse(localStorage.getItem(KEYS.USERS) || "[]");
-    },
+    register: async (userData: any) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                userData.email,
+                userData.password
+            );
 
-    register: (userData: any) => {
-        const users = authService.getUsers();
-        const existingUser = users.find((u: any) => u.email === userData.email);
+            // Save additional user info to Firestore
+            await firebaseService.saveUserProfile(userCredential.user.uid, {
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email,
+                createdAt: new Date().toISOString()
+            });
 
-        if (existingUser) {
-            toast.error("User already exists!");
-            return false;
-        }
-
-        const newUser = {
-            id: Date.now(),
-            ...userData,
-            createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        localStorage.setItem(KEYS.USERS, JSON.stringify(users));
-
-        // Auto login after register
-        localStorage.setItem(KEYS.CURRENT_USER, JSON.stringify(newUser));
-        toast.success("Registration successful!");
-        return true;
-    },
-
-    login: (email: string, password: string) => {
-        const users = authService.getUsers();
-        // In a real app we would hash passwords. Here we just compare plain text for simulation.
-        // Also since the current login page hardcodes "test@gmail.com", we might want to ensure that one exists or just check against registered users.
-        const user = users.find((u: any) => u.email === email && u.password === password);
-
-        if (user || (email === "test@gmail.com" && password === "test@123")) {
-            const userToSave = user || { email, firstName: "Test", lastName: "User", id: 0 };
-            localStorage.setItem(KEYS.CURRENT_USER, JSON.stringify(userToSave));
-            toast.success("Login successful!");
-            return true;
-        } else {
-            toast.error("Invalid credentials");
-            return false;
+            toast.success("¡Registro exitoso!");
+            return userCredential.user;
+        } catch (error: any) {
+            console.error("Error en registro:", error);
+            const message = error.code === 'auth/email-already-in-use'
+                ? "El correo ya está en uso."
+                : "Error al registrarse. Intenta de nuevo.";
+            toast.error(message);
+            throw error;
         }
     },
 
-    logout: () => {
-        localStorage.removeItem(KEYS.CURRENT_USER);
-        // method to clean other session data if needed
-        toast.success("Logged out successfully");
+    login: async (email: string, password: string) => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            toast.success("Sesión iniciada!");
+            return userCredential.user;
+        } catch (error: any) {
+            console.error("Error en login:", error);
+            let message = "Error al iniciar sesión.";
+            if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                message = "Credenciales inválidas.";
+            }
+            toast.error(message);
+            throw error;
+        }
+    },
+
+    logout: async () => {
+        try {
+            await signOut(auth);
+            toast.success("Sesión cerrada");
+        } catch (error) {
+            console.error("Error en logout:", error);
+            toast.error("Error al cerrar sesión");
+        }
+    },
+
+    onAuthStateChange: (callback: (user: User | null) => void) => {
+        return onAuthStateChanged(auth, callback);
     },
 
     getCurrentUser: () => {
-        if (typeof window === "undefined") return null;
-        return JSON.parse(localStorage.getItem(KEYS.CURRENT_USER) || "null");
+        return auth.currentUser;
     },
 
     isAuthenticated: () => {
-        return !!authService.getCurrentUser();
+        return !!auth.currentUser;
     }
 };

@@ -56,6 +56,8 @@ export const useLocalQuery = (query: any, options: any) => {
     useEffect(() => {
         if (options && options.variables) {
             fetchData(options.variables);
+        } else {
+            setLoading(false);
         }
     }, [JSON.stringify(options?.variables)]);
 
