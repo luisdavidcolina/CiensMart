@@ -148,7 +148,7 @@ const RatioSquare: NextPage = () => {
           {data &&
             !loading &&
             data.products.items.map((item: any) => {
-              item.collection.map((i: { collectionName: any }) => {
+              item.collection?.map((i: { collectionName: any }) => {
                 const index = collection.indexOf(i.collectionName);
                 if (index === -1) collection.push(i.collectionName);
               });

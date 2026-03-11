@@ -6,9 +6,9 @@ export interface PaymentResponse {
 }
 
 const BANK_ENDPOINTS = {
-    OBSIDIANA: "https://ecommerce-bancobsidiana-team5-production.up.railway.app/api/v1/transaction/process",
-    CREDITBANK: "https://core-banking-service-6pup.onrender.com/payments/card",
-    CIENSPAY: "http://3.144.142.161/api/transactions/simulate/"
+    OBSIDIANA: process.env.NEXT_PUBLIC_PAYMENT_URL_OBSIDIANA || "https://ecommerce-bancobsidiana-team5-production.up.railway.app/api/v1/transaction/process",
+    CREDITBANK: process.env.NEXT_PUBLIC_PAYMENT_URL_CREDITBANK || "https://core-banking-service-6pup.onrender.com/payments/card",
+    CIENSPAY: process.env.NEXT_PUBLIC_PAYMENT_URL_CIENSPAY || "http://3.144.142.161/api/transactions/simulate/"
 };
 
 export const paymentService = {
@@ -80,12 +80,12 @@ export const paymentService = {
         try {
             const payload = {
                 card_number: cardNumber,
-                expiry: details.expiry, // CreditBank uses 'expiry'
+                expiry: details.expiry,
                 cvv: details.cvv,
-                amount: amount, // Number according to specific docs
+                amount: amount,
                 description: description,
-                destination_account: "9368398521",
-                bank_identifier: "creditbank" // Included just in case if using shared tunnel
+                destination_account: process.env.NEXT_PUBLIC_CREDITBANK_ACCOUNT || "9368398521",
+                bank_identifier: "creditbank"
             };
 
             const response = await fetch(BANK_ENDPOINTS.CREDITBANK, {
@@ -110,11 +110,11 @@ export const paymentService = {
     async payWithObsidiana(cardNumber: string, details: any, amount: number, description: string): Promise<PaymentResponse> {
         try {
             const payload = {
-                card_number: cardNumber.replace(/\s/g, ""), // Obsidiana usually wants clean numbers
+                card_number: cardNumber.replace(/\s/g, ""),
                 expiry: details.expiry,
                 cvv: details.cvv,
                 amount: amount,
-                merchant_id: "ciens-mart",
+                merchant_id: process.env.NEXT_PUBLIC_OBSIDIANA_MERCHANT_ID || "ciens-mart",
                 description: description,
             };
 

@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery as useQuery, gql } from "@/hooks/useLocalQuery";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Col, Dropdown, DropdownToggle, Row } from "reactstrap";
@@ -25,7 +25,7 @@ const TopBar: React.FC = () => {
   const { data = { currency: [] } } = useQuery(GET_CURRENCY);
   const currencyContext = useContext(CurrencyContext);
   const { selectedCurrency, selectedCurr } = currencyContext;
-  const [lang, setSelectedLang] = useState<{ lang: string, val: string }| undefined>({ lang: "English", val: "en" });
+  const [lang, setSelectedLang] = useState<{ lang: string, val: string } | undefined>({ lang: "English", val: "en" });
   const [url, setUrl] = useState("");
   const currentLanguage = i18n.resolvedLanguage;
   const changeLanguage = (lang: any) => {
@@ -140,7 +140,7 @@ const TopBar: React.FC = () => {
                       <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </DropdownToggle>
                     <ul className={`curroncy-dropdown-open ${openUsd ? "" : "open"}`}>
-                      {data.currency.map((cur: any, i: number) => (
+                      {data?.currency?.map((cur: any, i: number) => (
                         <li key={i}>
                           <div
                             onClick={() => {

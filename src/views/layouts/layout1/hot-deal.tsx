@@ -1,7 +1,6 @@
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
 import { getImagePath } from "@/utils/imagePath";
-import { useLocalQuery } from "../../../hooks/useLocalQuery";
-import { gql } from "@apollo/client";
+import { useLocalQuery, gql } from "../../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import { useContext, useState } from "react";
 import Slider from "react-slick";
@@ -91,6 +90,13 @@ const HotDeal: NextPage = () => {
     },
   });
 
+  var { data: sideProducts } = useLocalQuery(GET_COLLECTION, {
+    variables: {
+      type: "ALL",
+      limit: 3
+    },
+  });
+
   const hotDealItem = dataR?.collection?.[0];
   const [nav1, setNav1] = useState<Slider | null>();
   const [nav2, setNav2] = useState<Slider | null>();
@@ -123,11 +129,9 @@ const HotDeal: NextPage = () => {
       <div className="custom-container">
         <Row className="hot-2">
           <Col lg="12">
-            {/* */}
             <div className="title3 b-g-white text-center">
               <h4>oferta destacada de hoy</h4>
             </div>
-            {/* */}
           </Col>
           <Col lg="9">
             <div className="slide-1 no-arrow">
@@ -138,10 +142,10 @@ const HotDeal: NextPage = () => {
                       <div className="hotdeal-right-slick border-0">
                         <Slider asNavFor={nav2!} ref={(slider1) => setNav1(slider1)} {...settings}>
                           {hotDealItem &&
-                            hotDealItem.images.map((img: any, i: any) => {
+                            hotDealItem.images && hotDealItem.images.map((img: any, i: any) => {
                               return (
                                 <div key={i}>
-                                  <Media src={getImagePath(img.src)} alt="oferta-dia" className="img-fluid" />
+                                  <Media src={img.src.startsWith('http') ? img.src : getImagePath(img.src)} alt="oferta-dia" className="img-fluid" />
                                 </div>
                               );
                             })}
@@ -152,7 +156,7 @@ const HotDeal: NextPage = () => {
                       <div className="hot-deal-center">
                         <div>
                           <div>
-                            <h5>Lo mejor en tecnología y hogar para la comunidad UCV</h5>
+                            <h5>{hotDealItem?.title || "Lo mejor en tecnología y hogar"}</h5>
                           </div>
                           <div className="rating">
                             <i className="fa fa-star"></i>
@@ -162,18 +166,20 @@ const HotDeal: NextPage = () => {
                             <i className="fa fa-star"></i>
                           </div>
                           <div>
-                            <p>En CiensMart seleccionamos cuidadosamente cada artículo para garantizarte la máxima calidad y durabilidad en todas tus compras departamentales.</p>
+                            <p>{hotDealItem?.description || "En CiensMart seleccionamos cuidadosamente cada artículo para garantizarte la máxima calidad."}</p>
                             {hotDealItem && !loading ? (
                               <div className="price">
                                 <span>
                                   {selectedCurr.symbol}
                                   {(hotDealItem.price * selectedCurr.value).toFixed(2)}
                                 </span>
-                                <span>
-                                  {" "}
-                                  {selectedCurr.symbol}
-                                  {(hotDealItem.price * (1 - hotDealItem.discount / 100) * selectedCurr.value).toFixed(2)}
-                                </span>
+                                {hotDealItem.discount > 0 && (
+                                  <span>
+                                    {" "}
+                                    {selectedCurr.symbol}
+                                    {(hotDealItem.price * (1 - hotDealItem.discount / 100) * selectedCurr.value).toFixed(2)}
+                                  </span>
+                                )}
                               </div>
                             ) : (
                               ""
@@ -187,10 +193,10 @@ const HotDeal: NextPage = () => {
                       <div className="hotdeal-right-nav">
                         <Slider asNavFor={nav1!} ref={(slider1) => setNav2(slider1)} vertical={true} {...setting1} slidesToShow={2} swipeToSlide={true} focusOnSelect={true} verticalSwiping={true}>
                           {hotDealItem &&
-                            hotDealItem.images.map((img: any, i: any) => {
+                            hotDealItem.images && hotDealItem.images.map((img: any, i: any) => {
                               return (
                                 <div key={i}>
-                                  <Media src={getImagePath(img.src)} alt="miniatura-oferta" className="img-fluid" />
+                                  <Media src={img.src.startsWith('http') ? img.src : getImagePath(img.src)} alt="miniatura-oferta" className="img-fluid" />
                                 </div>
                               );
                             })}
@@ -204,99 +210,42 @@ const HotDeal: NextPage = () => {
           </Col>
           <Col lg="3">
             <Slider className="bg-light h-100" {...bestSellerSetting}>
-              {/* Panel: Nuevos Productos */}
-              <div>
-                <div className="media-banner border-0">
-                  <div className="media-banner-box">
-                    <div className="media-heading">
-                      <h5>nuevos ingresos</h5>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid" alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Tecnología de punta</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
+              {sideProducts?.collection?.map((product: any, idx: number) => (
+                <div key={idx}>
+                  <div className="media-banner border-0">
+                    <div className="media-banner-box">
+                      <div className="media-heading">
+                        <h5>{idx === 0 ? "nuevo ingreso" : idx === 1 ? "oferta especial" : "más vendido"}</h5>
                       </div>
                     </div>
-                  </div>
-                  {/* Repetir estructura para otros productos... */}
-                </div>
-              </div>
-
-              {/* Panel: Oferta Especial */}
-              <div>
-                <div className="media-banner border-0">
-                  <div className="media-banner-box">
-                    <div className="media-heading">
-                      <h5>oferta especial</h5>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/3.jpg" className="img-fluid" alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
+                    <div className="media-banner-box">
+                      <div className="media">
+                        <Media
+                          src={product.images?.[0]?.src.startsWith('http') ? product.images[0].src : getImagePath(product.images?.[0]?.src || "pro3/3.jpg")}
+                          className="img-fluid"
+                          alt="banner"
+                          style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                        />
+                        <div className="media-body">
+                          <div className="media-contant">
+                            <div>
+                              <div className="rating">
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                              </div>
+                              <p>{product.title}</p>
+                              <h6>{selectedCurr.symbol}{(product.price * selectedCurr.value).toFixed(2)}</h6>
                             </div>
-                            <p>Hogar inteligente</p>
-                            <h6>$153.00</h6>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Panel: Más Vendidos */}
-              <div>
-                <div className="media-banner border-0">
-                  <div className="media-banner-box">
-                    <div className="media-heading">
-                      <h5>más vendidos</h5>
-                    </div>
-                  </div>
-                  <div className="media-banner-box">
-                    <div className="media">
-                      <Media src="/images/layout-1/media-banner/1.jpg" className="img-fluid" alt="banner" />
-                      <div className="media-body">
-                        <div className="media-contant">
-                          <div>
-                            <div className="rating">
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </div>
-                            <p>Línea blanca esencial</p>
-                            <h6>$153.00</h6>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              )) || <div>Cargando ofertas...</div>}
             </Slider>
           </Col>
         </Row>

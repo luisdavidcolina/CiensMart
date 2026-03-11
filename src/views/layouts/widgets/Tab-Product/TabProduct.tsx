@@ -124,7 +124,7 @@ const TabProduct: NextPage<TabProductProps> = ({ effect }) => {
     <>
       {data &&
         data.products.items.map((item: any) => {
-          item.collection.map((i: { collectionName: string }) => {
+          item.collection?.map((i: { collectionName: string }) => {
             const index = collection.indexOf(i.collectionName);
             if (index === -1 && i.collectionName !== "" && i.collectionName !== "special products") collection.push(i.collectionName);
           });

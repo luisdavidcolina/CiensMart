@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import { NextPage } from "next";
 import Slider from "react-slick";
 import { Media } from "reactstrap";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery as useQuery, gql } from "../../../hooks/useLocalQuery";
 import { CurrencyContext } from "../../../helpers/currency/CurrencyContext";
 
 const GET_PRODUCTS = gql`
@@ -95,7 +94,7 @@ const HotDeal: NextPage = () => {
   {
     data &&
       data.products.items.map((item: any) => {
-        item.collection.map((i:any) => {
+        item.collection?.map((i: any) => {
           const index = collection.indexOf(i.collectionName);
           if (index === -1) collection.push(i.collectionName);
         });
@@ -115,7 +114,7 @@ const HotDeal: NextPage = () => {
 
             {dataR &&
               !loading &&
-              dataR.collection.slice(0, 4).map((item:any, i:number) => (
+              dataR.collection.slice(0, 4).map((item: any, i: number) => (
                 <div key={i}>
                   <div className="media-banner-box">
                     <div className="media">

@@ -25,9 +25,9 @@ export const gql = (strings: any, ...values: any) => {
     };
 };
 
-export const useLocalQuery = (query: any, options: any) => {
+export const useLocalQuery = (query: any, options?: any) => {
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<any>(undefined);
     const [error, setError] = useState<any>(null);
 
     const fetchData = async (queryVariables: any) => {
@@ -38,7 +38,7 @@ export const useLocalQuery = (query: any, options: any) => {
 
             console.log(`📡 [useLocalQuery] intercepted: ${selection}`, queryVariables);
 
-            // We use Firebase service instead of localDataService
+            // Fetch from Firestore via firebaseService
             switch (selection) {
                 case 'products':
                     const productsResult = await firebaseService.getProducts(queryVariables);
@@ -47,7 +47,7 @@ export const useLocalQuery = (query: any, options: any) => {
                     };
                     break;
                 case 'product': // Added case for single product
-                    const singleProduct = await firebaseService.getProductById(queryVariables.id);
+                    const singleProduct = await firebaseService.getProductById(queryVariables?.id);
                     result = {
                         product: singleProduct
                     };
@@ -60,9 +60,19 @@ export const useLocalQuery = (query: any, options: any) => {
                     };
                     break;
                 case 'relatedProducts':
-                    const relatedResult = await firebaseService.getProducts({ type: queryVariables.type, limit: 6 });
+                    const relatedResult = await firebaseService.getProducts({ type: queryVariables?.type, limit: 6 });
                     result = {
                         relatedProducts: relatedResult.items
+                    };
+                    break;
+                case 'currency':
+                    result = {
+                        currency: [
+                            { currency: 'USD', symbol: '$', value: 1.0 },
+                            { currency: 'EUR', symbol: '€', value: 0.92 },
+                            { currency: 'GBP', symbol: '£', value: 0.78 },
+                            { currency: 'INR', symbol: '₹', value: 83.0 },
+                        ]
                     };
                     break;
                 default:
@@ -80,18 +90,20 @@ export const useLocalQuery = (query: any, options: any) => {
     };
 
     useEffect(() => {
-        if (options && options.variables) {
-            fetchData(options.variables);
+        // If no options or no variables, just fetch once
+        if (!options || !options.variables) {
+            fetchData({});
         } else {
-            setLoading(false);
+            fetchData(options.variables);
         }
     }, [JSON.stringify(options?.variables)]);
 
     const fetchMore = async (fetchMoreOptions: any) => {
-        const newVariables = { ...options.variables, ...fetchMoreOptions.variables };
+        const variables = options?.variables || {};
+        const newVariables = { ...variables, ...fetchMoreOptions.variables };
 
         setLoading(true);
-        const selection = query.definitions[0].selectionSet.selections[0].name.value;
+        const selection = query.selection || query.definitions[0].selectionSet.selections[0].name.value;
         let newData: any = null;
 
         if (selection === 'products') {
@@ -113,6 +125,6 @@ export const useLocalQuery = (query: any, options: any) => {
         data,
         error,
         fetchMore,
-        refetch: (newVariables?: any) => fetchData(newVariables || options.variables)
+        refetch: (newVariables?: any) => fetchData(newVariables || options?.variables || {})
     };
 };

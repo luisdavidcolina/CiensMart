@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery as useQuery, gql } from "../../../../hooks/useLocalQuery";
 import { CurrencyContext } from "../../../../helpers/currency/CurrencyContext";
 import { useTranslation } from "react-i18next";
 import dataa from "../../../../data/langConfig.json";
@@ -78,9 +77,8 @@ const MobileSetting: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <h5>currency</h5>
               <ul>
-                {data.currency.map((cur: { symbol: string; currency: string }, i: number) => (
+                {data?.currency?.map((cur: { symbol: string; currency: string }, i: number) => (
                   <li key={i}>
                     <div
                       onClick={() => {

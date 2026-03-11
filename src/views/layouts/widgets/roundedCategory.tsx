@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Link from "next/link";
 import Slider from "react-slick";
 import { Col, Container, Media, Row } from "reactstrap";
 
@@ -44,13 +45,10 @@ var settings = {
 };
 
 const CategoryList = [
-  { img: "/images/layout-1/rounded-cat/1.png", category: "Flores" },
-  { img: "/images/layout-1/rounded-cat/2.png", category: "Muebles" },
-  { img: "/images/layout-1/rounded-cat/3.png", category: "Bolsos" },
-  { img: "/images/layout-1/rounded-cat/4.png", category: "Herramientas" },
-  { img: "/images/layout-1/rounded-cat/5.png", category: "Comestibles" },
-  { img: "/images/layout-1/rounded-cat/6.png", category: "Cámaras" },
-  { img: "/images/layout-1/rounded-cat/7.png", category: "Moda" },
+  { img: "/images/layout-1/rounded-cat/7.png", category: "Moda", type: "fashion" },
+  { img: "/images/layout-1/rounded-cat/6.png", category: "Electrónica", type: "electronics" },
+  { img: "/images/layout-1/rounded-cat/2.png", category: "Muebles", type: "furniture" },
+  { img: "/images/layout-1/rounded-cat/5.png", category: "Comestibles", type: "grocery" },
 ];
 const Category: NextPage = () => {
   return (
@@ -62,14 +60,14 @@ const Category: NextPage = () => {
               {CategoryList.map((data, i) => (
                 <div key={i}>
                   <div className="category-contain">
-                    <a href="#">
+                    <Link href={{ pathname: "/collections/leftsidebar/", query: { category: data.type.toUpperCase() } }}>
                       <div className="img-wrapper">
                         <Media src={data.img} alt="category" className="img-fluid" />
                       </div>
                       <div>
                         <div className="btn-rounded">{data.category}</div>
                       </div>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               ))}
