@@ -59,7 +59,7 @@ const CheckoutPage: NextPage = () => {
     setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
   };
 
-  const processOrder = async (data: formType, paymentStatus: string, transactionId?: string) => {
+  const processOrder = async (data: formType, paymentStatus: string, transactionId?: string, bankName?: string) => {
     const order = {
       ...data,
       cartItems,
@@ -67,7 +67,8 @@ const CheckoutPage: NextPage = () => {
       userId: currentUser ? currentUser.uid : 'guest',
       status: 'Pending',
       paymentStatus: paymentStatus,
-      transactionId: transactionId || `txn_${Date.now()}` // Fallback ID
+      transactionId: transactionId || `txn_${Date.now()}`, // Fallback ID
+      paymentBank: bankName || "Unknown"
     };
 
     const newOrder = await orderService.createOrder(order);
@@ -102,7 +103,7 @@ const CheckoutPage: NextPage = () => {
 
       if (response.success) {
         toast.success("¡Pago Exitoso!");
-        await processOrder(data, "Pagado", response.data?.transaction_id);
+        await processOrder(data, "Pagado", response.data?.transaction_id, response.bankName);
       } else {
         setPaymentError(response.error || "Pago fallido");
         setLoading(false);
