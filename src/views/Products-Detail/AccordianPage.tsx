@@ -1,8 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import { Row } from "reactstrap";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 
 import AccordianSlick from "../../views/Products-Detail/accordian-slick";
 
@@ -36,7 +35,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const AccordianPage: NextPage = () => {
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },

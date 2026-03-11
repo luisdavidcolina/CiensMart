@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import Slider from "react-slick";
 import { Row, Col } from "reactstrap";
 import ProductBox from "../layouts/widgets/Product-Box/productbox";
@@ -83,7 +82,7 @@ const GET_PRODUCTS = gql`
 `;
 
 const ProductsBoxPage: React.FC = () => {
-  var { loading, data } = useQuery(GET_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_PRODUCTS, {
     variables: {
       limit: 100,
     },

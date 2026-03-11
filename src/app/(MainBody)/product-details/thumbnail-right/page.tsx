@@ -2,8 +2,7 @@
 import React from "react";
 import { Row } from "reactstrap";
 import { NextPage } from "next";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "@/hooks/useLocalQuery";
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 import Layout1 from "@/views/layouts/layout1";
 import RelatedProducts from "@/views/Products-Detail/related products";
@@ -39,7 +38,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const ThumbnailRight: NextPage = () => {
-  const { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  const { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },

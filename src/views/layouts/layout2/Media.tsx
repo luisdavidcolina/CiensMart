@@ -1,5 +1,5 @@
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import { useContext, useState } from "react";
 import Slider from "react-slick";
@@ -43,7 +43,7 @@ const MediaSection: NextPage = () => {
   const currencyContext = useContext(CurrencyContext);
   const { selectedCurr } = currencyContext;
 
-  var { loading, data: dataR } = useQuery(GET_COLLECTION, {
+  var { loading, data: dataR } = useLocalQuery(GET_COLLECTION, {
     variables: {
       collection: "hotdeal",
     },

@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-import { useLocalQuery } from "../../../../hooks/useLocalQuery";
+import { useLocalQuery, gql } from "../../../../hooks/useLocalQuery";
 import React from "react";
 import Slider from "react-slick";
 import { Skeleton } from "../../../../common/skeleton";

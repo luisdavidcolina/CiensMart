@@ -1,8 +1,7 @@
 import React from "react";
 import { Row } from "reactstrap";
 import ProductSlick from "../../views/Products-Detail/product-slick";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 
 const GET_SINGLE_PRODUCTS = gql`
   query getProducts($id: Float!) {
@@ -34,7 +33,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const VerticalTabPage: React.FC = () => {
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },

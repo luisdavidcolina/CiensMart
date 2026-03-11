@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import "photoswipe/dist/photoswipe.css";
 import React, { useState } from "react";
@@ -46,13 +46,12 @@ const categories = ["FLOWER", "FASHION", "BAGS", "SHOES", "WATCH"];
 
 const Portfolio: NextPage<PortfolioProps> = ({ cols }) => {
   const [activeTab, setActiveTab] = useState("FLOWER");
-  var { loading, data } = useQuery(GET_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_PRODUCTS, {
     variables: {
       type: activeTab,
       indexFrom: 0,
     },
   });
-
   return (
     <section className="portfolio-section grid-portfolio ratio2_3 portfolio-padding section-big-pt-space bg-light">
       <div className="container-lg">

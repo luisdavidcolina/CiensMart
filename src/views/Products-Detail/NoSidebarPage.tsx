@@ -2,8 +2,7 @@ import React from "react";
 import { NextPage } from "next";
 import { Row } from "reactstrap";
 import ProductSlick from "../../views/Products-Detail/product-slick";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 
 const GET_SINGLE_PRODUCTS = gql`
   query getProducts($id: Float!) {
@@ -35,7 +34,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const NoSidebarPage: NextPage = () => {
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },
@@ -43,17 +42,17 @@ const NoSidebarPage: NextPage = () => {
 
   return (
     <div className="bg-light section-big-pt-space section-big-pb-space">
-    <div className="collection-wrapper">
-      {data && !loading && data.product && (
-        <div className="custom-container">
-          <Row>
-            <ProductSlick item={data.product} bundle={false} swatch={false} />
-          </Row>
-        </div>
-      )}
+      <div className="collection-wrapper">
+        {data && !loading && data.product && (
+          <div className="custom-container">
+            <Row>
+              <ProductSlick item={data.product} bundle={false} swatch={false} />
+            </Row>
+          </div>
+        )}
+      </div>
     </div>
-    </div>
-    );
+  );
 };
 
 export default NoSidebarPage;

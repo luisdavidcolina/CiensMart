@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import { Row } from "reactstrap";
 import LeftImageProductSlick from "../../views/Products-Detail/left-image-slick";
@@ -33,7 +33,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const useGetSingleProducts = (id: number) => {
-  const { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  const { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id,
     },
@@ -47,7 +47,7 @@ const LeftImagePage: NextPage = () => {
 
   return (
     <div className="collection-wrapper">
-      {data && data.product &&!loading && (
+      {data && data.product && !loading && (
         <div className="custom-container">
           <Row className="left-slick">
             <LeftImageProductSlick item={data.product} />

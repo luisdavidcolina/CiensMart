@@ -1,6 +1,5 @@
 import React from "react";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import ProductBox from "../layouts/widgets/Product-Box/productbox";
 import { Row, Col } from "reactstrap";
 import { WishlistContext } from "@/helpers/wishlist/wish.context";
@@ -41,7 +40,7 @@ const GET_PRODUCTS = gql`
 `;
 
 const NoSliderProducts: React.FC = () => {
-  var { data } = useQuery(GET_PRODUCTS, {
+  var { data } = useLocalQuery(GET_PRODUCTS, {
     variables: {
       type: "FASHION",
       limit: 125,

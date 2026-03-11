@@ -1,42 +1,42 @@
+```
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { NextPage } from "next";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { Row, Col } from "reactstrap";
 import ProductDetail from "./product-detail";
 
 const GET_SINGLE_PRODUCTS = gql`
   query getProducts($id: Float!) {
-    product(id: $id) {
-      id
-      title
-      description
-      type
-      brand
-      category
-      price
-      new
+  product(id: $id) {
+    id
+    title
+    description
+    type
+    brand
+    category
+    price
+    new
       sale
-      discount
-      stock
+    discount
+    stock
       variants {
-        id
-        sku
-        size
-        color
-        image_id
-      }
+      id
+      sku
+      size
+      color
+      image_id
+    }
       images {
-        alt
-        src
-      }
+      alt
+      src
     }
   }
+}
 `;
 
 const FourImagePage: NextPage = () => {
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 2,
     },
@@ -55,7 +55,7 @@ const FourImagePage: NextPage = () => {
                       return (
                         <div className="col-6" key={i}>
                           <div>
-                            <img src={`/images/${img.src}`} alt="" className="img-fluid" />
+                            <img src={`/ images / ${ img.src } `} alt="" className="img-fluid" />
                           </div>
                         </div>
                       );

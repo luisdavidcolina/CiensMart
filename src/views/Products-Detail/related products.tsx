@@ -1,7 +1,6 @@
 import React from "react";
 import { getImagePath } from "../../utils/imagePath";
-import { gql } from "@apollo/client";
-import { useLocalQuery } from "../../hooks/useLocalQuery";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import Slider from "react-slick";
 import { Row, Col } from "reactstrap";

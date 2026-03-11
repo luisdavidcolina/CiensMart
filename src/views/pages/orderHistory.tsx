@@ -13,7 +13,7 @@ const OrderHistoryPage: NextPage = () => {
 
   useEffect(() => {
     const user = authService.getCurrentUser();
-    const userId = user ? user.id : 'guest';
+    const userId = user ? user.uid : 'guest';
     const history = orderService.getOrderHistory(userId);
     setOrders(history.reverse()); // Show newest first
   }, []);

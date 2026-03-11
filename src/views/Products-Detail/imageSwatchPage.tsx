@@ -2,40 +2,39 @@ import React from "react";
 import { Row } from "reactstrap";
 import { NextPage } from "next";
 import ProductSlick from "../../views/Products-Detail/product-slick";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 
 const GET_SINGLE_PRODUCTS = gql`
   query getProducts($id: Float!) {
-    product(id: $id) {
-      id
-      title
-      description
-      type
-      brand
-      category
-      price
-      new
+  product(id: $id) {
+    id
+    title
+    description
+    type
+    brand
+    category
+    price
+    new
       sale
-      discount
-      stock
+    discount
+    stock
       variants {
-        id
-        sku
-        size
-        color
-        image_id
-      }
+      id
+      sku
+      size
+      color
+      image_id
+    }
       images {
-        alt
-        src
-      }
+      alt
+      src
     }
   }
+}
 `;
 
 const ImageSwatchPage: NextPage = () => {
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },

@@ -1,7 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import OutsideImageSlick from "../../views/Products-Detail/outside-image-slick";
 
 const GET_SINGLE_PRODUCTS = gql`
@@ -34,7 +33,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const ImageOutsidePage: NextPage = () => {
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },
