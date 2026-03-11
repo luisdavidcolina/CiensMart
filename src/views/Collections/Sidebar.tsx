@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
 import { Collapse, Input, Label } from "reactstrap";
@@ -19,7 +19,7 @@ const GET_BRANDS = gql`
 
 const Sidebar: NextPage = () => {
   const { handleBrands, selectedBrands, selectedColor, setSelectedColor, setSelectedPrice, setSelectedBrands, setSelectedCategory, selectedCategory, selectedPrice, leftSidebarOpen, setLeftSidebarOpen } = useContext(FilterContext);
-  var { loading, data } = useQuery(GET_BRANDS, {
+  var { loading, data } = useLocalQuery(GET_BRANDS, {
     variables: {
       type: selectedCategory.toLowerCase(),
     },
@@ -40,7 +40,7 @@ const Sidebar: NextPage = () => {
   }, [selectedCategory, selectedPrice, selectedBrands, selectedColor, router]);
 
   useEffect(() => {
-    
+
     const { min, max } = selectedPrice;
     if (min === 0 && max === 100) setRadioChecked(1);
     else if (min === 100 && max === 200) setRadioChecked(2);

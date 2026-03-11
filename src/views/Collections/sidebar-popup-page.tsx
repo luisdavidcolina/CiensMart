@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { NextPage } from "next";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { Input, Label, Collapse } from "reactstrap";
 import { FilterContext } from "@/helpers/filter/filter.context";
 
@@ -18,7 +17,7 @@ const GET_BRANDS = gql`
 
 const SidebarPopupPage: NextPage = () => {
   const { sidebarpopup, setSidebarpopup } = React.useContext(FilterContext);
-  var { loading, data } = useQuery(GET_BRANDS);
+  var { loading, data } = useLocalQuery(GET_BRANDS);
   const [selectedColor, setSelectedColor] = useState("");
   const [isBrandOpen, setIsBrandOpen] = useState(true);
   const toggleBrand = () => setIsBrandOpen(!isBrandOpen);

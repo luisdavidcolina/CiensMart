@@ -6,8 +6,7 @@ import ProductService from "../../views/Products-Detail/product-service";
 import NewProduct from "../Collections/NewProduct";
 import TabProduct from "../../views/Products-Detail/tab-product";
 import ProductSlick from "../../views/Products-Detail/product-slick";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { FilterContext } from "@/helpers/filter/filter.context";
 
 interface LeftSidebar {
@@ -46,7 +45,7 @@ const GET_SINGLE_PRODUCTS = gql`
 const LeftSidebarPage: NextPage<LeftSidebar> = ({ pathId }) => {
   const filterContext = useContext(FilterContext);
   const { filterOpen, setFilterOpen } = filterContext;
-  var { loading, data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { loading, data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: parseInt(pathId),
     },

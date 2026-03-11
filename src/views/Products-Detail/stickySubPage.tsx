@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Row, Col } from "reactstrap";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import Sticky from "react-sticky-el";
 import ProductDetail from "./product-detail";
 
@@ -36,7 +35,7 @@ const GET_SINGLE_PRODUCTS = gql`
 `;
 
 const StickySubPage: React.FC = () => {
-  var { data } = useQuery(GET_SINGLE_PRODUCTS, {
+  var { data } = useLocalQuery(GET_SINGLE_PRODUCTS, {
     variables: {
       id: 1,
     },
@@ -66,7 +65,7 @@ const StickySubPage: React.FC = () => {
           </Col>
           {data && (
             <Col lg="7" className="rtl-text" style={{ position: "relative" }}>
-              <Sticky boundaryElement=".block"  hideOnBoundaryHit={false}>
+              <Sticky boundaryElement=".block" hideOnBoundaryHit={false}>
                 <ProductDetail item={data.product} bundle={false} swatch={false} changeColorVar={null} />
               </Sticky>
             </Col>

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { CompareContext } from "@/helpers/compare/compare.context";
-import { gql } from "@apollo/client";
-import { useLocalQuery } from "../../hooks/useLocalQuery"; // Replaced useQuery
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import React, { useContext, useState } from "react";
 import { Button, Col, Row, Spinner } from "reactstrap";

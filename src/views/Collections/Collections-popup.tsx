@@ -1,5 +1,5 @@
 /* eslint-disable no-var */
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import ContentLoader from "react-content-loader";
@@ -63,7 +63,7 @@ const CollectionPopup: NextPage<CollectionProps> = ({ cols, layoutList }) => {
   const [grid, setGrid] = useState(cols);
   const [layout, setLayout] = useState(layoutList);
 
-  var { data, loading, fetchMore } = useQuery(GET_PRODUCTS, {
+  var { data, loading, fetchMore } = useLocalQuery(GET_PRODUCTS, {
     variables: {
       type: selectedCategory,
       priceMax: selectedPrice.max,
@@ -82,7 +82,7 @@ const CollectionPopup: NextPage<CollectionProps> = ({ cols, layoutList }) => {
       variables: {
         indexFrom: data.products.items.length,
       },
-      updateQuery: (prev: any, { fetchMoreResult }) => {
+      updateQuery: (prev: any, { fetchMoreResult }: { fetchMoreResult: any }) => {
         if (!fetchMoreResult) return prev;
         setIsLoading(false);
         return {

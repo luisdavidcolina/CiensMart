@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useLocalQuery, gql } from "../../../hooks/useLocalQuery";
 import { NextPage } from "next";
 import React, { useContext, useState } from "react";
 import Slider from "react-slick";
@@ -138,7 +138,7 @@ const HotDeal: NextPage = () => {
   const { selectedCurr } = currencyContext;
   const [nav1, setNav1] = useState<Slider | null>();
   const [nav2, setNav2] = useState<Slider | null>();
-  var { loading, data: dataR } = useQuery(GET_COLLECTION, {
+  var { loading, data: dataR } = useLocalQuery(GET_COLLECTION, {
     variables: {
       collection: "hotdeal",
     },
