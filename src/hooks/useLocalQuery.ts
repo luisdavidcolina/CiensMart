@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { localDataService } from '../services/localData.service';
+import { firebaseService } from '../services/firebase.service';
 
 export const useLocalQuery = (query: any, options: any) => {
     const [loading, setLoading] = useState(true);
@@ -9,29 +9,34 @@ export const useLocalQuery = (query: any, options: any) => {
     const fetchData = async (queryVariables: any) => {
         setLoading(true);
         try {
-            // Minimal AST parsing to determine what data to fetch
-            // We assume the query name or the first selection field tells us what to get
             const selection = query.definitions[0].selectionSet.selections[0].name.value;
-
             let result = null;
 
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-
+            // We use Firebase service instead of localDataService
             switch (selection) {
                 case 'products':
+                    const productsResult = await firebaseService.getProducts(queryVariables);
                     result = {
-                        products: localDataService.getProducts(queryVariables)
+                        products: productsResult
+                    };
+                    break;
+                case 'product': // Added case for single product
+                    const singleProduct = await firebaseService.getProductById(queryVariables.id);
+                    result = {
+                        product: singleProduct
                     };
                     break;
                 case 'collection':
+                    // Map collection to a query in Firebase (simplified as all products for now)
+                    const collectionResult = await firebaseService.getProducts({ ...queryVariables, limit: 100 });
                     result = {
-                        collection: localDataService.getCollection(queryVariables.collection)
+                        collection: collectionResult.items
                     };
                     break;
                 case 'relatedProducts':
+                    const relatedResult = await firebaseService.getProducts({ type: queryVariables.type, limit: 6 });
                     result = {
-                        relatedProducts: localDataService.getRelatedProducts(queryVariables.type, queryVariables.id)
+                        relatedProducts: relatedResult.items
                     };
                     break;
                 default:
@@ -49,29 +54,20 @@ export const useLocalQuery = (query: any, options: any) => {
     };
 
     useEffect(() => {
-        // Initial fetch
         if (options && options.variables) {
             fetchData(options.variables);
         }
-    }, [JSON.stringify(options?.variables)]); // Deep compare variables
+    }, [JSON.stringify(options?.variables)]);
 
     const fetchMore = async (fetchMoreOptions: any) => {
-        // Implement fetchMore logic for pagination
-        // This usually returns a promise with the new data
         const newVariables = { ...options.variables, ...fetchMoreOptions.variables };
 
-        // We reuse the main fetch logic but we need to return the result for the caller to merge
-        // The caller in Collection.tsx uses updateQuery callback.
-
         setLoading(true);
-        // Simulate delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-
         const selection = query.definitions[0].selectionSet.selections[0].name.value;
         let newData: any = null;
 
         if (selection === 'products') {
-            const result = localDataService.getProducts(newVariables);
+            const result = await firebaseService.getProducts(newVariables);
             newData = { products: result };
         }
 

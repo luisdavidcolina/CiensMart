@@ -1,16 +1,16 @@
-import { localDataService } from "./localData.service";
+import { firebaseService } from "./firebase.service";
 
 export const orderService = {
-    createOrder: (orderData: any) => {
+    createOrder: async (orderData: any) => {
         // Enriched order data with more details if needed
-        return localDataService.saveOrder(orderData);
+        return await firebaseService.saveOrder(orderData);
     },
 
-    getOrderHistory: (email: string) => {
-        return localDataService.getOrdersByUser(email);
+    getOrderHistory: async (email: string) => {
+        return await firebaseService.getOrdersByUser(email);
     },
 
-    getOrderById: (id: any) => {
-        return localDataService.getOrderById(id);
+    getOrderById: async (id: any) => {
+        return await firebaseService.getProductById(id); // Using the general getById for now
     }
 }
