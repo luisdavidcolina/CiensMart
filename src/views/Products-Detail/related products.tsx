@@ -98,7 +98,7 @@ const RelatedProducts: NextPage = () => {
       <div className="custom-container">
         <Row>
           <Col className="product-related">
-            <h2>related products</h2>
+            <h2>productos relacionados</h2>
           </Col>
         </Row>
 

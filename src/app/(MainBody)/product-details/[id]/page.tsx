@@ -16,7 +16,7 @@ const LeftSidebar: NextPage = () => {
 
   return (
     <Layout1>
-      <Breadcrumb title="left sidebar" parent="product" />
+      <Breadcrumb title="detalle del producto" parent="producto" />
       <section className="section-big-pt-space bg-light">
         <LeftSidebarPage pathId={secondPart} />
       </section>

@@ -5,56 +5,56 @@ import Breadcrumb from "../Containers/Breadcrumb";
 const LeftSidebar: NextPage = () => {
   return (
     <div className="bg-light">
-      <Breadcrumb title="blog-detail" parent="home" />
+      <Breadcrumb title="detalle del blog" parent="inicio" />
       {/* <!-- section start --> */}
       <section className="blog-detail-page section-big-py-space ratio2_3">
         <Container>
           <Row className="section-big-pb-space">
             <Col sm="12" className="blog-detail">
               <div className="creative-card">
-                <Media src="/images/blog/main.jpg" className="img-fluid w-100 " alt="blog" />
-                <h3>Also the leap into electronic typesetting, remaining essentially unchanged.</h3>
+                <Media src="/images/layout-5/blog/5.jpg" className="img-fluid w-100 " alt="portada del blog" />
+                <h3>Tendencias de comercio digital para aumentar ventas en 2026</h3>
                 <ul className="post-social">
-                  <li>25 January 2023</li>
-                  <li>Posted By : Admin Admin</li>
+                  <li>11 marzo 2026</li>
+                  <li>Publicado por: Equipo CiensMart</li>
                   <li>
-                    <i className="fa fa-heart"></i> 5 Hits
+                    <i className="fa fa-heart"></i> 128 vistas
                   </li>
                   <li>
-                    <i className="fa fa-comments"></i> 10 Comment
+                    <i className="fa fa-comments"></i> 14 comentarios
                   </li>
                 </ul>
-                <p>Fusce scelerisque augue a viverra semper. Etiam nisi nibh, vestibulum quis augue id, imperdiet fringilla dolor. Nulla sed nisl vel nisi cursus finibus. Vivamus ut augue nec justo viverra laoreet. Nunc efficitur, arcu ac cursus gravida, lorem elit commodo urna, id viverra libero tellus non ipsum. Fusce molestie ultrices nibh feugiat pretium. Donec pulvinar arcu metus, et dapibus odio condimentum id. Quisque malesuada mauris sit amet dui feugiat, ut pretium mauris luctus. Ut aliquam, tellus nec molestie condimentum, tellus arcu dignissim quam, a gravida nunc nulla vel magna. Sed pulvinar tortor et euismod blandit. Proin accumsan orci ac nunc fermentum vehicula.</p>
-                <p>Cras quis neque urna. Pellentesque mollis, dui nec elementum elementum, ipsum quam suscipit ligula, sit amet lobortis dolor sem sed neque. Vivamus consequat est non sodales efficitur. Aliquam sodales eleifend sodales. Aliquam auctor ipsum quis nisl facilisis, at convallis mauris iaculis. Duis eleifend, magna ac convallis blandit, dui dui auctor leo, sed tincidunt nisi mauris ut nulla. Praesent porttitor dui ac turpis commodo porttitor. Integer ligula nisi, bibendum non sem at, porta condimentum dui.</p>
-                <p>Proin id eleifend diam, euismod dictum nibh. Ut ullamcorper in purus at tempor. Nullam mattis risus nec velit semper lobortis. Donec accumsan ligula fermentum, ultricies massa eget, cursus leo. Suspendisse placerat elit et lacus aliquam, ut elementum leo aliquet. Integer ornare, ipsum eu lacinia viverra, lectus ipsum scelerisque nisl, nec iaculis leo elit id arcu. Aliquam id ante elit. Donec commodo purus eget lacus pharetra, et egestas metus blandit. Quisque pellentesque porta urna.</p>
+                <p>En los ultimos meses el ecommerce paso de competir por precio a competir por experiencia. Las tiendas con mejor rendimiento estan optimizando velocidad, claridad visual y mensajes simples de compra. Cuando el cliente entiende rapido que esta comprando y por que confiar en la tienda, la conversion mejora sin necesidad de descuentos agresivos.</p>
+                <p>Otro cambio clave es la personalizacion por contexto: recomendaciones por categoria, banners segmentados y contenido editorial util en cada etapa del funnel. Un blog bien trabajado no solo aporta SEO, tambien reduce dudas y mejora la intencion de compra al mostrar casos reales, comparativas y guias practicas.</p>
+                <p>Para sostener crecimiento, conviene medir tres indicadores cada semana: tasa de conversion por dispositivo, abandono en checkout y tiempo hasta primera compra. Con esos datos, los ajustes de interfaz y contenido dejan de ser intuicion y pasan a ser decisiones de negocio.</p>
               </div>
             </Col>
           </Row>
           <Row className="section-big-pb-space blog-advance ">
             <Col lg="6">
               <div className="creative-card">
-                <Media src="/images/blog/1.jpg" className="img-fluid " alt="blog" />
+                <Media src="/images/layout-5/blog/1.jpg" className="img-fluid " alt="analitica de ventas" />
                 <ul>
-                  <li>Donec ut metus sit amet elit consectetur vel turpis.</li>
-                  <li>Aenean in mi eu elit mollis tincidunt.</li>
-                  <li>Etiam blandit metus vitae purus lacinia ultricies.</li>
-                  <li>Nunc quis nulla sagittis, tempus metus.</li>
-                  <li>In scelerisque libero ut mi ornare, neque pulvinar.</li>
-                  <li>Morbi molestie lacus blandit interdum sodales.</li>
-                  <li>Curabitur eleifend velit molestie eleifend interdum.</li>
-                  <li>Vestibulum fringilla tortor et lorem sagittis,</li>
-                  <li>In scelerisque libero ut mi ornare, neque pulvinar.</li>
-                  <li>Morbi molestie lacus blandit interdum sodales.</li>
-                  <li>Curabitur eleifend velit molestie eleifend interdum.</li>
+                  <li>Define una propuesta de valor clara en la cabecera.</li>
+                  <li>Usa imagenes reales de producto y contexto de uso.</li>
+                  <li>Elimina pasos innecesarios en carrito y pago.</li>
+                  <li>Muestra costos finales antes del ultimo paso.</li>
+                  <li>Integra pruebas sociales con opiniones verificadas.</li>
+                  <li>Optimiza la vista movil como prioridad comercial.</li>
+                  <li>Mide conversion por canal para invertir mejor.</li>
+                  <li>Publica contenido util orientado a decisiones de compra.</li>
+                  <li>Automatiza recuperacion de carritos abandonados.</li>
+                  <li>Revisa stock y precios a diario para evitar friccion.</li>
+                  <li>Actualiza banners segun temporada y categoria.</li>
                 </ul>
               </div>
             </Col>
             <Col lg="6">
               <div className="creative-card">
-                <Media src="/images/blog/2.jpg" className="img-fluid  " alt="blog" />
-                <p>Nulla quam turpis, commodo et placerat eu, mollis ut odio. Donec pellentesque egestas consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc at urna dolor. Mauris odio nisi, rhoncus ac justo eget, lacinia iaculis lectus. </p>
-                <p className="mt-2">Nulla quam turpis, commodo et placerat eu, mollis ut odio. Donec pellentesque egestas consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc at urna dolor. Mauris odio nisi, rhoncus ac justo eget, lacinia iaculis lectus. rhoncus ac justo eget, lacinia iaculis lectus.</p>
-                <p className="mt-2">Nulla quam turpis, commodo et placerat eu, mollis ut odio. Donec pellentesque egestas consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices.</p>
+                <Media src="/images/layout-5/blog/3.jpg" className="img-fluid  " alt="estrategia de crecimiento" />
+                <p>Una estrategia efectiva combina contenido, performance y confianza. Cuando la pagina carga rapido, el mensaje es claro y el usuario percibe seguridad, la experiencia de compra se vuelve fluida y la marca se fortalece.</p>
+                <p className="mt-2">El blog puede funcionar como apoyo comercial: responde preguntas frecuentes, educa sobre categorias y muestra comparativas que aceleran la decision del cliente. Esto reduce friccion y mejora conversion organica.</p>
+                <p className="mt-2">El objetivo final no es solo atraer visitas, sino convertir trafico en pedidos recurrentes con una identidad consistente y una propuesta de valor facil de entender.</p>
               </div>
             </Col>
           </Row>
@@ -64,34 +64,34 @@ const LeftSidebar: NextPage = () => {
                 <ul className="comment-section">
                   <li>
                     <div className="media">
-                      <Media src="/images/avtar/1.jpg" alt="Generic placeholder image" />
+                      <Media src="/images/avtar/1.jpg" alt="avatar de cliente" />
                       <div className="media-body">
                         <h6>
-                          Mark Jecno <span>( 12 Jannuary 2023 at 1:30AM )</span>
+                          Laura Mendez <span>( 11 marzo 2026 a las 10:30 AM )</span>
                         </h6>
-                        <p>Donec rhoncus massa quis nibh imperdiet dictum. Vestibulum id est sit amet felis fringilla bibendum at at leo. Proin molestie ac nisi eu laoreet. Integer faucibus enim nec ullamcorper tempor. Aenean nec felis dui.</p>
+                        <p>Excelente articulo, aplicamos dos cambios en la pagina de producto y subio la conversion movil en pocos dias.</p>
                       </div>
                     </div>
                   </li>
                   <li>
                     <div className="media">
-                      <Media src="/images/avtar/2.jpg" alt="Generic placeholder image" />
+                      <Media src="/images/avtar/2.jpg" alt="avatar de cliente" />
                       <div className="media-body">
                         <h6>
-                          Mark Jecno <span>( 12 Jannuary 2023 at 1:30AM )</span>
+                          Daniel Rivas <span>( 11 marzo 2026 a las 11:05 AM )</span>
                         </h6>
-                        <p>Donec rhoncus massa quis nibh imperdiet dictum. Vestibulum id est sit amet felis fringilla bibendum at at leo. Proin molestie ac nisi eu laoreet. Integer faucibus enim nec ullamcorper tempor. Aenean nec felis dui.</p>
+                        <p>Muy util la parte de indicadores. Nos ayudo a detectar que el abandono estaba en metodos de pago, no en el catalogo.</p>
                       </div>
                     </div>
                   </li>
                   <li>
                     <div className="media">
-                      <Media src="/images/avtar/3.jpg" alt="Generic placeholder image" />
+                      <Media src="/images/avtar/3.jpg" alt="avatar de cliente" />
                       <div className="media-body">
                         <h6>
-                          Mark Jecno <span>( 12 Jannuary 2023 at 1:30AM )</span>
+                          Sofia Torres <span>( 11 marzo 2026 a las 12:10 PM )</span>
                         </h6>
-                        <p>Donec rhoncus massa quis nibh imperdiet dictum. Vestibulum id est sit amet felis fringilla bibendum at at leo. Proin molestie ac nisi eu laoreet. Integer faucibus enim nec ullamcorper tempor. Aenean nec felis dui.</p>
+                        <p>Nos gusto que el contenido sea practico. Ya estamos preparando una guia parecida para nuestras categorias top.</p>
                       </div>
                     </div>
                   </li>
@@ -102,24 +102,24 @@ const LeftSidebar: NextPage = () => {
           <Row className="blog-contact">
             <Col sm="12">
               <div className="creative-card">
-                <h2>Leave Your Comment</h2>
+                <h2>Deja tu comentario</h2>
                 <Form className="theme-form">
                   <div className="form-row row">
                     <Col md="12">
-                      <Label htmlFor="name">Name</Label>
-                      <Input type="text" className="forInputm-control" id="name" placeholder="Enter Your name" required />
+                      <Label htmlFor="name">Nombre</Label>
+                      <Input type="text" className="forInputm-control" id="name" placeholder="Ingresa tu nombre" required />
                     </Col>
                     <Col md="12">
-                      <Label htmlFor="email">Email</Label>
-                      <Input type="text" className="form-Inputcontrol" placeholder="Email" required />
+                      <Label htmlFor="email">Correo electronico</Label>
+                      <Input type="text" className="form-Inputcontrol" placeholder="tu@correo.com" required />
                     </Col>
                     <Col md="12">
-                      <Label htmlFor="exampleFormControlTextarea1">Comment</Label>
-                      <textarea className="form-control" placeholder="Write Your InputComment" id="exampleFormControlTextarea1"></textarea>
+                      <Label htmlFor="exampleFormControlTextarea1">Comentario</Label>
+                      <textarea className="form-control" placeholder="Escribe tu comentario" id="exampleFormControlTextarea1"></textarea>
                     </Col>
                     <Col md="12">
                       <button className="btn btn-normal" type="submit">
-                        Post Comment
+                        Publicar comentario
                       </button>
                     </Col>
                   </div>

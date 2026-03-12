@@ -70,7 +70,7 @@ const LeftSidebarPage: NextPage<LeftSidebar> = ({ pathId }) => {
                 <Col xl="12">
                   <div className="filter-main-btn mb-sm-4">
                     <span className="filter-btn" onClick={() => setFilterOpen(!filterOpen)}>
-                      <i className="fa fa-filter" aria-hidden="true"></i> filter
+                      <i className="fa fa-filter" aria-hidden="true"></i> filtro
                     </span>
                   </div>
                 </Col>

@@ -18,7 +18,7 @@ interface ProductRightProps {
 const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bundle, swatch }) => {
   const [modal, setModal] = useState(false);
   const [qty, setQty] = useState(1);
-  const [stock, setStock] = useState("InStock");
+  const [stock, setStock] = useState("Disponible");
   const [activesize, setSize] = useState("");
   const { addToWish } = React.useContext(WishlistContext);
 
@@ -37,7 +37,7 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
 
   const minusQty = () => {
     if (qty > 1) {
-      setStock("InStock");
+      setStock("Disponible");
       setQty(qty - 1);
     }
   };
@@ -46,7 +46,7 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
     if (item.stock >= qty) {
       setQty(qty + 1);
     } else {
-      setStock("Out of Stock !");
+      setStock("Sin stock");
     }
   };
   const changeQty = (e: any) => {
@@ -63,7 +63,7 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
           {symbol}
           {item.price * value}
         </del>
-        <span>{item.discount}% off</span>
+        <span>{item.discount}% dto</span>
       </h4>
       <h3>
         {symbol}
@@ -78,7 +78,7 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
         })}
       {swatch ? <ImageSwatch item={item} changeColorVar={changeColorVar} /> : ""}
       <div className="product-description border-product">
-        <h6 className="product-title">select color</h6>
+        <h6 className="product-title">selecciona color</h6>
         {changeColorVar === undefined
           ? !!uniqueColor.length && (
               <ul className="color-variant">
@@ -97,10 +97,10 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
         {!!uniqueSize.length && (
           <>
             <h6 className="product-title size-text">
-              select size{" "}
+              selecciona talla{" "}
               <span>
                 <a data-toggle="modal" data-target="#sizemodal" onClick={onOpenModal}>
-                  size chart
+                  guia de tallas
                 </a>
               </span>
             </h6>
@@ -135,8 +135,8 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
         )}
       </div>
       <div className="product-description border-product">
-        {stock !== "InStock" ? <span className="instock-cls">{stock}</span> : ""}
-        <h6 className="product-title">quantity</h6>
+        {stock !== "Disponible" ? <span className="instock-cls">{stock}</span> : ""}
+        <h6 className="product-title">cantidad</h6>
         <div className="qty-box">
           <div className="input-group">
             <span className="input-group-prepend">
@@ -166,14 +166,15 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
           agregar al carrito
         </a>
         <a href="/pages/account/checkout" className="btn btn-normal">
-          buy now
+          comprar ahora
         </a>
       </div>
       <div className="border-product">
-        <h6 className="product-title">product details</h6>
+        <h6 className="product-title">detalles del producto</h6>
         <p>
-          Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae
-          vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,
+          Producto seleccionado con excelente relacion calidad-precio. Incluye acabados duraderos,
+          materiales de buena calidad y diseno pensado para uso diario. Ideal para clientes que
+          buscan rendimiento, estilo y una compra confiable.
         </p>
       </div>
       <div className="border-product">
@@ -212,14 +213,14 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
                 addToWish(item);
               }}>
               <i className="fa fa-heart"></i>
-              <span className="title-font">Add To WishList</span>
+              <span className="title-font">Agregar a favoritos</span>
             </button>
           </div>
         </div>
       </div>
       {bundle && <ImageGroup />}
       <div className="border-product pb-0">
-        <h6 className="product-title">Time Reminder</h6>
+        <h6 className="product-title">Cuenta regresiva</h6>
         <CountDownComponent />
       </div>
     </div>

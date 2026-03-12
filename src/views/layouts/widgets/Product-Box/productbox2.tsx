@@ -68,6 +68,12 @@ const ProductBox2: React.FC<productType> = (data) => {
     router.push(`/product-details/${data.id}` + "-" + `${titleProps}`);
   };
 
+  const basePrice = Number(data.price) || 0;
+  const rawDiscount = Number(data.discount);
+  const safeDiscount = Number.isFinite(rawDiscount) && rawDiscount > 0 && rawDiscount < 100 ? rawDiscount : 0;
+  const finalPrice = basePrice * (1 - safeDiscount / 100);
+  const showDiscount = safeDiscount > 0 && finalPrice > 0 && finalPrice < basePrice;
+
   useEffect(() => {
     cartItems.filter((elem: any) => {
       elem.id === data.item.id && setQuantity(elem.qty);
@@ -128,11 +134,13 @@ const ProductBox2: React.FC<productType> = (data) => {
 
             <span className="detail-price">
               {selectedCurr.symbol}
-              {(data.price * selectedCurr.value).toFixed(2)}
-              <span>
-                {selectedCurr.symbol}
-                {((data.price - data.price * (data.discount / 100)) * selectedCurr.value).toFixed(2)}
-              </span>
+              {(showDiscount ? finalPrice : basePrice * selectedCurr.value).toFixed(2)}
+              {showDiscount && (
+                <span>
+                  {selectedCurr.symbol}
+                  {(basePrice * selectedCurr.value).toFixed(2)}
+                </span>
+              )}
             </span>
           </div>
           <div className="addtocart_btn">

@@ -11,7 +11,7 @@ const TabProduct: React.FC = () => {
           <Nav tabs className="nav-material" id="top-tab" role="tablist">
             <NavItem>
               <NavLink className={activeTab === "1" ? "active" : ""} onClick={() => setActiveTab("1")}>
-                Description
+                Descripcion
                 <div className="material-border"></div>
               </NavLink>
             </NavItem>
@@ -23,39 +23,39 @@ const TabProduct: React.FC = () => {
             </NavItem>
             <NavItem>
               <NavLink className={activeTab === "3" ? "active" : ""} onClick={() => setActiveTab("3")}>
-                Write Review
+                Escribir resena
                 <div className="material-border"></div>
               </NavLink>
             </NavItem>
           </Nav>
           <TabContent className="nav-material" activeTab={activeTab}>
             <TabPane tabId="1">
-              <p className="ps-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+              <p className="ps-0">Este producto ofrece un equilibrio ideal entre diseno, funcionalidad y durabilidad. Fue pensado para un uso diario comodo, con acabados cuidados y materiales resistentes. Es una excelente opcion para quienes buscan calidad y buen precio en una sola compra.</p>
               <div className="single-product-tables">
                 <table>
                   <tbody>
                     <tr>
-                      <td>Febric</td>
+                      <td>Tejido</td>
                       <td>Chiffon</td>
                     </tr>
                     <tr>
                       <td>Color</td>
-                      <td>Red</td>
+                      <td>Rojo</td>
                     </tr>
                     <tr>
                       <td>Material</td>
-                      <td>Crepe printed</td>
+                      <td>Crepe estampado</td>
                     </tr>
                   </tbody>
                 </table>
                 <table>
                   <tbody>
                     <tr>
-                      <td>Length</td>
-                      <td>50 Inches</td>
+                      <td>Largo</td>
+                      <td>50 pulgadas</td>
                     </tr>
                     <tr>
-                      <td>Size</td>
+                      <td>Talla</td>
                       <td>S, M, L .XXL</td>
                     </tr>
                   </tbody>
@@ -81,24 +81,24 @@ const TabProduct: React.FC = () => {
                     </div>
                   </Col>
                   <Col md="6">
-                    <Label htmlFor="name">Name</Label>
-                    <Input type="text" className="form-control" id="name" placeholder="Enter Your name" required />
+                    <Label htmlFor="name">Nombre</Label>
+                    <Input type="text" className="form-control" id="name" placeholder="Ingresa tu nombre" required />
                   </Col>
                   <Col md="6">
                     <Label htmlFor="email">Email</Label>
-                    <Input type="text" className="form-control" placeholder="Email" required />
+                    <Input type="text" className="form-control" placeholder="Correo electronico" required />
                   </Col>
                   <Col md="12">
-                    <Label htmlFor="review">Review Title</Label>
-                    <Input type="text" className="form-control" placeholder="Enter your Review Subjects" required />
+                    <Label htmlFor="review">Titulo de la resena</Label>
+                    <Input type="text" className="form-control" placeholder="Escribe el titulo de tu resena" required />
                   </Col>
                   <Col md="12">
-                    <Label htmlFor="review">Review Title</Label>
-                    <textarea className="form-control" rows={4} placeholder="Write Your Testimonial Here" id="exampleFormControlTextarea1"></textarea>
+                    <Label htmlFor="review">Comentario</Label>
+                    <textarea className="form-control" rows={4} placeholder="Escribe aqui tu experiencia" id="exampleFormControlTextarea1"></textarea>
                   </Col>
                   <Col md="12">
                     <button className="btn btn-normal" type="submit">
-                      Submit YOur Review
+                      Enviar resena
                     </button>
                   </Col>
                 </div>

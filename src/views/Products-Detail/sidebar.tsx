@@ -14,31 +14,31 @@ const Sidebar: NextPage = () => {
       <div className="collection-mobile-back">
         <span className="filter-back" onClick={() => setFilterOpen(!filterOpen)}>
           <i className="fa fa-angle-left" aria-hidden="true"></i>
-          back
+          volver
         </span>
       </div>
       <div className="collection-collapse-block border-0 open">
         <h3 className="collapse-block-title" onClick={toggleBrand}>
-          brand
+          marca
         </h3>
         <Collapse isOpen={isBrandOpen}>
           <div className="collection-collapse-block-content">
             <div className="collection-brand-filter">
               <ul className="category-list">
                 <li>
-                  <a href="#">clothing</a>
+                  <a href="#">ropa</a>
                 </li>
                 <li>
-                  <a href="#">bags</a>
+                  <a href="#">bolsos</a>
                 </li>
                 <li>
-                  <a href="#">footwear</a>
+                  <a href="#">calzado</a>
                 </li>
                 <li>
-                  <a href="#">watches</a>
+                  <a href="#">relojes</a>
                 </li>
                 <li>
-                  <a href="#">accessories</a>
+                  <a href="#">accesorios</a>
                 </li>
               </ul>
             </div>
