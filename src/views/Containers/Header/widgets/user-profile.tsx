@@ -32,9 +32,10 @@ const UserProfile: NextPage = () => {
 
   return (
     <>
-      <li className="mobile-user onhover-dropdown" onClick={() => setOpenAccount(!openAccount)}>
-        <a href="#">
+      <li className={`mobile-user onhover-dropdown ${currentUser ? "logged-in" : ""}`} onClick={() => setOpenAccount(!openAccount)}>
+        <a href="#" aria-label={currentUser ? "Sesion iniciada" : "Sesion no iniciada"}>
           <i className="icon-user"></i>
+          {currentUser && <span className="auth-status-dot" title="Sesion iniciada"></span>}
         </a>
       </li>
       <div id="myAccount" className={`add_to_cart right account-bar ${openAccount ? "open-side" : ""}`}>

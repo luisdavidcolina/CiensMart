@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocalQuery as useQuery, gql } from "../../../../hooks/useLocalQuery";
 import { CurrencyContext } from "../../../../helpers/currency/CurrencyContext";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,13 @@ const MobileSetting: React.FC = () => {
   const { selectedCurrency } = currencyContext;
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "visible";
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, [open]);
+
   const changeLanguage = (lang: { val: string | undefined; }) => {
     i18n.changeLanguage(lang.val);
     setOpen(false);
@@ -42,7 +49,8 @@ const MobileSetting: React.FC = () => {
         <a
           href="#"
           className="overlay"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             setOpen(false);
           }}
         ></a>
@@ -52,7 +60,8 @@ const MobileSetting: React.FC = () => {
             <div className="close-cart">
               <a
                 href="#"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   setOpen(false);
                 }}
               >
@@ -68,7 +77,8 @@ const MobileSetting: React.FC = () => {
                   <li key={i}>
                     <a
                       href="#"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         changeLanguage(lang);
                       }}
                     >

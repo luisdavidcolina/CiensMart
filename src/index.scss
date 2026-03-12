@@ -1,2 +1,20 @@
 @import "../public/scss/app.scss";
 @import "react-toastify/dist/ReactToastify.css";
+
+@media (min-width: 768px) {
+	.mobile-user.logged-in > a {
+		position: relative;
+	}
+
+	.mobile-user.logged-in .auth-status-dot {
+		position: absolute;
+		top: 2px;
+		right: -2px;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background-color: #28a745;
+		border: 2px solid #ffffff;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+	}
+}

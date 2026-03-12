@@ -71,9 +71,11 @@ const CheckoutPage: NextPage = () => {
       setValue("lastName", userProfile.lastName || "");
       setValue("email", userProfile.email || "");
       setValue("phone", userProfile.phone || "0");
+      setValue("address", userProfile.address || "Av. Principal, Caracas");
       setValue("city", userProfile.city || "Caracas");
     } else {
       setValue("phone", "0");
+      setValue("address", "Av. Principal, Caracas");
       setValue("city", "Caracas");
       if (currentUser) {
         setValue("email", currentUser.email || "");
