@@ -7,7 +7,7 @@ import LeftSidebarCollection from "@/views/Collections/LeftSidebar";
 const LeftSidebar: NextPage = () => {
   return (
     <Layout1>
-      <Breadcrumb parent="Category" title="LeftSidebar" />
+      <Breadcrumb parent="Categoria" title="Coleccion" />
       <section className="section-big-pt-space section-big-pb-space ratio_asos bg-light">
         <div className="collection-wrapper">
           <div className="custom-container">

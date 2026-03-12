@@ -61,13 +61,13 @@ const Sidebar: NextPage = () => {
       {/* <!-- brand filter start --> */}
       <div className="collection-mobile-back">
         <span className="filter-back" onClick={() => setLeftSidebarOpen(!leftSidebarOpen)}>
-          <i className="fa fa-angle-left" aria-hidden="true"></i> back
+          <i className="fa fa-angle-left" aria-hidden="true"></i> volver
         </span>
       </div>
       {/* <!-- price filter start here --> */}
       <div className="collection-collapse-block open">
         <h3 className="collapse-block-title mt-0" onClick={toggleCategory}>
-          Category
+          Categoria
         </h3>
         <Collapse isOpen={isCategoryOpen}>
           <div className="collection-collapse-block-content">
@@ -81,7 +81,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    ALL PRODUCTS
+                    TODOS LOS PRODUCTOS
                   </a>
                 </li>
                 <li>
@@ -92,7 +92,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    FASHION
+                    MODA
                   </a>
                 </li>
                 <li>
@@ -103,7 +103,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    ELECTRONIC
+                    ELECTRONICA
                   </a>
                 </li>
                 <li>
@@ -114,7 +114,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    VEGETABLES
+                    VERDURAS
                   </a>
                 </li>
                 <li>
@@ -125,7 +125,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    FURNITURE
+                    MUEBLES
                   </a>
                 </li>
                 <li>
@@ -136,7 +136,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    JEWELLWEY
+                    JOYERIA
                   </a>
                 </li>
                 <li>
@@ -147,7 +147,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    BEAUTY
+                    BELLEZA
                   </a>
                 </li>
                 <li>
@@ -158,7 +158,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    FLOWER
+                    FLORES
                   </a>
                 </li>
                 <li>
@@ -169,7 +169,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    TOOLS
+                    HERRAMIENTAS
                   </a>
                 </li>
                 <li>
@@ -180,7 +180,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    WATCH
+                    RELOJES
                   </a>
                 </li>
                 <li>
@@ -202,7 +202,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    SHOES
+                    ZAPATOS
                   </a>
                 </li>
                 <li>
@@ -213,7 +213,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    BAGS
+                    BOLSOS
                   </a>
                 </li>
                 <li>
@@ -224,7 +224,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    KIDS
+                    NINOS
                   </a>
                 </li>
                 <li>
@@ -235,7 +235,7 @@ const Sidebar: NextPage = () => {
                       resetFilter();
                     }}
                   >
-                    PETS
+                    MASCOTAS
                   </a>
                 </li>
               </ul>
@@ -244,11 +244,11 @@ const Sidebar: NextPage = () => {
         </Collapse>
       </div>
       {!data || !data.getBrands || data.getBrands.brand.length === 0 || loading ? (
-        loading && <h4>Loading</h4>
+        loading && <h4>Cargando</h4>
       ) : (
         <div className="collection-collapse-block open">
           <h3 className="collapse-block-title mt-0" onClick={toggleBrand}>
-            brand
+            marca
           </h3>
           <Collapse isOpen={isBrandOpen}>
             <div className="collection-collapse-block-content">
@@ -274,11 +274,11 @@ const Sidebar: NextPage = () => {
       )}
       {/* <!-- color filter start here --> */}
       {!data || !data.getColors || data.getColors.colors.length === 0 || loading ? (
-        loading && <h4>Loading</h4>
+        loading && <h4>Cargando</h4>
       ) : (
         <div className="collection-collapse-block open">
           <h3 className="collapse-block-title" onClick={toggleColor}>
-            colors
+            colores
           </h3>
           <Collapse isOpen={isColorOpen}>
             <div className="collection-collapse-block-content">
@@ -302,7 +302,7 @@ const Sidebar: NextPage = () => {
       {/* <!-- price filter start here --> */}
       <div className="collection-collapse-block border-0 open">
         <h3 className="collapse-block-title" onClick={togglePrice}>
-          price
+          precio
         </h3>
         <Collapse isOpen={isPriceOpen}>
           <div className="collection-collapse-block-content">
@@ -325,7 +325,7 @@ const Sidebar: NextPage = () => {
               </div>
               <div className="custom-control custom-checkbox collection-filter-checkbox">
                 <Input onClick={() => setSelectedPrice({ min: 400, max: 1000 })} type="radio" name="price-filter" className="custom-control-input" id="fourhundredabove" checked={radioChecked === 5} onChange={() => setRadioChecked(5)} />
-                <Label className="custom-control-label">$400 above</Label>
+                <Label className="custom-control-label">$400 o mas</Label>
               </div>
             </div>
           </div>

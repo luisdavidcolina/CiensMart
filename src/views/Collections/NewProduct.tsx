@@ -22,7 +22,7 @@ var bestSellerSetting = {
 
 const NewProduct: NextPage = () => (
   <div className="theme-card creative-card creative-inner">
-    <h5 className="title-border">new product</h5>
+    <h5 className="title-border">nuevos productos</h5>
     <div className="offer-slider slide-1">
       <Slider {...bestSellerSetting}>
         <div>
@@ -39,7 +39,7 @@ const NewProduct: NextPage = () => (
                 <i className="fa fa-star"></i>
               </div>
               <a href="/collections/no-sidebar">
-                <h6>Slim Fit Cotton Shirt</h6>
+                <h6>Camisa de algodon corte slim</h6>
               </a>
               <h4>$500.00</h4>
             </div>
@@ -53,7 +53,7 @@ const NewProduct: NextPage = () => (
                 <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i>
               </div>
               <a href="#">
-                <h6>Slim Fit Cotton Shirt</h6>
+                <h6>Camisa de algodon corte slim</h6>
               </a>
               <h4>$500.00</h4>
             </div>
@@ -67,7 +67,7 @@ const NewProduct: NextPage = () => (
                 <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i>
               </div>
               <a href="#">
-                <h6>Slim Fit Cotton Shirt</h6>
+                <h6>Camisa de algodon corte slim</h6>
               </a>
               <h4>$500.00</h4>
             </div>
@@ -83,7 +83,7 @@ const NewProduct: NextPage = () => (
                 <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i>
               </div>
               <a href="#">
-                <h6>Slim Fit Cotton Shirt</h6>
+                <h6>Camisa de algodon corte slim</h6>
               </a>
               <h4>$500.00</h4>
             </div>
@@ -97,7 +97,7 @@ const NewProduct: NextPage = () => (
                 <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i>
               </div>
               <a href="#">
-                <h6>Slim Fit Cotton Shirt</h6>
+                <h6>Camisa de algodon corte slim</h6>
               </a>
               <h4>$500.00</h4>
             </div>
@@ -111,7 +111,7 @@ const NewProduct: NextPage = () => (
                 <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i>
               </div>
               <a href="#">
-                <h6>Slim Fit Cotton Shirt</h6>
+                <h6>Camisa de algodon corte slim</h6>
               </a>
               <h4>$500.00</h4>
             </div>

@@ -71,6 +71,12 @@ const ProductBox: NextPage<productType> = ({ layout, id, item, title, newLabel, 
     router.push(`/product-details/${id}` + "-" + `${titleProps}`);
   };
 
+  const basePrice = Number(price) || 0;
+  const rawDiscount = Number(discount);
+  const safeDiscount = Number.isFinite(rawDiscount) && rawDiscount > 0 && rawDiscount < 100 ? rawDiscount : 0;
+  const finalPrice = basePrice * (1 - safeDiscount / 100);
+  const showDiscount = safeDiscount > 0 && finalPrice > 0 && finalPrice < basePrice;
+
   return (
     <Fragment>
       <div className="product-box">
@@ -134,14 +140,16 @@ const ProductBox: NextPage<productType> = ({ layout, id, item, title, newLabel, 
             <div className="detail-right">
               <div className="check-price">
                 {selectedCurr.symbol}
-                {(price * selectedCurr.value).toFixed(2)}{" "}
+                {(showDiscount ? finalPrice : basePrice * selectedCurr.value).toFixed(2)}{" "}
               </div>
-              <div className="price">
+              {showDiscount && (
                 <div className="price">
-                  {selectedCurr.symbol}
-                  {((price - price * (discount / 100)) * selectedCurr.value).toFixed(2)}
+                  <div className="price">
+                    {selectedCurr.symbol}
+                    {(basePrice * selectedCurr.value).toFixed(2)}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

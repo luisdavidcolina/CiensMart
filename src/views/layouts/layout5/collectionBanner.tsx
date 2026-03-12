@@ -4,9 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Collectionbanner = [
-  { img: "/images/layout-5/collection-banner/1.jpg", title: "Laptop", subtitle: "Trending", btn: "Shop now", category: "ELECTRONICS" },
-  { img: "/images/layout-5/collection-banner/2.jpg", title: "Refrigrator", subtitle: "Special", btn: "Shop now", category: "ELECTRONICS" },
-  { img: "/images/layout-5/collection-banner/3.jpg", title: "Tablet", subtitle: "New Generation", btn: "Shop now", category: "ELECTRONICS" },
+  { img: "/images/layout-5/collection-banner/1.jpg", title: "Portatil", subtitle: "Tendencia", btn: "Comprar ahora", category: "ELECTRONICS" },
+  { img: "/images/layout-5/collection-banner/2.jpg", title: "Refrigerador", subtitle: "Especial", btn: "Comprar ahora", category: "ELECTRONICS" },
+  { img: "/images/layout-5/collection-banner/3.jpg", title: "Tablet", subtitle: "Nueva generacion", btn: "Comprar ahora", category: "ELECTRONICS" },
 ];
 
 const CollectionBanner: NextPage = () => {
