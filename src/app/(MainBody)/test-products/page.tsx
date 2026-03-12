@@ -36,9 +36,9 @@ const TestProductsPage = () => {
     };
 
     const configAudit = {
-        apiKey: 'AIzaSyAsp4NO1C8q14d3--RxGU8VTVaD5LEj8SQ' ? 'Conexion_OK' : 'FALTA_CLAVE',
-        projectId: 'ciensmart' || 'NO_DEFINIDO',
-        authDomain: 'ciensmart.firebaseapp.com' ? 'OK' : 'FALTA',
+        apiKey: 'AIzaSyAsp4NO1C8q14d3--RxGU8VTVaD5LEj8SQ',
+        projectId: 'ciensmart' ,
+        authDomain: 'ciensmart.firebaseapp.com'
     };
 
     return (

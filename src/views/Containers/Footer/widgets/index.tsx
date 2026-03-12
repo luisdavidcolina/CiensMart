@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Row, Col, Container, Media, Input } from "reactstrap";
 
 type FooterSectionProps = {
@@ -16,7 +17,9 @@ const FooterSection: React.FC<FooterSectionProps> = ({ layoutLogo }) => {
                 <Col lg="4" md="12">
                   <div className="footer-left">
                     <div className="footer-logo">
-                      <Media src={`/images/${layoutLogo}/logo/logo.png`} className="img-fluid  " alt="logo" />
+                      <Link href="/">
+                        <Media src={`/images/${layoutLogo}/logo/logo.png`} className="img-fluid  " alt="logo" />
+                      </Link>
                     </div>
                     <div className="footer-detail">
                       <p>

@@ -1,8 +1,24 @@
 import ErrorBoundary from "@/utils/ErrorBoundry";
 import type { Metadata } from "next";
+import { PT_Sans, Raleway } from "next/font/google";
 import "../../src/index.scss";
 import { I18nProvider } from "./i18n/i18n-context";
 import { detectLanguage } from "./i18n/server";
+
+const ptSans = PT_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-pt-sans",
+});
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-raleway",
+});
+
 export const metadata: Metadata = {
   title: "CiensMart",
 };
@@ -10,17 +26,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const lng = await detectLanguage();
   return (
-    <I18nProvider language={lng}>
       <html lang='en'>
-        <head>
-          <link rel='shortcut icon' href='/images/favicon/favicon.ico' />
-          <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700&amp;display=swap' rel='stylesheet' />
-          <link href='https://fonts.googleapis.com/css?family=Raleway&amp;display=swap' rel='stylesheet' />
-        </head>
-        <body>
+        <body className={`${ptSans.variable} ${raleway.variable}`}>
+          <I18nProvider language={lng}>
           <ErrorBoundary>{children}</ErrorBoundary>
+          </I18nProvider>
         </body>
       </html>
-    </I18nProvider>
   );
 }

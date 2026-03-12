@@ -72,7 +72,10 @@ export const useLocalQuery = (query: any, options?: any) => {
                     };
                     break;
                 case 'collection':
-                    const collectionResult = await firebaseService.getProducts({ ...queryVariables, limit: 100 });
+                    const collectionResult = await firebaseService.getProducts({
+                        ...queryVariables,
+                        limit: queryVariables?.limit || 24,
+                    });
                     result = {
                         collection: collectionResult.items
                     };

@@ -17,18 +17,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [userProfile, setUserProfile] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const getCachedProfile = (uid: string) => {
+        if (typeof window === "undefined") return null;
+        const raw = sessionStorage.getItem(`profile_${uid}`);
+        if (!raw) return null;
+        try {
+            return JSON.parse(raw);
+        } catch {
+            return null;
+        }
+    };
+
+    const setCachedProfile = (uid: string, profile: any) => {
+        if (typeof window === "undefined") return;
+        sessionStorage.setItem(`profile_${uid}`, JSON.stringify(profile || null));
+    };
+
     useEffect(() => {
         // Subscribe to auth state changes
-        const unsubscribe = authService.onAuthStateChange(async (user) => {
+        const unsubscribe = authService.onAuthStateChange((user) => {
             setCurrentUser(user);
             if (user) {
-                // Fetch additional profile info from Firestore
-                const profile = await firebaseService.getUserProfile(user.uid);
-                setUserProfile(profile);
+                const cachedProfile = getCachedProfile(user.uid);
+                if (cachedProfile) {
+                    setUserProfile(cachedProfile);
+                }
+
+                // Do not block initial render with profile fetch
+                setLoading(false);
+                firebaseService.getUserProfile(user.uid).then((profile) => {
+                    setUserProfile(profile);
+                    setCachedProfile(user.uid, profile);
+                }).catch(() => {
+                    // Keep UI responsive even if profile fetch fails
+                });
             } else {
                 setUserProfile(null);
+                setLoading(false);
             }
-            setLoading(false);
         });
 
         return () => unsubscribe();

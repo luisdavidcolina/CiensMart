@@ -25,6 +25,7 @@ export const firebaseService = {
     // Productos
     getProducts: async (filter: any) => {
         try {
+            filter = filter || {};
             console.log(`🔍 [Firestore Query] Input Filter:`, JSON.stringify(filter));
 
             let q = collection(db, COLLECTIONS.PRODUCTS);
@@ -44,7 +45,7 @@ export const firebaseService = {
             }
 
             // 5. Pagination
-            constraints.push(limit(filter.limit || 50));
+            constraints.push(limit(filter.limit || 24));
 
             let finalQuery = query(q, ...constraints);
             let querySnapshot;
@@ -58,7 +59,7 @@ export const firebaseService = {
                     console.warn("⚠️ [Firestore] 0 products found with strict filters. Falling back to broader search...");
                     const fallbackConstraints = [];
                     if (filter.source) fallbackConstraints.push(where("source", "==", filter.source));
-                    fallbackConstraints.push(limit(20));
+                    fallbackConstraints.push(limit(12));
 
                     const broadQuery = query(collection(db, COLLECTIONS.PRODUCTS), ...fallbackConstraints);
                     querySnapshot = await getDocs(broadQuery);
@@ -72,7 +73,7 @@ export const firebaseService = {
                 }
             } catch (queryError: any) {
                 console.warn("⚠️ [Firestore Query Failed] Probable missing index/complex filter. Fetching random batch.", queryError.message);
-                querySnapshot = await getDocs(query(q, limit(50)));
+                querySnapshot = await getDocs(query(q, limit(24)));
             }
 
             let items = querySnapshot.docs.map(doc => ({
