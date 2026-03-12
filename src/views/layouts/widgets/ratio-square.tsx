@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useRef, useState } from "react";
 import Slider from "react-slick";
 import { Col, Media, Modal, ModalBody, Nav, NavItem, NavLink, Row, TabContent, TabPane } from "reactstrap";
+import { getImagePath } from "@/utils/imagePath";
 
 var settings = {
   dots: false,
@@ -177,7 +178,7 @@ const RatioSquare: NextPage = () => {
                               <div className="media-banner-box">
                                 <div className="media">
                                   <Link href={`/product-details/${item.id}-${typeof item.title === "string" ? item.title.split(" ").join("") : ""}`}>
-                                    <img src={`/images/${item.images[0] ? item.images[0].src : "pro3/3.jpg"}`} width="80" height="80" className="img-fluid " alt="banner" />
+                                    <img src={getImagePath(item.images[0] ? item.images[0].src : "pro3/3.jpg")} width="80" height="80" className="img-fluid " alt="banner" />
                                   </Link>
                                   <div className="media-body">
                                     <div className="media-contant">
@@ -226,7 +227,7 @@ const RatioSquare: NextPage = () => {
                               </div>
                               <div className="media-banner-box">
                                 <div className="media">
-                                  <Media src={`/images/${item.images[1] ? item.images[1].src : "pro3/3.jpg"}`} width="80" height="80" className="img-fluid " alt="banner" />
+                                  <Media src={getImagePath(item.images[1] ? item.images[1].src : "pro3/3.jpg")} width="80" height="80" className="img-fluid " alt="banner" />
                                   <div className="media-body">
                                     <div className="media-contant">
                                       <div>
@@ -255,7 +256,7 @@ const RatioSquare: NextPage = () => {
                               </div>
                               <div className="media-banner-box">
                                 <div className="media">
-                                  <Media src={`/images/${item.images[2] ? item.images[2].src : "pro3/3.jpg"}`} width="80" height="80" className="img-fluid " alt="banner" />
+                                  <Media src={getImagePath(item.images[2] ? item.images[2].src : "pro3/3.jpg")} width="80" height="80" className="img-fluid " alt="banner" />
                                   <div className="media-body">
                                     <div className="media-contant">
                                       <div>
@@ -295,7 +296,7 @@ const RatioSquare: NextPage = () => {
                                         item.images.map((img: any, i: any) => {
                                           return (
                                             <div key={i}>
-                                              <Media src={`/images/${img.src}`} alt="" className="img-fluid  image_zoom_cls-0" />
+                                              <Media src={getImagePath(img.src)} alt="" className="img-fluid  image_zoom_cls-0" />
                                             </div>
                                           );
                                         })}

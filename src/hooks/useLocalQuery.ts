@@ -31,14 +31,30 @@ export const useLocalQuery = (query: any, options?: any) => {
     const [error, setError] = useState<any>(null);
 
     const fetchData = async (queryVariables: any) => {
-        setLoading(true);
+        const selection = query.selection || query.definitions[0].selectionSet.selections[0].name.value;
+        const cacheKey = `gql_cache_${selection}_${JSON.stringify(queryVariables)}`;
+
+        // 1. Check Cache First (for instant UI)
+        if (typeof window !== 'undefined') {
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    console.log(`📦 [useLocalQuery] Cache Hit for '${selection}'`);
+                    setData(parsed);
+                    setLoading(false); // Immediate data, no spinner
+                } catch (e) {
+                    console.warn("Failed to parse cache", e);
+                }
+            }
+        }
+
+        // 2. Fetch from Network
         try {
-            const selection = query.selection || query.definitions[0].selectionSet.selections[0].name.value;
             let result = null;
 
-            console.log(`📡 [useLocalQuery] Intercepted selection: '${selection}'`, {
-                variables: queryVariables,
-                query: query.selection || "dynamic"
+            console.log(`📡 [useLocalQuery] Intercepting network for: '${selection}'`, {
+                variables: queryVariables
             });
 
             // Fetch from Firestore via firebaseService
@@ -49,14 +65,13 @@ export const useLocalQuery = (query: any, options?: any) => {
                         products: productsResult
                     };
                     break;
-                case 'product': // Added case for single product
+                case 'product':
                     const singleProduct = await firebaseService.getProductById(queryVariables?.id);
                     result = {
                         product: singleProduct
                     };
                     break;
                 case 'collection':
-                    // Map collection to a query in Firebase (simplified as all products for now)
                     const collectionResult = await firebaseService.getProducts({ ...queryVariables, limit: 100 });
                     result = {
                         collection: collectionResult.items
@@ -79,11 +94,17 @@ export const useLocalQuery = (query: any, options?: any) => {
                     };
                     break;
                 default:
-                    console.warn(`useLocalQuery: Unknown query selection '${selection}'`);
+                    console.warn(`useLocalQuery: Unknown selection '${selection}'`);
                     break;
             }
 
-            setData(result);
+            if (result) {
+                setData(result);
+                // Update Cache
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(cacheKey, JSON.stringify(result));
+                }
+            }
         } catch (err) {
             console.error(err);
             setError(err);

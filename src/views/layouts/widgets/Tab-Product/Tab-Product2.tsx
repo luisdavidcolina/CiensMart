@@ -117,7 +117,7 @@ const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
 
   const { loading, data } = useLocalQuery(GET_PRODUCTS, {
     variables: {
-      type: type[0], // Fetch by the first type requested
+      type: Array.isArray(type) ? type[0] : type, // Fetch by use localized type safely
       source: "ciensmart", // Only fetch official products
       limit: 50, // Fetch more to allow for better client-side filtering
     },

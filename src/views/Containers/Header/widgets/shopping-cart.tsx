@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Media } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { CurrencyContext } from "../../../../helpers/currency/CurrencyContext";
+import { getImagePath } from "@/utils/imagePath";
 
 const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
   const [openSide, setOpenSide] = useState(false);
@@ -83,7 +84,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
                   <li key={`cart-popup-${index}`}>
                     <div className="media">
                       <a href="#">
-                        <Media alt="" className="me-3" src={`/images/${item.images[0].src}`} />
+                        <Media alt="" className="me-3" src={getImagePath(item.images[0].src)} />
                       </a>
                       <div className="media-body">
                         <a href="#">

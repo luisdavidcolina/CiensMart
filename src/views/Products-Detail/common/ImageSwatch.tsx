@@ -1,5 +1,6 @@
 import React from "react";
 import { Media } from "reactstrap";
+import { getImagePath } from "@/utils/imagePath";
 
 interface ImageSwatchProps {
   item: any;
@@ -18,7 +19,7 @@ const ImageSwatch: React.FC<ImageSwatchProps> = ({ item, changeColorVar }) => {
                 changeColorVar(i);
               }}>
               <a>
-                <Media className="img-fluid" src={`/images/${vari.src}`} />
+                <Media className="img-fluid" src={getImagePath(vari.src)} />
               </a>
             </li>
           );

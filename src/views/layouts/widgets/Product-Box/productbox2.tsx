@@ -79,7 +79,7 @@ const ProductBox2: React.FC<productType> = (data) => {
         <div className="product-box">
           <div className="product-imgbox">
             <div className="product-front" onClick={clickProductDetail}>
-              <Img src={getImagePath(data.images[0].src)} className="img-fluid" alt="product" />
+              <Img src={getImagePath(data.images?.[0]?.src || "")} className="img-fluid" alt="product" />
             </div>
             <div className="product-icon">
               <button onClick={() => data.addCart()}>

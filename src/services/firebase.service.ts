@@ -32,37 +32,46 @@ export const firebaseService = {
             // Normalize type - Firestore is case-sensitive
             const normalizedType = filter.type ? String(filter.type).toLowerCase() : null;
 
-            // 1. Category Filter (Skip if "ALL")
-            if (normalizedType && normalizedType !== "all") {
+            // 1. Category Filter - ONLY apply if specifically requested and NOT "all"
+            if (normalizedType && normalizedType !== "all" && normalizedType !== "undefined") {
                 constraints.push(where("type", "==", normalizedType));
             }
 
-            // 1.1 Source Filter (Only if explicitly requested)
-            if (filter.source) {
+            // 1.1 Source Filter - Only apply if it's a specific requirement
+            if (filter.source && filter.source !== "all") {
                 constraints.push(where("source", "==", filter.source));
             }
 
             // 5. Pagination
             constraints.push(limit(filter.limit || 50));
 
-            const finalQuery = query(q, ...constraints);
+            let finalQuery = query(q, ...constraints);
             let querySnapshot;
 
             try {
                 querySnapshot = await getDocs(finalQuery);
                 console.log(`📥 [Firestore Success] Found ${querySnapshot.size} products via DB query`);
 
-                // If 0 products found with filters, try a broader search
+                // EMERGENCY FALLBACK: If 0 products found with filters, just get the latest 20 products
                 if (querySnapshot.size === 0) {
-                    console.warn("⚠️ [Firestore] 0 products found with filters. Trying broad search (limit 20)...");
-                    const broadQuery = query(collection(db, COLLECTIONS.PRODUCTS), limit(20));
+                    console.warn("⚠️ [Firestore] 0 products found with strict filters. Falling back to broader search...");
+                    const fallbackConstraints = [];
+                    if (filter.source) fallbackConstraints.push(where("source", "==", filter.source));
+                    fallbackConstraints.push(limit(20));
+
+                    const broadQuery = query(collection(db, COLLECTIONS.PRODUCTS), ...fallbackConstraints);
                     querySnapshot = await getDocs(broadQuery);
-                    console.log(`📥 [Firestore Broad] Found ${querySnapshot.size} products as fallback`);
+
+                    // ULTIMATE FALLBACK: If still 0, get anything
+                    if (querySnapshot.size === 0) {
+                        console.error("🚨 [Firestore] Absolute zero results. Fetching anything available...");
+                        querySnapshot = await getDocs(query(collection(db, COLLECTIONS.PRODUCTS), limit(10)));
+                    }
+                    console.log(`📥 [Firestore Fallback] Found ${querySnapshot.size} products`);
                 }
             } catch (queryError: any) {
-                console.warn("⚠️ [Firestore Query Failed] Falling back to full scan (limit 50).", queryError.message);
-                const fallbackQuery = query(q, limit(50));
-                querySnapshot = await getDocs(fallbackQuery);
+                console.warn("⚠️ [Firestore Query Failed] Probable missing index/complex filter. Fetching random batch.", queryError.message);
+                querySnapshot = await getDocs(query(q, limit(50)));
             }
 
             let items = querySnapshot.docs.map(doc => ({
@@ -70,33 +79,20 @@ export const firebaseService = {
                 ...doc.data() as any
             }));
 
-            // In-memory filtering (Apply only if we have items)
-            if (items.length > 0) {
-                // If we did a broad search, we still try to filter in-memory if possible, 
-                // but we are more lenient.
-                if (normalizedType && normalizedType !== "all") {
-                    const filtered = items.filter(item => item.type?.toLowerCase() === normalizedType);
-                    // Only apply if it doesn't leave us with 0 items
-                    if (filtered.length > 0) items = filtered;
-                }
+            // In-memory filtering (Apply only if we have many items and want to refine)
+            if (items.length > 5 && normalizedType && normalizedType !== "all") {
+                const refined = items.filter(item => item.type?.toLowerCase() === normalizedType);
+                if (refined.length > 0) items = refined;
+            }
 
-                if (filter.priceMin !== undefined) {
-                    items = items.filter(item => item.price >= filter.priceMin);
-                }
-
-                if (filter.priceMax !== undefined) {
-                    items = items.filter(item => item.price <= filter.priceMax);
-                }
-
-                // Sorting in memory
-                if (filter.sortBy) {
-                    items.sort((a, b) => {
-                        if (filter.sortBy === "HIGH_TO_LOW") return b.price - a.price;
-                        if (filter.sortBy === "LOW_TO_HIGH") return a.price - b.price;
-                        if (filter.sortBy === "NEWEST") return b.id - a.id;
-                        return 0;
-                    });
-                }
+            // Sorting in memory (Saves us from Firestore index hell)
+            if (filter.sortBy) {
+                items.sort((a, b) => {
+                    if (filter.sortBy === "HIGH_TO_LOW") return (b.price || 0) - (a.price || 0);
+                    if (filter.sortBy === "LOW_TO_HIGH") return (a.price || 0) - (b.price || 0);
+                    if (filter.sortBy === "NEWEST") return (b.id || 0) - (a.id || 0);
+                    return 0;
+                });
             }
 
             // Slice for final pagination limit

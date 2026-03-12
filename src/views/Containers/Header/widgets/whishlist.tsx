@@ -5,6 +5,7 @@ import { WishlistContext } from "../../../../helpers/wishlist/wish.context";
 import { Media } from "reactstrap";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { getImagePath } from "@/utils/imagePath";
 
 const Wishlist: NextPage = () => {
   const [openWishlist, setOpenWishlist] = useState(false);
@@ -39,12 +40,12 @@ const Wishlist: NextPage = () => {
               <div className="cart_media">
                 <ul className="cart_product">
                   {wishlistItems &&
-                    wishlistItems.map((item:any, index:number) => {
+                    wishlistItems.map((item: any, index: number) => {
                       return (
                         <li key={index}>
                           <div className="media">
                             <a href="#">
-                              <Media alt="" className="me-3" src={`/images/${item.images[0].src}`} />
+                              <Media alt="" className="me-3" src={getImagePath(item.images[0].src)} />
                             </a>
                             <div className="media-body">
                               <a href="#">

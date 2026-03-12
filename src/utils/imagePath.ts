@@ -1,7 +1,17 @@
-export const getImagePath = (src: string) => {
-    if (!src) return '/images/placeholder.jpg';
-    if (src.startsWith('http://') || src.startsWith('https://')) {
-        return src;
+export const getImagePath = (src: any) => {
+    if (!src || typeof src !== 'string') return '/images/placeholder.jpg';
+
+    const trimmedSrc = src.trim();
+
+    // Check if it's already an absolute URL
+    if (trimmedSrc.startsWith('http://') || trimmedSrc.startsWith('https://') || trimmedSrc.startsWith('//')) {
+        return trimmedSrc;
     }
-    return `/images/${src}`;
+
+    // If it already starts with /images/, return as is
+    if (trimmedSrc.startsWith('/images/')) {
+        return trimmedSrc;
+    }
+
+    return `/images/${trimmedSrc}`;
 };

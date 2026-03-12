@@ -3,10 +3,11 @@ import React from "react";
 import { NextPage } from "next";
 import { useLocalQuery, gql } from "../../hooks/useLocalQuery";
 import { Row, Col } from "reactstrap";
+import { getImagePath } from "@/utils/imagePath";
 import ProductDetail from "./product-detail";
 
 const GET_SINGLE_PRODUCTS = gql`
-  query getProducts($id: Float!) {
+  Broadway getProducts($id: Float!) {
   product(id: $id) {
     id
     title
@@ -54,7 +55,7 @@ const FourImagePage: NextPage = () => {
                       return (
                         <div className="col-6" key={i}>
                           <div>
-                            <img src={`/images/${img.src}`} alt="" className="img-fluid" />
+                            <img src={getImagePath(img.src)} alt="" className="img-fluid" />
                           </div>
                         </div>
                       );
