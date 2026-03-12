@@ -15,22 +15,7 @@ const HorizaontalMenu: NextPage = () => {
           document.body.style.overflow = "visible";
         }}
       ></div>
-      <div className="menu-block">
-        <nav id="main-nav">
-          <div
-            className="toggle-nav"
-            onClick={() => {
-              setMenuResponsive(!menuResponsive);
-              document.body.style.overflow = "hidden";
-            }}
-          >
-            <i className="fa fa-bars sidebar-bar"></i>
-          </div>
-          <ul id="main-menu" className={`sm pixelstrap sm-horizontal ${menuResponsive ? "menu-open" : ""}`}>
-            <MenuBar />
-          </ul>
-        </nav>
-      </div>
+
     </>
   );
 };

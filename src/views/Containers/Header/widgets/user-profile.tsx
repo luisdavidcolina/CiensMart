@@ -59,15 +59,15 @@ const UserProfile: NextPage = () => {
               )}
               {currentUser && (
                 <div className="text-center mb-3">
-                  <h5>HOLA,</h5>
-                  <p>{currentUser.email}</p>
+                  <h4 style={{ fontSize: "20px", fontWeight: 700 }}>HOLA,</h4>
+                  <p style={{ fontSize: "18px" }}>{currentUser.email}</p>
                   <hr />
                   <div className="user-links text-left">
-                    <a href="/pages/account/dashboard" className="d-block mb-2 text-dark" onClick={() => setOpenAccount(false)}>
-                      <i className="fa fa-dashboard mr-2"></i> Mi Panel
+                    <a href="/pages/account/dashboard" className="d-block mb-3 text-dark" style={{ fontSize: "17px" }} onClick={() => setOpenAccount(false)}>
+                      <i className="fa fa-dashboard mr-2" style={{ fontSize: "19px" }}></i> Mi Panel
                     </a>
-                    <a href="/pages/account/order-history" className="d-block mb-2 text-dark" onClick={() => setOpenAccount(false)}>
-                      <i className="fa fa-history mr-2"></i> Mis Pedidos
+                    <a href="/pages/account/order-history" className="d-block mb-3 text-dark" style={{ fontSize: "17px" }} onClick={() => setOpenAccount(false)}>
+                      <i className="fa fa-history mr-2" style={{ fontSize: "19px" }}></i> Mis Pedidos
                     </a>
                   </div>
                 </div>
