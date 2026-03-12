@@ -24,7 +24,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
           }}
         >
           <a href="#">
-            <span className="cart-item">{cartItems.length}</span>
+            {cartItems.length > 0 && <span className="cart-item">{cartItems.length}</span>}
             <i className="icon-shopping-cart"></i>
           </a>
         </li>
@@ -41,6 +41,7 @@ const ShoppingCart = ({ position, cartDisplay, layout }: any) => {
             <ul>
               <li className="mobile-cart">
                 <a href="#">
+                  {cartItems.length > 0 && <span className="cart-item">{cartItems.length}</span>}
                   <i className="icon-shopping-cart "></i>
                 </a>
               </li>
