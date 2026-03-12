@@ -36,9 +36,22 @@ const UserProfile: NextPage = () => {
         <a href="#" aria-label={currentUser ? "Sesion iniciada" : "Sesion no iniciada"}>
           <i className="icon-user"></i>
           {currentUser && (
-            <span className="user-email-label" title={currentUser.email || "Sesion iniciada"}>
-              {currentUser.email}
-            </span>
+            <>
+              <span className="user-email-label d-none d-md-inline-block" title={currentUser.email || "Sesion iniciada"} style={{ marginLeft: "8px", fontSize: "12px" }}>
+                {currentUser.email}
+              </span>
+              <span
+                className="d-inline-block d-md-none"
+                title="Sesion iniciada"
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: "#28a745",
+                  marginLeft: "6px",
+                  verticalAlign: "middle",
+                }}></span>
+            </>
           )}
         </a>
       </li>
