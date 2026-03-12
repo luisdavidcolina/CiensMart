@@ -4,8 +4,10 @@ import { NextPage } from "next";
 import { CartContext } from "../../../helpers/cart/cart.context";
 import Breadcrumb from "../../../views/Containers/Breadcrumb";
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
+import { useTranslation } from "react-i18next";
 
 const CartPage: NextPage = () => {
+  const { t } = useTranslation("common");
   const { cartItems, updateQty, removeFromCart, cartTotal } = React.useContext(CartContext);
   const { selectedCurr } = React.useContext(CurrencyContext);
   const { symbol, value } = selectedCurr;
@@ -20,7 +22,7 @@ const CartPage: NextPage = () => {
   };
   return (
     <>
-      <Breadcrumb parent="home" title="cart" />
+      <Breadcrumb parent={t("account_breadcrumb_home")} title={t("cart_breadcrumb_title")} />
       <section className="cart-section section-big-py-space bg-light">
         <div className="custom-container">
           {cartItems && cartItems.length > 0 ? (
@@ -30,12 +32,12 @@ const CartPage: NextPage = () => {
                   <table className="table cart-table table-responsive-xs">
                     <thead>
                       <tr className="table-head">
-                        <th scope="col">image</th>
-                        <th scope="col">product name</th>
-                        <th scope="col">price</th>
-                        <th scope="col">quantity</th>
-                        <th scope="col">action</th>
-                        <th scope="col">total</th>
+                        <th scope="col">{t("cart_table_image")}</th>
+                        <th scope="col">{t("cart_table_product_name")}</th>
+                        <th scope="col">{t("cart_table_price")}</th>
+                        <th scope="col">{t("cart_table_quantity")}</th>
+                        <th scope="col">{t("cart_table_action")}</th>
+                        <th scope="col">{t("cart_table_total")}</th>
                       </tr>
                     </thead>
                     {cartItems.map((item:any, index:number) => (
@@ -117,7 +119,7 @@ const CartPage: NextPage = () => {
                   <table className="table cart-table table-responsive-md">
                     <tfoot>
                       <tr>
-                        <td>total price :</td>
+                        <td>{t("cart_total_price")}</td>
                         <td>
                           <h2>${cartTotal.toFixed(2)}</h2>
                         </td>
@@ -129,10 +131,10 @@ const CartPage: NextPage = () => {
               <div className="row cart-buttons">
                 <div className="col-12">
                   <a href="/" className="btn btn-normal">
-                    continue shopping
+                    {t("order_history_start_shopping")}
                   </a>
                   <a href="/pages/account/checkout" className="btn btn-normal ms-3">
-                    check out
+                    {t("cart_checkout")}
                   </a>
                 </div>
               </div>
@@ -143,9 +145,9 @@ const CartPage: NextPage = () => {
                 <div className="col-sm-12 empty-cart-cls text-center">
                   <img src={`static/images/icon-empty-cart.png`} className="img-fluid mb-4" alt="" />
                   <h3>
-                    <strong>Your Cart is Empty</strong>
+                    <strong>{t("cart_empty_title")}</strong>
                   </h3>
-                  <h4>Explore more shortlist some items.</h4>
+                  <h4>{t("cart_empty_subtitle")}</h4>
                 </div>
               </div>
             </div>

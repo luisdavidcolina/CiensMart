@@ -5,9 +5,11 @@ import Breadcrumb from "../../Containers/Breadcrumb";
 import { useAuth } from "@/helpers/auth/auth.context";
 import { orderService } from "@/services/order.service";
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
+import { useTranslation } from "react-i18next";
 
 const OrderHistoryPage: NextPage = () => {
     const { currentUser } = useAuth();
+    const { t } = useTranslation("common");
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -23,17 +25,17 @@ const OrderHistoryPage: NextPage = () => {
                 }
             } catch (err: any) {
                 console.error("Error loading orders:", err);
-                setError("Error al cargar el historial. Probablemente falte un índice en Firestore.");
+                setError(t("order_history_error_loading"));
             } finally {
                 setLoading(false);
             }
         };
         fetchOrders();
-    }, [currentUser]);
+    }, [currentUser, t]);
 
     return (
         <>
-            <Breadcrumb title="Mis Pedidos" parent="cuenta" />
+            <Breadcrumb title={t("order_history_breadcrumb_title")} parent={t("account_breadcrumb_account")} />
             <section className="section-big-py-space bg-light">
                 <Container>
                     <Row>
@@ -41,22 +43,22 @@ const OrderHistoryPage: NextPage = () => {
                             <div className="order-history-page">
                                 {loading ? (
                                     <div className="text-center">
-                                        <h3>Cargando historial...</h3>
+                                        <h3>{t("order_history_loading")}</h3>
                                     </div>
                                 ) : error ? (
                                     <div className="alert alert-warning text-center">
                                         <h4>{error}</h4>
-                                        <p>Por favor, asegúrate de haber creado el índice en la consola de Firebase usando el enlace que aparece en la consola del navegador.</p>
+                                        <p>{t("order_history_error_hint")}</p>
                                     </div>
                                 ) : orders.length > 0 ? (
                                     <Table hover responsive>
                                         <thead>
                                             <tr>
-                                                <th>Fecha</th>
-                                                <th>ID Pedido</th>
-                                                <th>Banco</th>
-                                                <th>Total</th>
-                                                <th>Estado Pago</th>
+                                                <th>{t("order_history_table_date")}</th>
+                                                <th>{t("order_history_table_id")}</th>
+                                                <th>{t("order_history_table_bank")}</th>
+                                                <th>{t("order_history_table_total")}</th>
+                                                <th>{t("order_history_table_payment_status")}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -64,11 +66,11 @@ const OrderHistoryPage: NextPage = () => {
                                                 <tr key={order.fireId}>
                                                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                                                     <td>{order.fireId}</td>
-                                                    <td>{order.paymentBank || "N/A"}</td>
+                                                    <td>{order.paymentBank || t("order_history_not_available")}</td>
                                                     <td>{symbol}{(order.total * value).toFixed(2)}</td>
                                                     <td>
                                                         <Badge color={order.paymentStatus === "Pagado" ? "success" : "warning"}>
-                                                            {order.paymentStatus}
+                                                            {order.paymentStatus || t("dashboard_pending")}
                                                         </Badge>
                                                     </td>
                                                 </tr>
@@ -77,8 +79,8 @@ const OrderHistoryPage: NextPage = () => {
                                     </Table>
                                 ) : (
                                     <div className="text-center">
-                                        <h3>Aún no tienes pedidos.</h3>
-                                        <a href="/" className="btn btn-normal mt-3">Empezar a comprar</a>
+                                        <h3>{t("order_history_empty")}</h3>
+                                        <a href="/" className="btn btn-normal mt-3">{t("order_history_start_shopping")}</a>
                                     </div>
                                 )}
                             </div>

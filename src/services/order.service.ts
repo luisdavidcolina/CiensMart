@@ -12,5 +12,9 @@ export const orderService = {
 
     getOrderById: async (id: any) => {
         return await firebaseService.getOrderById(id);
+    },
+
+    deleteOrder: async (id: string) => {
+        return await firebaseService.deleteOrder(id);
     }
 }

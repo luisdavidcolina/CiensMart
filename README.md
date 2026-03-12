@@ -79,7 +79,7 @@ Sigue estos pasos para configurar el proyecto localmente:
 
 La aplicación está integrada con la **Pasarela de Pagos Bancobsidiana**.
 
--   **Endpoint de la API**: `https://ecommerce-bancobsidiana-team5-production.up.railway.app/api/v1/transaction/process`
+-   **Endpoint de la API**: `https://bancobsidiana.up.railway.app/api/v1/transaction/process`
 -   **Método**: `POST`
 -   **ID de Comerciante**: `ciens-mart`
 

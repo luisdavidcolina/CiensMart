@@ -11,6 +11,7 @@ import { orderService } from "../../../services/order.service";
 import { paymentService } from "../../../services/payment.service";
 import { useAuth } from "@/helpers/auth/auth.context";
 import { userStorageService } from "@/services/user-storage.service";
+import { useTranslation } from "react-i18next";
 
 interface formType {
   firstName: string;
@@ -22,6 +23,7 @@ interface formType {
 }
 
 const CheckoutPage: NextPage = () => {
+  const { t } = useTranslation("common");
   const { currentUser, userProfile } = useAuth();
   const { cartItems, cartTotal, emptyCart } = React.useContext(CartContext);
   const { selectedCurr } = React.useContext(CurrencyContext);
@@ -89,7 +91,7 @@ const CheckoutPage: NextPage = () => {
     if (card.bankIdentifier) {
       setManualBank(card.bankIdentifier);
     }
-    toast.info(`Tarjeta terminada en ${card.last4} seleccionada`);
+    toast.info(t("checkout_saved_card_selected", { last4: card.last4 }));
   };
 
   const processOrder = async (data: formType, paymentStatus: string, transactionId?: string, bankName?: string) => {
@@ -120,7 +122,7 @@ const CheckoutPage: NextPage = () => {
       setPaymentError(null);
 
       if (!cardDetails.cardNumber || !cardDetails.expiry || !cardDetails.cvv) {
-        toast.error("Por favor ingrese los detalles de la tarjeta");
+        toast.error(t("checkout_card_details_required"));
         setLoading(false);
         return;
       }
@@ -133,7 +135,7 @@ const CheckoutPage: NextPage = () => {
       );
 
       if (response.success) {
-        toast.success("¡Pago Exitoso!");
+        toast.success(t("checkout_payment_success"));
 
         if (rememberCard && currentUser) {
           await userStorageService.saveCard(currentUser.uid, cardDetails, manualBank || response.bankName?.toLowerCase().replace(/\s/g, ""));
@@ -141,20 +143,20 @@ const CheckoutPage: NextPage = () => {
 
         await processOrder(data, "Pagado", response.data?.transaction_id, response.bankName);
       } else {
-        setPaymentError(response.error || "Pago fallido");
+        setPaymentError(response.error || t("checkout_payment_failed"));
         setLoading(false);
-        toast.error("Pago fallido. Puedes intentar de nuevo o pedir sin pagar.");
+        toast.error(t("checkout_payment_failed_hint"));
       }
     }
   };
 
   const handleBuyAnyway = handleSubmit((data: formType) => {
-    processOrder(data, "Payment Failed/Pending");
+    processOrder(data, t("checkout_payment_failed_pending"));
   });
 
   return (
     <>
-      <Breadcrumb title="Finalizar Pedido" parent="inicio" />
+      <Breadcrumb title={t("checkout_breadcrumb_title")} parent={t("account_breadcrumb_home")} />
       <section className="section-big-py-space bg-light">
         <div className="custom-container">
           <div className="checkout-page contact-page">
@@ -163,40 +165,40 @@ const CheckoutPage: NextPage = () => {
                 <Row>
                   <Col lg="6" sm="12" xs="12">
                     <div className="checkout-title">
-                      <h3>Detalles de Facturación</h3>
+                      <h3>{t("checkout_billing_details")}</h3>
                     </div>
                     <div className="theme-form">
                       <Row className="check-out ">
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label>Nombre</Label>
+                          <Label>{t("account_first_name_label")}</Label>
                           <input type="text" {...register("firstName", { required: true })} name="firstName" className={`${errors.firstName ? "error_border" : ""}`} />
-                          <span className="error-message">{errors.firstName && "El nombre es obligatorio"}</span>
+                          <span className="error-message">{errors.firstName && t("checkout_first_name_required")}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label>Apellido</Label>
+                          <Label>{t("account_last_name_label")}</Label>
                           <input type="text" className={`${errors.lastName ? "error_border" : ""}`} {...register("lastName", { required: true })} />
-                          <span className="error-message">{errors.lastName && "El apellido es obligatorio"}</span>
+                          <span className="error-message">{errors.lastName && t("checkout_last_name_required")}</span>
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label className="field-label">Teléfono</Label>
+                          <Label className="field-label">{t("checkout_phone")}</Label>
                           <input type="text" className={`${errors.phone ? "error_border" : ""}`} {...register("phone", { pattern: /\d+/ })} />
                         </FormGroup>
                         <FormGroup className="col-md-6 col-sm-6 col-xs-12">
-                          <Label className="field-label">Correo Electrónico</Label>
+                          <Label className="field-label">{t("account_email_label")}</Label>
                           <input type="text" className={`${errors.email ? "error_border" : ""}`} {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
                         </FormGroup>
                         <FormGroup className="col-md-12 col-sm-12 col-xs-12">
-                          <Label className="field-label">Dirección</Label>
-                          <input type="text" placeholder="Dirección de calle" className={`${errors.address ? "error_border" : ""}`} {...register("address", { required: true })} />
+                          <Label className="field-label">{t("checkout_address")}</Label>
+                          <input type="text" placeholder={t("checkout_street_address")} className={`${errors.address ? "error_border" : ""}`} {...register("address", { required: true })} />
                         </FormGroup>
                         <FormGroup className="col-md-12 col-sm-12 col-xs-12">
-                          <Label className="field-label">Ciudad</Label>
+                          <Label className="field-label">{t("checkout_city")}</Label>
                           <input type="text" className={`${errors.city ? "error_border" : ""}`} {...register("city", { required: true })} />
                         </FormGroup>
                         {!currentUser && (
                           <FormGroup className="col-lg-12">
                             <Input type="checkbox" id="account-option" /> &ensp;
-                            <Label htmlFor="account-option">¿Crear una cuenta?</Label>
+                            <Label htmlFor="account-option">{t("checkout_create_account")}</Label>
                           </FormGroup>
                         )}
                       </Row>
@@ -208,7 +210,7 @@ const CheckoutPage: NextPage = () => {
                       {cartItems && cartItems.length > 0 && (
                         <div className="order-box">
                           <div className="title-box">
-                            <div>Producto <span>Total</span></div>
+                            <div>{t("checkout_product")} <span>{t("checkout_total")}</span></div>
                           </div>
                           <ul className="qty">
                             {cartItems.map((item: any, index: number) => (
@@ -216,10 +218,10 @@ const CheckoutPage: NextPage = () => {
                             ))}
                           </ul>
                           <ul className="sub-total">
-                            <li>Subtotal <span className="count">{symbol}{(cartTotal * value).toFixed(2)}</span></li>
+                            <li>{t("checkout_subtotal")} <span className="count">{symbol}{(cartTotal * value).toFixed(2)}</span></li>
                           </ul>
                           <ul className="total">
-                            <li>Total <span className="count">{symbol}{(cartTotal * value).toFixed(2)}</span></li>
+                            <li>{t("checkout_total")} <span className="count">{symbol}{(cartTotal * value).toFixed(2)}</span></li>
                           </ul>
                         </div>
                       )}
@@ -227,12 +229,12 @@ const CheckoutPage: NextPage = () => {
                       <div className="payment-box">
                         <div className="upper-box">
                           <div className="payment-options">
-                            <h4 className="mb-3">Pago con Tarjeta de Crédito</h4>
+                            <h4 className="mb-3">{t("checkout_credit_card_payment")}</h4>
 
                             {/* Saved Cards Selection */}
                             {savedCards.length > 0 && (
                               <div className="saved-cards-section mb-4">
-                                <Label className="font-weight-bold">Tarjetas Guardadas:</Label>
+                                <Label className="font-weight-bold">{t("checkout_saved_cards")}</Label>
                                 <Row className="g-2">
                                   {savedCards.map((card) => (
                                     <Col md="6" key={card.id}>
@@ -256,21 +258,21 @@ const CheckoutPage: NextPage = () => {
 
                             <Row>
                               <Col md="12" className="mb-3">
-                                <Label>Seleccionar Banco (Opcional)</Label>
+                                <Label>{t("checkout_select_bank_optional")}</Label>
                                 <Input type="select" name="manualBank" value={manualBank} onChange={(e) => setManualBank(e.target.value)}>
-                                  <option value="">Detección Automática (por BIN)</option>
+                                  <option value="">{t("checkout_bank_auto_detect")}</option>
                                   <option value="cienspay">Ciens Pay</option>
                                   <option value="bancobsidiana">Bancobsidiana</option>
                                   <option value="creditbank">CreditBank</option>
                                 </Input>
-                                <small className="text-muted">Si no seleccionas ninguno, detectaremos tu banco automáticamente.</small>
+                                <small className="text-muted">{t("checkout_bank_auto_detect_hint")}</small>
                               </Col>
                               <Col md="12" className="mb-3">
-                                <Label>Número de Tarjeta</Label>
+                                <Label>{t("checkout_card_number")}</Label>
                                 <Input type="text" name="cardNumber" value={cardDetails.cardNumber} onChange={handleCardChange} placeholder="0000 0000 0000 0000" />
                               </Col>
                               <Col md="6" className="mb-3">
-                                <Label>Vencimiento (MM/AA)</Label>
+                                <Label>{t("checkout_expiry")}</Label>
                                 <Input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardChange} placeholder="MM/YY" />
                               </Col>
                               <Col md="6" className="mb-3">
@@ -283,7 +285,7 @@ const CheckoutPage: NextPage = () => {
                                   <FormGroup check>
                                     <Label check>
                                       <Input type="checkbox" checked={rememberCard} onChange={(e) => setRememberCard(e.target.checked)} />
-                                      Recordar esta tarjeta para futuras compras
+                                      {t("checkout_remember_card")}
                                     </Label>
                                   </FormGroup>
                                 </Col>
@@ -296,17 +298,17 @@ const CheckoutPage: NextPage = () => {
                           <div className="alert alert-danger mt-3">
                             <p>{paymentError}</p>
                             <Button type="button" color="warning" className="mt-2 text-white" onClick={handleBuyAnyway}>
-                              Comprar de todos modos (Pagar después)
+                              {t("checkout_buy_anyway")}
                             </Button>
                           </div>
                         )}
 
                         <div className="text-right mt-4">
                           {cartTotal === 0 ? (
-                            <div className="alert alert-warning">Tu carrito está vacío</div>
+                            <div className="alert alert-warning">{t("checkout_cart_empty")}</div>
                           ) : (
                             <Button type="submit" className="btn-normal btn" disabled={loading}>
-                              {loading ? <Spinner size="sm" /> : "Realizar Pedido y Pagar"}
+                              {loading ? <Spinner size="sm" /> : t("checkout_place_order_pay")}
                             </Button>
                           )}
                         </div>

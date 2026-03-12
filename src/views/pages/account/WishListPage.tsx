@@ -7,8 +7,10 @@ import { Row, Col, Table } from "reactstrap";
 import Link from "next/link";
 import Breadcrumb from "../../Containers/Breadcrumb";
 import { CurrencyContext } from "@/helpers/currency/CurrencyContext";
+import { useTranslation } from "react-i18next";
 
 const WishListPage: NextPage = () => {
+  const { t } = useTranslation("common");
   const { wishlistItems, removeFromWish } = React.useContext(WishlistContext);
   const { addToCart } = React.useContext(CartContext);
   const { selectedCurr } = React.useContext(CurrencyContext);
@@ -20,7 +22,7 @@ const WishListPage: NextPage = () => {
   };
   return (
     <>
-      <Breadcrumb parent="home" title="wishlist" />
+      <Breadcrumb parent={t("account_breadcrumb_home")} title={t("wishlist_breadcrumb_title")} />
       <section className="wishlist-section section-big-py-space bg-light">
         <div className="custom-container">
           {wishlistItems && wishlistItems.length > 0 ? (
@@ -30,11 +32,11 @@ const WishListPage: NextPage = () => {
                   <Table className="table cart-table table-responsive-xs">
                     <thead>
                       <tr className="table-head">
-                        <th scope="col">image</th>
-                        <th scope="col">product name</th>
-                        <th scope="col">price</th>
-                        <th scope="col">availability</th>
-                        <th scope="col">action</th>
+                        <th scope="col">{t("cart_table_image")}</th>
+                        <th scope="col">{t("cart_table_product_name")}</th>
+                        <th scope="col">{t("cart_table_price")}</th>
+                        <th scope="col">{t("wishlist_table_availability")}</th>
+                        <th scope="col">{t("cart_table_action")}</th>
                       </tr>
                     </thead>
                     {wishlistItems.map((item:any, index:number) => (
@@ -59,7 +61,7 @@ const WishListPage: NextPage = () => {
                             </a>
                             <Row className="mobile-cart-content row">
                               <Col xs="3" className="col-xs-3 col-3">
-                                <p>in stock</p>
+                                <p>{t("wishlist_in_stock")}</p>
                               </Col>
                               <Col xs="3" className="col-xs-3 col-3">
                                 <h2 className="td-color">
@@ -96,7 +98,7 @@ const WishListPage: NextPage = () => {
                             </h2>
                           </td>
                           <td>
-                            <p>in stock</p>
+                            <p>{t("wishlist_in_stock")}</p>
                           </td>
                           <td>
                             <a
@@ -127,10 +129,10 @@ const WishListPage: NextPage = () => {
               <Row className="wishlist-buttons">
                 <Col xs="12">
                   <Link className="btn btn-normal" href="/collections/leftsidebar">
-                    continue shopping
+                    {t("order_history_start_shopping")}
                   </Link>
                   <Link className="btn btn-normal" href="/pages/account/checkout">
-                    check out
+                    {t("cart_checkout")}
                   </Link>
                 </Col>
               </Row>
@@ -141,9 +143,9 @@ const WishListPage: NextPage = () => {
                 <Col sm="12" className="empty-cart-cls text-center">
                   <img src="/images/empty-wishlist.png" className="img-fluid mb-4" alt="" />
                   <h3>
-                    <strong>Your wishlist is Empty</strong>
+                    <strong>{t("wishlist_empty_title")}</strong>
                   </h3>
-                  <h4>Explore more shortlist some items.</h4>
+                  <h4>{t("cart_empty_subtitle")}</h4>
                 </Col>
               </div>
             </Col>

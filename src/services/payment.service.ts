@@ -6,7 +6,7 @@ export interface PaymentResponse {
 }
 
 const BANK_ENDPOINTS = {
-    OBSIDIANA: process.env.NEXT_PUBLIC_PAYMENT_URL_OBSIDIANA || "https://ecommerce-bancobsidiana-team5-production.up.railway.app/api/v1/transaction/process",
+    OBSIDIANA: process.env.NEXT_PUBLIC_PAYMENT_URL_OBSIDIANA || "https://bancobsidiana.up.railway.app/api/v1/transaction/process",
     CREDITBANK: process.env.NEXT_PUBLIC_PAYMENT_URL_CREDITBANK || "https://core-banking-service-6pup.onrender.com/payments/card",
     CIENSPAY: process.env.NEXT_PUBLIC_PAYMENT_URL_CIENSPAY || "http://3.144.142.161/api/transactions/simulate/"
 };

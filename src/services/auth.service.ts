@@ -4,6 +4,7 @@ import {
     createUserWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    deleteUser,
     User
 } from "firebase/auth";
 import { toast } from "react-toastify";
@@ -66,6 +67,34 @@ export const authService = {
 
     onAuthStateChange: (callback: (user: User | null) => void) => {
         return onAuthStateChanged(auth, callback);
+    },
+
+    deleteCurrentAccount: async () => {
+        const user = auth.currentUser;
+
+        if (!user) {
+            throw new Error("No hay sesión activa para eliminar la cuenta.");
+        }
+
+        try {
+            if (user.email) {
+                await firebaseService.deleteOrdersByEmail(user.email);
+            }
+
+            await firebaseService.deleteUserProfileByUid(user.uid);
+            await deleteUser(user);
+            toast.success("Tu cuenta fue eliminada.");
+        } catch (error: any) {
+            console.error("Error eliminando cuenta:", error);
+
+            if (error?.code === "auth/requires-recent-login") {
+                toast.error("Por seguridad, vuelve a iniciar sesión y luego intenta eliminar tu cuenta.");
+            } else {
+                toast.error("No se pudo eliminar la cuenta.");
+            }
+
+            throw error;
+        }
     },
 
     getCurrentUser: () => {

@@ -5,6 +5,7 @@ import {
     getDoc,
     doc,
     addDoc,
+    deleteDoc,
     query,
     where,
     orderBy,
@@ -174,6 +175,10 @@ export const firebaseService = {
         });
     },
 
+    deleteOrder: async (id: string) => {
+        await deleteDoc(doc(db, COLLECTIONS.ORDERS, id));
+    },
+
     // Perfiles de Usuario
     saveUserProfile: async (uid: string, profileData: any) => {
         try {
@@ -195,5 +200,17 @@ export const firebaseService = {
             return { fireId: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
         }
         return null;
+    },
+
+    deleteUserProfileByUid: async (uid: string) => {
+        const q = query(collection(db, COLLECTIONS.USERS), where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+        await Promise.all(querySnapshot.docs.map((profileDoc) => deleteDoc(profileDoc.ref)));
+    },
+
+    deleteOrdersByEmail: async (email: string) => {
+        const q = query(collection(db, COLLECTIONS.ORDERS), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        await Promise.all(querySnapshot.docs.map((orderDoc) => deleteDoc(orderDoc.ref)));
     }
 };

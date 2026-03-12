@@ -5,9 +5,11 @@ import { authService } from "../../../services/auth.service";
 import { toast } from "react-toastify";
 import { Col, Input, Label, Row } from "reactstrap";
 import Breadcrumb from "../../Containers/Breadcrumb";
+import { useTranslation } from "react-i18next";
 
 const Login: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation("common");
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test@123");
 
@@ -24,32 +26,32 @@ const Login: NextPage = () => {
 
   return (
     <>
-      <Breadcrumb title="iniciar sesión" parent="inicio" />
+      <Breadcrumb title={t("account_login_breadcrumb_title")} parent={t("account_breadcrumb_home")} />
       <section className="login-page section-big-py-space bg-light">
         <div className="custom-container">
           <Row className="row">
             <Col xl="4" lg="6" md="8" className="offset-xl-4 offset-lg-3 offset-md-2">
               <div className="theme-card">
-                <h3 className="text-center">Iniciar Sesión</h3>
+                <h3 className="text-center">{t("account_login_title")}</h3>
                 <form className="theme-form">
                   <div className="form-group">
-                    <Label htmlFor="email">Correo Electrónico</Label>
-                    <Input type="text" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="Correo Electrónico" required />
+                    <Label htmlFor="email">{t("account_email_label")}</Label>
+                    <Input type="text" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder={t("account_email_placeholder")} required />
                   </div>
                   <div className="form-group">
-                    <Label htmlFor="review">Contraseña</Label>
-                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" placeholder="Introduce tu contraseña" required />
+                    <Label htmlFor="review">{t("account_password_label")}</Label>
+                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" placeholder={t("account_password_placeholder")} required />
                   </div>
                   <a href="#" className="btn btn-normal" onClick={() => loginAuth(email, password)}>
-                    Iniciar Sesión
+                    {t("account_login_action")}
                   </a>
                   <a className="float-end txt-default mt-2" href="/pages/account/forget-password" id="fgpwd">
-                    ¿Olvidaste tu contraseña?
+                    {t("account_forgot_password")}
                   </a>
                 </form>
-                <p className="mt-3">Regístrate para obtener una cuenta gratuita en nuestra tienda. El registro es rápido y fácil. Te permite realizar pedidos en nuestra tienda. Para comenzar a comprar, haz clic en registrarse.</p>
+                <p className="mt-3">{t("account_login_register_hint")}</p>
                 <a href="/pages/account/register" className="txt-default pt-3 d-block">
-                  Crear una Cuenta
+                  {t("account_create_account")}
                 </a>
               </div>
             </Col>
