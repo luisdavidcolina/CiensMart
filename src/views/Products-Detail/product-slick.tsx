@@ -13,17 +13,21 @@ interface ProductSlickProps {
 const ProductSlick: React.FC<ProductSlickProps> = ({ item, bundle, swatch }) => {
   const [nav1, setNav1] = useState<Slider | null>();
   const [nav2, setNav2] = useState<Slider | null>();
+  const images = Array.isArray(item?.images) ? item.images : [];
+  const hasMultipleImages = images.length > 1;
 
   let setting = {
     slidesToShow: 1,
     slidesToScroll: 1,
+    infinite: hasMultipleImages,
     arrows: false,
-    fade: true,
+    fade: hasMultipleImages,
   };
   let setting1 = {
     slidesToScroll: 1,
-    slidesToShow: 3,
-    dots: true,
+    slidesToShow: Math.min(3, Math.max(images.length, 1)),
+    dots: hasMultipleImages,
+    infinite: hasMultipleImages,
     centerMode: false,
     focusOnSelect: true,
   };
@@ -34,8 +38,8 @@ const ProductSlick: React.FC<ProductSlickProps> = ({ item, bundle, swatch }) => 
     <>
       <Col lg="5">
         <Slider {...setting} className="product-slick" asNavFor={nav2!} ref={(slider1) => setNav1(slider1)}>
-          {item &&
-            item.images.map((img: any, i: any) => {
+          {images.length > 0 &&
+            images.map((img: any, i: any) => {
               return (
                 <div key={i}>
                   <Media src={getImagePath(img.src)} alt="" className="img-fluid  image_zoom_cls-0" />
@@ -45,9 +49,9 @@ const ProductSlick: React.FC<ProductSlickProps> = ({ item, bundle, swatch }) => 
         </Slider>
         <Row>
           <Col>
-            <Slider {...setting1} className="slider-nav" asNavFor={nav1!} ref={(slider2) => setNav2(slider2)} slidesToShow={item.images.length >= 3 ? 3 : item.images.length} >
-              {item &&
-                item.images.map((img: any, i: any) => {
+            <Slider {...setting1} className="slider-nav" asNavFor={nav1!} ref={(slider2) => setNav2(slider2)}>
+              {images.length > 0 &&
+                images.map((img: any, i: any) => {
                   return (
                     <div key={i}>
                       <Media src={getImagePath(img.src)} alt="" className="img-fluid  image_zoom_cls-0" />
