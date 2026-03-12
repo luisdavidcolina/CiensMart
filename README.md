@@ -89,7 +89,7 @@ Usa los siguientes detalles de tarjeta de prueba para simular una transacción e
 
 | Campo | Valor |
 | :--- | :--- |
-| **Número de Tarjeta** | `0572818983980488` |
+| **Número de Tarjeta** | `0593818983980488` |
 | **Fecha de Expiración** | `05/27` |
 | **CVV** | `881` |
 | **Monto** | (Calculado automáticamente) |

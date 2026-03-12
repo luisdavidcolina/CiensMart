@@ -42,7 +42,7 @@ const ByCategory: NextPage<byCategory> = ({ category }) => {
                 }}
               >
                 <a>
-                  <i className="fa fa-angle-left"></i>Back
+                  <i className="fa fa-angle-left"></i>{t("dashboard_back")}
                 </a>
               </li>
               <li>

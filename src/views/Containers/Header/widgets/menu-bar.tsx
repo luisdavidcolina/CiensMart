@@ -34,7 +34,7 @@ const MenuBar1: NextPage<MenuBarState> = ({ menuData = data }) => {
               document.body.style.overflow = "visible";
             }}
           >
-            Back<i className="fa fa-angle-right ps-2" aria-hidden="true"></i>
+            {t("dashboard_back")}<i className="fa fa-angle-right ps-2" aria-hidden="true"></i>
           </div>
         </li>
       )}

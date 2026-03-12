@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import { NextPage } from "next";
 import MenuBar from "../Header/widgets/menu-bar";
 import { MenuContext } from "../../../helpers/menu/MenuContext";
+import { useTranslation } from "react-i18next";
 
 const VerticalMenu: NextPage = () => {
+  const { t } = useTranslation("common");
   const menuContext = useContext(MenuContext);
   const { menuResponsive, setMenuResponsive } = menuContext;
 
@@ -24,7 +26,7 @@ const VerticalMenu: NextPage = () => {
                 setMenuResponsive(false);
                 document.body.style.overflow = "visible";
               }}>
-              Back<i className="fa fa-angle-right ps-2" aria-hidden="true"></i>
+              {t("dashboard_back")}<i className="fa fa-angle-right ps-2" aria-hidden="true"></i>
             </div>
           </li>
           <MenuBar />

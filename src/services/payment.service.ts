@@ -30,7 +30,7 @@ export const paymentService = {
         // 2. Fallback: Routing based on BIN
         if (bin === "4651") {
             return await this.payWithCiensPay(cardDetails.cardNumber, cardDetails, amount, description);
-        } else if (bin === "0572" || bin === "0506") {
+        } else if (bin === "0593" || bin === "0506") {
             return await this.payWithObsidiana(cardDetails.cardNumber, cardDetails, amount, description);
         } else if (bin === "5297") {
             return await this.payWithCreditBank(cardDetails.cardNumber, cardDetails, amount, description);
