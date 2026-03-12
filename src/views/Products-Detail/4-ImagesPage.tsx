@@ -1,4 +1,3 @@
-```
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { NextPage } from "next";
@@ -55,7 +54,7 @@ const FourImagePage: NextPage = () => {
                       return (
                         <div className="col-6" key={i}>
                           <div>
-                            <img src={`/ images / ${ img.src } `} alt="" className="img-fluid" />
+                            <img src={`/images/${img.src}`} alt="" className="img-fluid" />
                           </div>
                         </div>
                       );
