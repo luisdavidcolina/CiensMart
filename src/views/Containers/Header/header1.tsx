@@ -1,4 +1,5 @@
 import React, { Fragment, useContext, useEffect } from "react";
+import Link from "next/link";
 import { Container, Row, Col, Media } from "reactstrap";
 import TopBar from "./widgets/TopBar";
 import Search from "./widgets/search";
@@ -55,9 +56,9 @@ const Header: NextPage<header> = ({ cartPopupPosition, display, category, layout
                     </span>
                   </div>
                   <div className="logo-block">
-                    <a href="/#">
+                    <Link href="/">
                       <Media src={`/images/${layoutLogo}/logo/logo.png`} className="img-fluid" alt="logo" />
-                    </a>
+                    </Link>
                   </div>
                   <Search />
                   <ShoppingCart position={cartPopupPosition} cartDisplay={display} layout="layout2" />

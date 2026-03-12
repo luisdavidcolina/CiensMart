@@ -1,6 +1,7 @@
 import { MenuContext } from "@/helpers/menu/MenuContext";
 import { NextPage } from "next";
 import { Fragment, useContext } from "react";
+import Link from "next/link";
 import { Col, Container, Media, Row } from "reactstrap";
 import HorizaontalMenu from "../Menu/horizontal";
 import TopBar from "./widgets/TopBar";
@@ -48,9 +49,9 @@ const Header: NextPage<header> = ({ cartPopupPosition, display, category, catego
                       </span>
                     </div>
                     <div className="brand-logo">
-                      <a href="#">
+                      <Link href="/">
                         <Media src={`/images/${layoutLogo}/logo/logo.png`} className="img-fluid" alt="logo-header" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="menu-right">

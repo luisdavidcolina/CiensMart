@@ -1,4 +1,5 @@
 import React, { Fragment, useContext } from "react";
+import Link from "next/link";
 import { Row, Col, Media } from "reactstrap";
 import TopBar from "./widgets/TopBar";
 import UserProfile from "./widgets/user-profile";
@@ -44,9 +45,9 @@ const Header: React.FC<HeaderProps> = ({ cartPopupPosition, display, category })
                     </div>
                     <ByCategory category={category} />
                     <div className="logo-block">
-                      <a className="#">
+                      <Link href="/">
                         <Media src="/images/layout-3/logo/logo.png" className="img-fluid  " alt="logo" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="menu-right">
