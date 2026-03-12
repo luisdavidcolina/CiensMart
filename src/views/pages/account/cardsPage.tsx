@@ -298,7 +298,7 @@ const CardsPage: NextPage = () => {
               <Card>
                 <CardBody>
                   <h3 className="mb-3">Tarjetas registradas</h3>
-                  <small className="text-muted d-block mb-2">Fuente: users/{currentUser.uid}/cards</small>
+     
                   {cards.length === 0 ? (
                     <p className="mb-0">Aun no tienes tarjetas guardadas.</p>
                   ) : (
