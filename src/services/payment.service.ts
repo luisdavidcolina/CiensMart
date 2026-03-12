@@ -8,7 +8,8 @@ export interface PaymentResponse {
 const BANK_ENDPOINTS = {
     OBSIDIANA: process.env.NEXT_PUBLIC_PAYMENT_URL_OBSIDIANA || "https://bancobsidiana.up.railway.app/api/v1/transaction/process",
     CREDITBANK: process.env.NEXT_PUBLIC_PAYMENT_URL_CREDITBANK || "https://core-banking-service-6pup.onrender.com/payments/card",
-    CIENSPAY: process.env.NEXT_PUBLIC_PAYMENT_URL_CIENSPAY || "http://3.144.142.161/api/transactions/simulate/"
+    // Use same-origin proxy to avoid browser CORS restrictions in production.
+    CIENSPAY: "/api/payments/cienspay"
 };
 
 export const paymentService = {
