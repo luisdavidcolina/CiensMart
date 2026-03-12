@@ -2,27 +2,46 @@ import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { FilterContext } from "./filter.context";
 
+const CATEGORY_MAP: { [key: string]: string } = {
+  "MODA": "fashion",
+  "FASHION": "fashion",
+  "ELECTRÓNICA": "electronics",
+  "ELECTRONICA": "electronics",
+  "ELECTRONICS": "electronics",
+  "MUEBLES": "furniture",
+  "FURNITURE": "furniture",
+  "COMESTIBLES": "grocery",
+  "GROCERY": "grocery"
+};
+
 export const FilterProvider = (props: any) => {
   const searchParams = useSearchParams();
   const brand: any = searchParams.get("brand");
   const color: any = searchParams.get("color");
   const pricemin: any = searchParams.get("pricemin");
   const pricemax: any = searchParams.get("pricemax");
-  const category: any = searchParams.get("category");
+  const categoryParam: any = searchParams.get("category");
+
+  const getNormalizedCategory = (cat: string | null) => {
+    if (!cat) return "fashion";
+    const upper = cat.toUpperCase();
+    return CATEGORY_MAP[upper] || cat.toLowerCase();
+  };
+
   const param: [] = brand ? brand.split(",") : [];
   const [filterOpen, setFilterOpen] = useState(false);
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<String>(category || "FASHION");
+  const [selectedCategory, setSelectedCategory] = useState<String>(getNormalizedCategory(categoryParam));
   const [selectedBrands, setSelectedBrands] = useState<String[]>(param || []);
   const [selectedColor, setSelectedColor] = useState<String>(color || "");
   const [selectedPrice, setSelectedPrice] = useState({ min: parseInt(pricemin) || 0, max: parseInt(pricemax) || 500 });
   const [sidebarpopup, setSidebarpopup] = useState(false);
 
   useEffect(() => {
-    if (category) {
-      setSelectedCategory(category.toUpperCase());
+    if (categoryParam) {
+      setSelectedCategory(getNormalizedCategory(categoryParam));
     }
-  }, [category]);
+  }, [categoryParam]);
   const handleBrands = (brand: String) => {
     var index = selectedBrands.indexOf(brand);
     if (index > -1) {

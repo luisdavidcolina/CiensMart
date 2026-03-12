@@ -36,7 +36,10 @@ export const useLocalQuery = (query: any, options?: any) => {
             const selection = query.selection || query.definitions[0].selectionSet.selections[0].name.value;
             let result = null;
 
-            console.log(`📡 [useLocalQuery] intercepted: ${selection}`, queryVariables);
+            console.log(`📡 [useLocalQuery] Intercepted selection: '${selection}'`, {
+                variables: queryVariables,
+                query: query.selection || "dynamic"
+            });
 
             // Fetch from Firestore via firebaseService
             switch (selection) {

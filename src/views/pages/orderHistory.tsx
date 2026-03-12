@@ -12,10 +12,14 @@ const OrderHistoryPage: NextPage = () => {
   const { symbol, value } = selectedCurr;
 
   useEffect(() => {
-    const user = authService.getCurrentUser();
-    const userId = user ? user.uid : 'guest';
-    const history = orderService.getOrderHistory(userId);
-    setOrders(history.reverse()); // Show newest first
+    const fetchOrders = async () => {
+      const user = authService.getCurrentUser();
+      if (user) {
+        const history = await orderService.getOrderHistory(user.email || user.uid);
+        setOrders(history); // Already sorted in service
+      }
+    };
+    fetchOrders();
   }, []);
 
   return (

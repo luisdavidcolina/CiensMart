@@ -24,84 +24,94 @@ export const firebaseService = {
     // Productos
     getProducts: async (filter: any) => {
         try {
+            console.log(`🔍 [Firestore Query] Input Filter:`, JSON.stringify(filter));
+
             let q = collection(db, COLLECTIONS.PRODUCTS);
             let constraints: any[] = [];
 
+            // Normalize type - Firestore is case-sensitive
+            const normalizedType = filter.type ? String(filter.type).toLowerCase() : null;
+
             // 1. Category Filter (Skip if "ALL")
-            if (filter.type && filter.type.toUpperCase() !== "ALL") {
-                constraints.push(where("type", "==", filter.type.toLowerCase()));
+            if (normalizedType && normalizedType !== "all") {
+                constraints.push(where("type", "==", normalizedType));
             }
 
-            // 1.1 Source Filter (to hide "fake" template products)
+            // 1.1 Source Filter (Only if explicitly requested)
             if (filter.source) {
                 constraints.push(where("source", "==", filter.source));
             }
 
-            // 2. Brand Filter
-            if (filter.brand && filter.brand.length > 0) {
-                constraints.push(where("brand", "in", filter.brand));
-            }
-
-            // 3. Price Filter (Simplified to avoid index issues with orderBy)
-            if (filter.priceMin !== undefined && filter.priceMax !== undefined && (filter.priceMin > 0 || filter.priceMax < 500)) {
-                constraints.push(where("price", ">=", filter.priceMin));
-                constraints.push(where("price", "<=", filter.priceMax));
-            }
-
-            // 4. Sorting & Index Safety
-            // Note: Cloud Firestore requires composite indexes for combining equality + inequality + sorting.
-            // If the user hasn't created them, it will throw an error with a link.
-            if (filter.sortBy) {
-                switch (filter.sortBy) {
-                    case "HIGH_TO_LOW":
-                        constraints.push(orderBy("price", "desc"));
-                        break;
-                    case "LOW_TO_HIGH":
-                        constraints.push(orderBy("price", "asc"));
-                        break;
-                    case "NEWEST":
-                        constraints.push(orderBy("id", "desc"));
-                        break;
-                    default:
-                        // Sorting by ID is safe but might still need an index if combined with 'type'
-                        constraints.push(orderBy("id", "asc"));
-                }
-            }
-
             // 5. Pagination
-            constraints.push(limit(filter.limit || 12));
+            constraints.push(limit(filter.limit || 50));
 
-            console.log(`🔍 [Firestore Query] Type: ${filter.type}, Source: ${filter.source}, Limit: ${filter.limit}`);
             const finalQuery = query(q, ...constraints);
-            const querySnapshot = await getDocs(finalQuery);
+            let querySnapshot;
 
-            console.log(`📥 [Firestore Result] Found ${querySnapshot.size} products`);
-            const items = querySnapshot.docs.map(doc => {
-                const d = doc.data();
-                if (d.title.includes("Wheel") || d.title.includes("diamond")) {
-                    console.warn("⚠️ [DANGER] Found template product in Firestore result:", d.title);
+            try {
+                querySnapshot = await getDocs(finalQuery);
+                console.log(`📥 [Firestore Success] Found ${querySnapshot.size} products via DB query`);
+
+                // If 0 products found with filters, try a broader search
+                if (querySnapshot.size === 0) {
+                    console.warn("⚠️ [Firestore] 0 products found with filters. Trying broad search (limit 20)...");
+                    const broadQuery = query(collection(db, COLLECTIONS.PRODUCTS), limit(20));
+                    querySnapshot = await getDocs(broadQuery);
+                    console.log(`📥 [Firestore Broad] Found ${querySnapshot.size} products as fallback`);
                 }
-                return {
-                    fireId: doc.id,
-                    ...d
-                };
-            });
+            } catch (queryError: any) {
+                console.warn("⚠️ [Firestore Query Failed] Falling back to full scan (limit 50).", queryError.message);
+                const fallbackQuery = query(q, limit(50));
+                querySnapshot = await getDocs(fallbackQuery);
+            }
+
+            let items = querySnapshot.docs.map(doc => ({
+                fireId: doc.id,
+                ...doc.data() as any
+            }));
+
+            // In-memory filtering (Apply only if we have items)
+            if (items.length > 0) {
+                // If we did a broad search, we still try to filter in-memory if possible, 
+                // but we are more lenient.
+                if (normalizedType && normalizedType !== "all") {
+                    const filtered = items.filter(item => item.type?.toLowerCase() === normalizedType);
+                    // Only apply if it doesn't leave us with 0 items
+                    if (filtered.length > 0) items = filtered;
+                }
+
+                if (filter.priceMin !== undefined) {
+                    items = items.filter(item => item.price >= filter.priceMin);
+                }
+
+                if (filter.priceMax !== undefined) {
+                    items = items.filter(item => item.price <= filter.priceMax);
+                }
+
+                // Sorting in memory
+                if (filter.sortBy) {
+                    items.sort((a, b) => {
+                        if (filter.sortBy === "HIGH_TO_LOW") return b.price - a.price;
+                        if (filter.sortBy === "LOW_TO_HIGH") return a.price - b.price;
+                        if (filter.sortBy === "NEWEST") return b.id - a.id;
+                        return 0;
+                    });
+                }
+            }
+
+            // Slice for final pagination limit
+            const finalItems = items.slice(0, filter.limit || 12);
 
             return {
                 total: items.length,
-                hasMore: items.length === (filter.limit || 12),
-                items,
+                hasMore: items.length > finalItems.length,
+                items: finalItems,
             };
         } catch (error: any) {
-            console.error("🔥 Firestore Query Error:", error.message);
-            if (error.message.includes("index")) {
-                console.error("👉 Click the link above to create the required Firestore index!");
-            }
-            // Return empty set instead of crashing
+            console.error("🔥 Firestore Service Fatal Error:", error.message);
             return { total: 0, hasMore: false, items: [] };
         }
     },
-
     getProductById: async (id: string | number) => {
         // Si el ID es numérico (viniendo de los datos locales antiguos)
         // Buscamos por el campo 'id'
