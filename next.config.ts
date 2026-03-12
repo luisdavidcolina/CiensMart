@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60 * 60 * 24 * 7,
+  },
   env: {
     //If you wan to run your local api folder then need to comment this below line
     API_URL: "https://bigdeal-api-git-main-pixelstrapthemes.vercel.app/",
@@ -14,12 +20,25 @@ const nextConfig: NextConfig = {
       use: {
         loader: "url-loader",
         options: {
-          limit: 100000,
+          limit: 8192,
         },
       },
     });
 
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
+    ];
   },
 };
 

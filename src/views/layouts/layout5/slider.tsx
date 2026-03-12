@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import { NextPage } from "next";
 import Slider from "react-slick";
 import { Row, Col } from "reactstrap";
 import Link from "next/link";
+import Image from "next/image";
 
 var settings = {
   autoplay: false,
@@ -21,6 +21,7 @@ interface slider {
 
 interface sliderProps {
   banner: slider;
+  priority?: boolean;
 }
 
 const banners = [
@@ -50,7 +51,7 @@ const banners = [
   },
 ];
 
-const BannerList: React.FC<sliderProps> = ({ banner }) => {
+const BannerList: React.FC<sliderProps> = ({ banner, priority = false }) => {
   const [elemOne, setElemOne] = useState({});
 
   const onMouseHover = (e:any) => {
@@ -66,7 +67,15 @@ const BannerList: React.FC<sliderProps> = ({ banner }) => {
       <div className="slider-img">
         <ul className="layout5-slide-1">
           <li style={elemOne} id="img-1">
-            <img src={banner.img1} className="img-fluid" alt="slider" />
+            <Image
+              src={banner.img1}
+              className="img-fluid"
+              alt="slider"
+              width={1200}
+              height={900}
+              priority={priority}
+              sizes="(max-width: 768px) 100vw, 70vw"
+            />
           </li>
         </ul>
       </div>
@@ -101,7 +110,7 @@ const SliderBanner: NextPage = () => {
               <div className="slide-1 no-arrow">
                 <Slider {...settings}>
                   {banners.map((banner, i) => (
-                    <BannerList banner={banner} key={i} />
+                    <BannerList banner={banner} key={i} priority={i === 0} />
                   ))}
                 </Slider>
               </div>

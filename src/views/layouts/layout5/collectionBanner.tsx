@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { NextPage } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 const Collectionbanner = [
   { img: "/images/layout-5/collection-banner/1.jpg", title: "Laptop", subtitle: "Trending", btn: "Shop now", category: "ELECTRONICS" },
@@ -19,7 +19,15 @@ const CollectionBanner: NextPage = () => {
               <div className="col-md-4" key={i}>
                 <div className="collection-banner-main p-right banner-9">
                   <div className="collection-img">
-                    <img src={data.img} className="img-fluid bg-img  " alt="banner" />
+                    <Image
+                      src={data.img}
+                      className="img-fluid bg-img"
+                      alt="banner"
+                      width={900}
+                      height={650}
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                   </div>
                   <div className="collection-banner-contain">
                     <div>
