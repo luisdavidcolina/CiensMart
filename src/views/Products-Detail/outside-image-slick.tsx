@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useContext, useState } from "react";
+import Link from "next/link";
 import { Col, Row, Input, Modal, ModalHeader, ModalBody } from "reactstrap";
 import Slider from "react-slick";
 import { CartContext } from "@/helpers/cart/cart.context";
@@ -166,9 +167,14 @@ const OutsideImageSlick: React.FC<OutsideImageSlickProps> = ({ item }) => {
                       }}>
                       agregar al carrito
                     </a>
-                    <a href="/pages/account/checkout" className="btn btn-normal">
+                    <Link
+                      href="/pages/account/checkout"
+                      className="btn btn-normal"
+                      onClick={() => {
+                        addToCart(item);
+                      }}>
                       buy now
-                    </a>
+                    </Link>
                   </div>
                   <div className="border-product">
                     <h6 className="product-title">product details</h6>

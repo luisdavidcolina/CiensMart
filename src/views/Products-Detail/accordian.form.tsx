@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useContext, useState } from "react";
+import Link from "next/link";
 import { Input } from "reactstrap";
 import CountDownComponent from "../layouts/widgets/CountDownComponent";
 import { CartContext } from "@/helpers/cart/cart.context";
@@ -94,9 +95,14 @@ const AccordianForm: React.FC<ProductRightProps> = ({ item, changeColorVar }) =>
           <a href="#" data-toggle="modal" data-target="#addtocart" className="btn btn-normal" onClick={() => addToCart(item)}>
             agregar al carrito
           </a>{" "}
-          <a href="/pages/account/checkout" className="btn btn-normal">
+          <Link
+            href="/pages/account/checkout"
+            className="btn btn-normal"
+            onClick={() => {
+              addToCart(item);
+            }}>
             buy now
-          </a>
+          </Link>
         </div>
       </div>
     </>

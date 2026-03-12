@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useContext, useState } from "react";
+import Link from "next/link";
 import { Modal, ModalHeader, ModalBody, Input } from "reactstrap";
 import ImageGroup from "./common/ImageGroup";
 import CountDownComponent from "@/views/layouts/widgets/CountDownComponent";
@@ -165,9 +166,14 @@ const ProductDetail: React.FC<ProductRightProps> = ({ item, changeColorVar, bund
           }}>
           agregar al carrito
         </a>
-        <a href="/pages/account/checkout" className="btn btn-normal">
+        <Link
+          href="/pages/account/checkout"
+          className="btn btn-normal"
+          onClick={() => {
+            addToCart(item);
+          }}>
           comprar ahora
-        </a>
+        </Link>
       </div>
       <div className="border-product">
         <h6 className="product-title">detalles del producto</h6>
