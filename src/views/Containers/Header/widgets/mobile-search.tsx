@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import { Button, Col, Container, Form, FormGroup, Input, Row } from "reactstrap";
 import { NextPage } from "next";
+import { useRouter } from "next/navigation";
 
 const MobileSearch: NextPage = () => {
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = React.useState("");
+
   useEffect(() => {
     document.getElementById("search-overlay")!.style.display = "none";
   });
@@ -13,6 +17,15 @@ const MobileSearch: NextPage = () => {
   const openSearch = () => {
     document.getElementById("search-overlay")!.style.display = "flex";
   };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const trimmed = searchTerm.trim();
+    const query = trimmed ? `?q=${encodeURIComponent(trimmed)}` : "";
+    closeSearch();
+    router.push(`/pages/search${query}`);
+  };
+
   return (
     <>
       <li className="onhover-div mobile-search">
@@ -27,9 +40,16 @@ const MobileSearch: NextPage = () => {
             <Container>
               <Row>
                 <Col xl="12">
-                  <Form>
+                  <Form onSubmit={handleSubmit}>
                     <FormGroup>
-                      <Input type="text" className="form-control" id="exampleInputPassword1" placeholder="Search a Product" />
+                      <Input
+                        type="text"
+                        className="form-control"
+                        id="mobileSearchInput"
+                        placeholder="Search a Product"
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                      />
                     </FormGroup>
                     <Button type="submit" className="btn btn-primary">
                       <i className="fa fa-search"></i>
