@@ -38,12 +38,12 @@ const Search: NextPage = () => {
             <Input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} />
             <ButtonDropdown isOpen={dropdownOpen} toggle={toggleDropDown}>
               <DropdownToggle key={"search-menu-toggle"} caret>
-                {t("All Category")}
+                Todas las categorias
               </DropdownToggle>
               <DropdownMenu key={"search-menu"}>
-                <DropdownItem>All Category</DropdownItem>
-                <DropdownItem>indurstrial</DropdownItem>
-                <DropdownItem>sports</DropdownItem>
+                <DropdownItem>Todas las categorias</DropdownItem>
+                <DropdownItem>Industrial</DropdownItem>
+                <DropdownItem>Deportes</DropdownItem>
               </DropdownMenu>
             </ButtonDropdown>
           </InputGroup>

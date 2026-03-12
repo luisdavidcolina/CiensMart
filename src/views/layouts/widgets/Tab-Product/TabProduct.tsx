@@ -101,6 +101,12 @@ type TabProductProps = {
   effect?: any;
 };
 
+const collectionTranslations: Record<string, string> = {
+  "new products": "NUEVOS PRODUCTOS",
+  "featured products": "PRODUCTOS DESTACADOS",
+  "on sale": "EN OFERTA",
+};
+
 const TabProduct: NextPage<TabProductProps> = ({ effect }) => {
   const { addToWish } = React.useContext(WishlistContext);
   const { addToCart } = React.useContext(CartContext);
@@ -136,7 +142,7 @@ const TabProduct: NextPage<TabProductProps> = ({ effect }) => {
               {collection.map((c, i) => (
                 <NavItem key={i}>
                   <NavLink className={activeTab === c ? "active" : ""} onClick={() => setActiveTab(c)}>
-                    {c}
+                    {collectionTranslations[String(c).toLowerCase()] || c}
                   </NavLink>
                 </NavItem>
               ))}

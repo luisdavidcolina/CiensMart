@@ -56,7 +56,7 @@ const MobileSetting: React.FC = () => {
         ></a>
         <div className="cart-inner">
           <div className="cart_top">
-            <h3>my setting</h3>
+            <h3>mi configuracion</h3>
             <div className="close-cart">
               <a
                 href="#"
@@ -71,7 +71,7 @@ const MobileSetting: React.FC = () => {
           </div>
           <div className="setting-block">
             <div>
-              <h5>language</h5>
+              <h5>idioma</h5>
               <ul>
                 {dataa.map((lang: any, i) => (
                   <li key={i}>

@@ -28,7 +28,7 @@ export const CartProvider = (props: any) => {
 
   // Add Product To Cart
   const addToCart = (item: any) => {
-    toast.success("Product Added to Cart Successfully !");
+    toast.success("Producto agregado al carrito correctamente");
     const index = cartItems.findIndex((itm) => itm.id === item.id);
 
     if (index !== -1) {
@@ -51,25 +51,25 @@ export const CartProvider = (props: any) => {
         cartItems[index] = { ...product, ...item, qty: quantity, total: item.price * quantity };
 
         setCartItems([...cartItems]);
-        toast.info("Product Quantity Updated !");
+        toast.info("Cantidad de producto actualizada");
       } else {
         const product = { ...item, qty: quantity, total: item.price * quantity };
         setCartItems([...cartItems, product]);
-        toast.success("Product Added Updated !");
+        toast.success("Producto agregado y actualizado");
       }
     } else {
-      toast.error("Enter Valid Quantity !");
+      toast.error("Ingresa una cantidad valida");
     }
   };
 
   // Remove Product From Cart
   const removeFromCart = (item: { id: number; }) => {
-    toast.error("Product Removed from Cart Successfully !");
+    toast.error("Producto eliminado del carrito");
     setCartItems(cartItems.filter((e) => e.id !== item.id));
   };
 
   const emptyCart = () => {
-    toast.error("Cart is empty");
+    toast.error("El carrito esta vacio");
     setCartItems([]);
   };
 

@@ -45,17 +45,17 @@ export const WishlistProvider = (props: any) => {
   const addToWish = (item: product) => {
     const index = wishlistItems.findIndex((wish) => wish.id === item.id);
     if (index === -1) {
-      toast.success("Product Added to Wishlist Successfully !");
+      toast.success("Producto agregado a favoritos");
       setWishlistItems([...wishlistItems, item]);
     } else {
-      toast.error("This Product Already Added !");
+      toast.error("Este producto ya esta en favoritos");
     }
   };
 
   // Remove Product From Wishlist
   const removeFromWish = (item: { id: number; }) => {
     setWishlistItems(wishlistItems.filter((e) => e.id !== item.id));
-    toast.error("Product Removed from Wishlist Successfully !");
+    toast.error("Producto eliminado de favoritos");
   };
 
   return (

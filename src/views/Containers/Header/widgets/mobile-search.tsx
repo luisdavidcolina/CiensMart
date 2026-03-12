@@ -39,7 +39,7 @@ const MobileSearch: NextPage = () => {
       {isOpen && (
         <div id="search-overlay" className="search-overlay">
           <div>
-            <span className="close-mobile-search" onClick={closeSearch} title="Close Overlay">
+            <span className="close-mobile-search" onClick={closeSearch} title="Cerrar busqueda">
               ×
             </span>
             <div className="overlay-content">
@@ -52,7 +52,7 @@ const MobileSearch: NextPage = () => {
                           type="text"
                           className="form-control"
                           id="mobileSearchInput"
-                          placeholder="Search a Product"
+                          placeholder="Buscar un producto"
                           value={searchTerm}
                           onChange={(event) => setSearchTerm(event.target.value)}
                           autoFocus

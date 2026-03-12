@@ -125,7 +125,6 @@ const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
 
   const allProd = data?.products?.items || [];
 
-  // Dynamic filtering based on active tab
   const prod = allProd.filter((item: any) => {
     if (activeTab === "NEW PRODUCTS") return item.new === true;
     if (activeTab === "FEATURED PRODUCTS") return item.featured === true;
@@ -145,7 +144,7 @@ const TabProduct2: NextPage<tabProduct2Props> = ({ type }) => {
               {["NEW PRODUCTS", "FEATURED PRODUCTS", "ON SALE"].map((c, i) => (
                 <NavItem key={i}>
                   <NavLink className={activeTab === c ? "active" : ""} onClick={() => setActiveTab(c)}>
-                    {c}
+                    {collectionTranslations[c] || c}
                   </NavLink>
                 </NavItem>
               ))}
