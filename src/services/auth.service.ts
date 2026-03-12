@@ -10,6 +10,9 @@ import {
 import { toast } from "react-toastify";
 import { firebaseService } from "./firebase.service";
 
+const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL || "test@gmail.com";
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD || "test@123";
+
 export const authService = {
     register: async (userData: any) => {
         try {
@@ -53,6 +56,17 @@ export const authService = {
             toast.error(message);
             throw error;
         }
+    },
+
+    loginDemo: async () => {
+        return authService.login(DEMO_EMAIL, DEMO_PASSWORD);
+    },
+
+    getDemoCredentials: () => {
+        return {
+            email: DEMO_EMAIL,
+            password: DEMO_PASSWORD,
+        };
     },
 
     logout: async () => {

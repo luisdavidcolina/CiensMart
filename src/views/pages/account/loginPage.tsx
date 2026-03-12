@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authService } from "../../../services/auth.service";
-import { toast } from "react-toastify";
 import { Col, Input, Label, Row } from "reactstrap";
 import Breadcrumb from "../../Containers/Breadcrumb";
 import { useTranslation } from "react-i18next";
@@ -24,6 +23,11 @@ const Login: NextPage = () => {
     }
   };
 
+  const loginDemo = async () => {
+    const { email: demoEmail, password: demoPassword } = authService.getDemoCredentials();
+    await loginAuth(demoEmail, demoPassword);
+  };
+
   return (
     <>
       <Breadcrumb title={t("account_login_breadcrumb_title")} parent={t("account_breadcrumb_home")} />
@@ -42,8 +46,17 @@ const Login: NextPage = () => {
                     <Label htmlFor="review">{t("account_password_label")}</Label>
                     <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" placeholder={t("account_password_placeholder")} required />
                   </div>
-                  <a href="#" className="btn btn-normal" onClick={() => loginAuth(email, password)}>
+                  <a href="#" className="btn btn-normal" onClick={(e) => {
+                    e.preventDefault();
+                    loginAuth(email, password);
+                  }}>
                     {t("account_login_action")}
+                  </a>
+                  <a href="#" className="btn btn-outline-secondary mt-2 ms-2" onClick={(e) => {
+                    e.preventDefault();
+                    loginDemo();
+                  }}>
+                    Iniciar sesion con cuenta demo
                   </a>
                   <a className="float-end txt-default mt-2" href="/pages/account/forget-password" id="fgpwd">
                     {t("account_forgot_password")}

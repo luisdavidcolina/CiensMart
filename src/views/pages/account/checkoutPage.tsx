@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NextPage } from "next";
+import Link from "next/link";
 import { Input, Label, Form, Row, Col, FormGroup, Button, Spinner, Card, CardBody } from "reactstrap";
 import { CartContext } from "../../../helpers/cart/cart.context";
 import Breadcrumb from "../../../views/Containers/Breadcrumb";
@@ -11,6 +12,7 @@ import { orderService } from "../../../services/order.service";
 import { paymentService } from "../../../services/payment.service";
 import { useAuth } from "@/helpers/auth/auth.context";
 import { userStorageService } from "@/services/user-storage.service";
+import { authService } from "@/services/auth.service";
 import { useTranslation } from "react-i18next";
 
 interface formType {
@@ -33,6 +35,7 @@ const CheckoutPage: NextPage = () => {
   const [savedCards, setSavedCards] = useState<any[]>([]);
   const [rememberCard, setRememberCard] = useState(false);
   const [manualBank, setManualBank] = useState(""); // manual bank selection
+  const [demoLoginLoading, setDemoLoginLoading] = useState(false);
 
   // Payment Form State
   const [cardDetails, setCardDetails] = useState({
@@ -153,6 +156,44 @@ const CheckoutPage: NextPage = () => {
   const handleBuyAnyway = handleSubmit((data: formType) => {
     processOrder(data, t("checkout_payment_failed_pending"));
   });
+
+  const handleDemoLogin = async () => {
+    try {
+      setDemoLoginLoading(true);
+      await authService.loginDemo();
+      router.push("/pages/account/checkout");
+    } catch (error) {
+      // Toast is handled in auth service
+    } finally {
+      setDemoLoginLoading(false);
+    }
+  };
+
+  if (!currentUser) {
+    return (
+      <>
+        <Breadcrumb title={t("checkout_breadcrumb_title")} parent={t("account_breadcrumb_home")} />
+        <section className="section-big-py-space bg-light">
+          <div className="custom-container">
+            <div className="alert alert-warning mb-4">
+              Debes iniciar sesion o registrarte para poder pagar.
+            </div>
+            <div className="d-flex flex-wrap gap-2">
+              <Link href="/pages/account/login" className="btn btn-normal me-2">
+                Iniciar sesion
+              </Link>
+              <Link href="/pages/account/register" className="btn btn-outline-primary me-2">
+                Registrarme
+              </Link>
+              <Button type="button" color="secondary" onClick={handleDemoLogin} disabled={demoLoginLoading}>
+                {demoLoginLoading ? <Spinner size="sm" /> : "Iniciar sesion con cuenta demo"}
+              </Button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   return (
     <>

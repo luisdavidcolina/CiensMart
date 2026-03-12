@@ -25,6 +25,11 @@ const UserProfile: NextPage = () => {
     }
   };
 
+  const loginDemo = async () => {
+    const { email: demoEmail, password: demoPassword } = authService.getDemoCredentials();
+    await loginAuth(demoEmail, demoPassword);
+  };
+
   return (
     <>
       <li className="mobile-user onhover-dropdown" onClick={() => setOpenAccount(!openAccount)}>
@@ -74,7 +79,10 @@ const UserProfile: NextPage = () => {
               )}
               <FormGroup>
                 {!currentUser ? (
-                  <a href="#" className="btn btn-rounded btn-block" onClick={() => loginAuth(email, password)}>
+                  <a href="#" className="btn btn-rounded btn-block" onClick={(e) => {
+                    e.preventDefault();
+                    loginAuth(email, password);
+                  }}>
                     Ingresar
                   </a>
                 ) : (
@@ -83,6 +91,16 @@ const UserProfile: NextPage = () => {
                   </a>
                 )}
               </FormGroup>
+              {!currentUser && (
+                <FormGroup>
+                  <a href="#" className="btn btn-outline-secondary btn-block" onClick={(e) => {
+                    e.preventDefault();
+                    loginDemo();
+                  }}>
+                    Iniciar sesion con cuenta demo
+                  </a>
+                </FormGroup>
+              )}
               {!currentUser && (
                 <FormGroup>
                   <h5 className="forget-class">

@@ -35,6 +35,17 @@ const RegisterPage: NextPage = () => {
     }
   };
 
+  const handleDemoLogin = async () => {
+    try {
+      const user = await authService.loginDemo();
+      if (user) {
+        router.push(`/`);
+      }
+    } catch (error) {
+      // Error is handled with toast in service
+    }
+  };
+
   return (
     <>
       <Breadcrumb title={t("account_register_breadcrumb_title")} parent={t("account_breadcrumb_home")} />
@@ -68,6 +79,9 @@ const RegisterPage: NextPage = () => {
                     <FormGroup className="col-md-12">
                       <button type="submit" className="btn btn-normal">
                         {t("account_register_action")}
+                      </button>
+                      <button type="button" className="btn btn-outline-secondary ms-2" onClick={handleDemoLogin}>
+                        Iniciar sesion con cuenta demo
                       </button>
                     </FormGroup>
                   </div>
