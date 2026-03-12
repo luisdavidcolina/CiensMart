@@ -3,7 +3,7 @@ import Breadcrumb from "@/views/Containers/Breadcrumb";
 import ImageOutsidePage from "@/views/Products-Detail/ImageOutsidePage";
 import RelatedProducts from "@/views/Products-Detail/related products";
 import TabProduct from "@/views/Products-Detail/tab-product";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import { NextPage } from "next";
 
 const ImageOutside: NextPage = () => {

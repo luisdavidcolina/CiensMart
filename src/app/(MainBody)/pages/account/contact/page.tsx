@@ -1,5 +1,5 @@
 "use client";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import ContactPage from "@/views/pages/account/contactPage";
 import { NextPage } from "next";
 

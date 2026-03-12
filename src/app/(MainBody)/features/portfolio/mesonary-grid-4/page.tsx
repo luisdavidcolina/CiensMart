@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import MasonryGrid from "@/views/Features/Masonry";
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 

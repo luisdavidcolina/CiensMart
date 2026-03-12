@@ -1,7 +1,7 @@
 "use client"
 import { NextPage } from "next";
 import { Row } from "reactstrap";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import CollectionPopup from "@/views/Collections/Collections-popup";
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 

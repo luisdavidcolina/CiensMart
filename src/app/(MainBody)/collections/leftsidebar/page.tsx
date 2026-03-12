@@ -1,6 +1,6 @@
 "use client"
 import { NextPage } from "next";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 import LeftSidebarCollection from "@/views/Collections/LeftSidebar";
 

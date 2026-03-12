@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import { NextPage } from "next";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import LoginPage from "@/views/pages/account/loginPage";
 
 const Login: NextPage = () => {

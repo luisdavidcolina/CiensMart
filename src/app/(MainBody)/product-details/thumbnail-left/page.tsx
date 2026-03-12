@@ -2,7 +2,7 @@
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 import RelatedProducts from "@/views/Products-Detail/related products";
 import ThumbnailLeftPage from "@/views/Products-Detail/thumbnailLeftPage";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import { NextPage } from "next";
 
 const ThumbnailLeft: NextPage = () => {

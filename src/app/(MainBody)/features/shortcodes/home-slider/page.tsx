@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import HomeSliderPage from "@/views/Features/HomeSliderPage";
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 

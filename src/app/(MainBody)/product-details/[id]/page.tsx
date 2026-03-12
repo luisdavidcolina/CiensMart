@@ -2,7 +2,7 @@
 import Breadcrumb from "@/views/Containers/Breadcrumb";
 import LeftSidebarPage from "@/views/Products-Detail/leftSidebarPage";
 import RelatedProducts from "@/views/Products-Detail/related products";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import { NextPage } from "next";
 import { usePathname } from "next/navigation";
 

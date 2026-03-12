@@ -4,7 +4,7 @@ import { Row } from "reactstrap";
 import { NextPage } from "next";
 import { useLocalQuery, gql } from "@/hooks/useLocalQuery";
 import Breadcrumb from "@/views/Containers/Breadcrumb";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import RelatedProducts from "@/views/Products-Detail/related products";
 import ThumbnailRightSlick from "@/views/Products-Detail/thumbnail-right-slick";
 

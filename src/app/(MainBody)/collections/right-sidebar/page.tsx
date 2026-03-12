@@ -2,7 +2,7 @@
 "use client";
 import { NextPage } from "next";
 import { Row, Col } from "reactstrap";
-import Layout1 from "@/views/layouts/layout1";
+import Layout1 from "@/views/layouts/layout5";
 import Sidebar from "@/views/Collections/Sidebar";
 import NewProduct from "@/views/Collections/NewProduct";
 import Collection from "@/views/Collections/Collection";
