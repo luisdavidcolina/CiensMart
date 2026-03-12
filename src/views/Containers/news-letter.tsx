@@ -23,12 +23,10 @@ const NewsLatter: NextPage = () => {
                   Suscríbete a nuestra lista de correos <br /> ¡y recibe una oferta especial solo para ti!
                 </p>
                 <Form
-                  action="https://pixelstrap.us19.list-manage.com/subscribe/post?u=5a128856334b598b395f1fc9b&amp;id=082f74cbda"
                   className="auth-form needs-validation"
-                  method="post"
                   id="mc-embedded-subscribe-form"
                   name="mc-embedded-subscribe-form"
-                  target="_blank"
+                  onSubmit={(e) => e.preventDefault()}
                 >
                   <div className="form-group mx-sm-3">
                     <Input
@@ -39,8 +37,8 @@ const NewsLatter: NextPage = () => {
                       placeholder="Ingresa tu correo electrónico"
                       required
                     />
-                    <Button className="btn btn-theme btn-normal btn-sm " id="mc-submit">
-                      suscribirse
+                    <Button type="button" disabled className="btn btn-theme btn-normal btn-sm " id="mc-submit">
+                      suscripción desactivada
                     </Button>
                   </div>
                 </Form>
