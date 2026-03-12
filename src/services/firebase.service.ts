@@ -5,6 +5,7 @@ import {
     getDoc,
     doc,
     addDoc,
+    setDoc,
     deleteDoc,
     query,
     where,
@@ -183,11 +184,12 @@ export const firebaseService = {
     // Perfiles de Usuario
     saveUserProfile: async (uid: string, profileData: any) => {
         try {
-            await addDoc(collection(db, COLLECTIONS.USERS), {
+            const userRef = doc(db, COLLECTIONS.USERS, uid);
+            await setDoc(userRef, {
                 uid,
                 ...profileData,
                 updatedAt: new Date().toISOString()
-            });
+            }, { merge: true });
         } catch (e) {
             console.error("Error saving user profile: ", e);
             throw e;
@@ -195,10 +197,19 @@ export const firebaseService = {
     },
 
     getUserProfile: async (uid: string) => {
+        const directRef = doc(db, COLLECTIONS.USERS, uid);
+        const directSnap = await getDoc(directRef);
+        if (directSnap.exists()) {
+            return { fireId: directSnap.id, ...directSnap.data() };
+        }
+
         const q = query(collection(db, COLLECTIONS.USERS), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
-            return { fireId: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+            const legacy = { fireId: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+            // Migracion silenciosa al documento users/{uid}
+            await setDoc(directRef, { ...legacy, uid, updatedAt: new Date().toISOString() }, { merge: true });
+            return { ...legacy, fireId: uid };
         }
         return null;
     },

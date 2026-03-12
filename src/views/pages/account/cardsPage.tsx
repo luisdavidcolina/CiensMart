@@ -5,6 +5,8 @@ import { useAuth } from "@/helpers/auth/auth.context";
 import { userStorageService } from "@/services/user-storage.service";
 import { toast } from "react-toastify";
 import { Button, Card, CardBody, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { db } from "@/config/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 type SavedCard = {
   id: number;
@@ -21,6 +23,36 @@ const bankNameMap: Record<string, string> = {
   cienspay: "Ciens Pay",
   bancobsidiana: "Bancobsidiana",
   creditbank: "CreditBank",
+};
+
+// Ajusta aqui el tamano cuadrado de todos los logos del modulo.
+const BANK_LOGO_SIZE_SMALL = 28;
+const BANK_LOGO_SIZE_LARGE = 56;
+
+// Reemplaza aqui por tus logos reales cuando los tengas listos.
+// Ejemplo: "/images/banks/cienspay.png"
+const BANK_LOGOS: Record<string, string> = {
+  cienspay: "/images/icon/1.png",
+  bancobsidiana: "/images/icon/2.png",
+  creditbank: "/images/icon/3.png",
+};
+
+const bankCatalog: Record<string, { name: string; logo: string; portal?: string }> = {
+  cienspay: {
+    name: "Ciens Pay",
+    logo: BANK_LOGOS.cienspay,
+    portal: "http://3.144.142.161/dashboard",
+  },
+  bancobsidiana: {
+    name: "Bancobsidiana",
+    logo: BANK_LOGOS.bancobsidiana,
+    portal: "https://bancobsidiana.up.railway.app/login",
+  },
+  creditbank: {
+    name: "CreditBank",
+    logo: BANK_LOGOS.creditbank,
+    portal: "https://creditbankbanco.vercel.app/login",
+  },
 };
 
 const emptyForm = {
@@ -54,7 +86,22 @@ const CardsPage: NextPage = () => {
 
   const loadCards = async () => {
     if (!currentUser?.uid) return;
-    const saved = await userStorageService.getSavedCards(currentUser.uid, currentUser.email || undefined);
+    try {
+      const userDocRef = doc(db, "users", currentUser.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const directCards = userDocSnap.data()?.cards;
+        if (Array.isArray(directCards)) {
+          setCards(directCards as SavedCard[]);
+          return;
+        }
+      }
+    } catch (error) {
+      // si falla lectura directa, seguimos con fallback del servicio
+    }
+
+    const saved = await userStorageService.getSavedCards(currentUser.uid, currentUser.email || undefined, true);
     setCards(saved || []);
   };
 
@@ -127,7 +174,7 @@ const CardsPage: NextPage = () => {
         cvv: form.cvv,
         bankIdentifier: form.bankIdentifier,
         bankName: bankNameMap[form.bankIdentifier],
-      }, form.bankIdentifier);
+      }, form.bankIdentifier, currentUser.email || undefined);
 
       if (!ok) {
         toast.error("No se pudo guardar la tarjeta");
@@ -160,7 +207,7 @@ const CardsPage: NextPage = () => {
 
     try {
       setDeletingId(cardId);
-      const ok = await userStorageService.deleteSavedCard(currentUser.uid, cardId);
+      const ok = await userStorageService.deleteSavedCard(currentUser.uid, cardId, currentUser.email || undefined);
       if (!ok) {
         toast.error("No se pudo eliminar la tarjeta");
         return;
@@ -251,6 +298,7 @@ const CardsPage: NextPage = () => {
               <Card>
                 <CardBody>
                   <h3 className="mb-3">Tarjetas registradas</h3>
+                  <small className="text-muted d-block mb-2">Fuente: users/{currentUser.uid}/cards</small>
                   {cards.length === 0 ? (
                     <p className="mb-0">Aun no tienes tarjetas guardadas.</p>
                   ) : (
@@ -262,6 +310,16 @@ const CardsPage: NextPage = () => {
                               <strong>{card.alias || "Tarjeta"}</strong>
                               <span className="badge bg-light text-dark">{card.bankName || bankNameMap[card.bankIdentifier || ""] || "Banco"}</span>
                             </div>
+                            {card.bankIdentifier && bankCatalog[card.bankIdentifier] && (
+                              <div className="mb-2 d-flex align-items-center" style={{ gap: "8px" }}>
+                                <img
+                                  src={bankCatalog[card.bankIdentifier].logo}
+                                  alt={bankCatalog[card.bankIdentifier].name}
+                                  style={{ width: `${BANK_LOGO_SIZE_SMALL}px`, height: `${BANK_LOGO_SIZE_SMALL}px`, objectFit: "contain" }}
+                                />
+                                <small className="text-muted">{bankCatalog[card.bankIdentifier].name}</small>
+                              </div>
+                            )}
                             <div className="mb-1">{maskCardNumber(card.cardNumber)}</div>
                             <small className="text-muted d-block">Exp: {card.expiry}</small>
                             <small className="text-muted d-block">CVV: ***</small>
@@ -272,12 +330,43 @@ const CardsPage: NextPage = () => {
                               <Button size="sm" color="danger" disabled={deletingId === card.id} onClick={() => onDelete(card.id)}>
                                 {deletingId === card.id ? "Eliminando..." : "Quitar"}
                               </Button>
+                              {card.bankIdentifier && bankCatalog[card.bankIdentifier]?.portal && (
+                                <a
+                                  href={bankCatalog[card.bankIdentifier].portal}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="btn btn-sm btn-outline-dark"
+                                >
+                                  Ir al banco
+                                </a>
+                              )}
                             </div>
                           </div>
                         </Col>
                       ))}
                     </Row>
                   )}
+
+                  <div className="mt-4 pt-3 border-top">
+                    <h5 className="mb-3">Portales bancarios</h5>
+                    <Row>
+                      {Object.entries(bankCatalog).map(([key, bank]) => (
+                        <Col md="4" key={key} className="mb-3">
+                          <div className="p-3 border rounded text-center h-100">
+                            <img src={bank.logo} alt={bank.name} style={{ width: `${BANK_LOGO_SIZE_LARGE}px`, height: `${BANK_LOGO_SIZE_LARGE}px`, objectFit: "contain" }} />
+                            <div className="mt-2" style={{ fontWeight: 600 }}>{bank.name}</div>
+                            {bank.portal ? (
+                              <a href={bank.portal} target="_blank" rel="noreferrer" className="btn btn-sm btn-normal mt-2">
+                                Abrir portal
+                              </a>
+                            ) : (
+                              <small className="d-block text-muted mt-2">Enlace pendiente</small>
+                            )}
+                          </div>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
                 </CardBody>
               </Card>
             </Col>

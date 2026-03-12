@@ -14,6 +14,8 @@ import { useAuth } from "@/helpers/auth/auth.context";
 import { userStorageService } from "@/services/user-storage.service";
 import { authService } from "@/services/auth.service";
 import { useTranslation } from "react-i18next";
+import { db } from "@/config/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 interface formType {
   firstName: string;
@@ -57,7 +59,21 @@ const CheckoutPage: NextPage = () => {
   React.useEffect(() => {
     const fetchCards = async () => {
       if (currentUser) {
-        const cards = await userStorageService.getSavedCards(currentUser.uid, currentUser.email || undefined);
+        try {
+          const userDocRef = doc(db, "users", currentUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            const directCards = userDocSnap.data()?.cards;
+            if (Array.isArray(directCards)) {
+              setSavedCards(directCards);
+              return;
+            }
+          }
+        } catch (error) {
+          // fallback con servicio
+        }
+
+        const cards = await userStorageService.getSavedCards(currentUser.uid, currentUser.email || undefined, true);
         setSavedCards(cards);
       }
     };
@@ -143,7 +159,12 @@ const CheckoutPage: NextPage = () => {
         toast.success(t("checkout_payment_success"));
 
         if (rememberCard && currentUser) {
-          await userStorageService.saveCard(currentUser.uid, cardDetails, manualBank || response.bankName?.toLowerCase().replace(/\s/g, ""));
+          await userStorageService.saveCard(
+            currentUser.uid,
+            cardDetails,
+            manualBank || response.bankName?.toLowerCase().replace(/\s/g, ""),
+            currentUser.email || undefined
+          );
         }
 
         await processOrder(data, "Pagado", response.data?.transaction_id, response.bankName);
