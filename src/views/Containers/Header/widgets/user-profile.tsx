@@ -92,6 +92,9 @@ const UserProfile: NextPage = () => {
                     <a href="/pages/account/order-history" className="d-block mb-3 text-dark" style={{ fontSize: "17px" }} onClick={() => setOpenAccount(false)}>
                       <i className="fa fa-history mr-2" style={{ fontSize: "19px" }}></i> Mis Pedidos
                     </a>
+                    <a href="/pages/account/cards" className="d-block mb-3 text-dark" style={{ fontSize: "17px" }} onClick={() => setOpenAccount(false)}>
+                      <i className="fa fa-credit-card mr-2" style={{ fontSize: "19px" }}></i> Mis Tarjetas
+                    </a>
                   </div>
                 </div>
               )}

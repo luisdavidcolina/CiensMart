@@ -57,7 +57,7 @@ const CheckoutPage: NextPage = () => {
   React.useEffect(() => {
     const fetchCards = async () => {
       if (currentUser) {
-        const cards = await userStorageService.getSavedCards(currentUser.uid);
+        const cards = await userStorageService.getSavedCards(currentUser.uid, currentUser.email || undefined);
         setSavedCards(cards);
       }
     };

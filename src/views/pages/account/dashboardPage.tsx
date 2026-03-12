@@ -141,6 +141,9 @@ const Dashboard: NextPage = () => {
                       <a href="/pages/account/order-history">{t("dashboard_my_orders")}</a>
                     </li>
                     <li>
+                      <a href="/pages/account/cards">Mis tarjetas</a>
+                    </li>
+                    <li>
                       <a
                         href="#"
                         onClick={(event) => {

@@ -1,155 +1,133 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { NextPage } from "next";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Container, Row, Col } from "reactstrap";
 import Breadcrumb from "../../views/Containers/Breadcrumb";
+import { useLocalQuery, gql } from "@/hooks/useLocalQuery";
+import { getImagePath } from "@/utils/imagePath";
 
-interface products {
-  img1: string;
-  img2: string;
-  title: string;
-  price: string;
-  discount: string;
-}
-
-interface productsProps {
-  product: products;
-}
-
-const productData = [
-  {
-    img1: "/images/layout-2/product/1.jpg",
-    img2: "/images/layout-2/product/a1.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/2.jpg",
-    img2: "/images/layout-2/product/a2.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/3.jpg",
-    img2: "/images/layout-2/product/a3.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/4.jpg",
-    img2: "/images/layout-2/product/a4.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/5.jpg",
-    img2: "/images/layout-2/product/a5.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/6.jpg",
-    img2: "/images/layout-2/product/a6.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/7.jpg",
-    img2: "/images/layout-2/product/a7.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-  {
-    img1: "/images/layout-2/product/8.jpg",
-    img2: "/images/layout-2/product/a8.jpg",
-    title: "reader will be distracted.",
-    price: "$ 56.21",
-    discount: "$ 24.05",
-  },
-];
-
-const ProductList: React.FC<productsProps> = ({ product }) => {
-  return (
-    <Col xl="3" md="4" sm="6">
-      <div className="product">
-        <div className="product-box">
-          <div className="product-imgbox">
-            <div className="product-front">
-              <img src={product.img1} className="img-fluid  " alt="product" />
-            </div>
-            <div className="product-back">
-              <img src={product.img2} className="img-fluid  " alt="product" />
-            </div>
-          </div>
-          <div className="product-detail detail-center ">
-            <div className="detail-title">
-              <div className="detail-left">
-                <div className="rating-star">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                </div>
-                <a href="">
-                  <h6 className="price-title">{product.title}</h6>
-                </a>
-              </div>
-              <div className="detail-right">
-                <div className="check-price">{product.price}</div>
-                <div className="price">
-                  <div className="price">{product.discount}</div>
-                </div>
-              </div>
-            </div>
-            <div className="icon-detail">
-              <button data-toggle="modal" data-target="#addtocart" title="Agregar al carrito">
-                <i className="ti-bag"></i>
-              </button>
-              <a href="" title="Add to Wishlist">
-                <i className="ti-heart" aria-hidden="true"></i>
-              </a>
-              <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View">
-                <i className="ti-search" aria-hidden="true"></i>
-              </a>
-              <a href="#" title="Compare">
-                <i className="fa fa-exchange" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Col>
-  );
-};
+const GET_PRODUCTS = gql`
+  query getProducts($limit: Int) {
+    products(limit: $limit) {
+      total
+      items {
+        id
+        title
+        type
+        category
+        brand
+        price
+        discount
+        images {
+          src
+        }
+      }
+    }
+  }
+`;
 
 const SearchPage: NextPage = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const qParam = searchParams.get("q") || "";
+  const categoryParam = (searchParams.get("category") || "all").toUpperCase();
+
+  const [searchTerm, setSearchTerm] = useState(qParam);
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
+
+  const categoryOptions = [
+    { value: "all", label: "Todas las categorias" },
+    { value: "FASHION", label: "Moda" },
+    { value: "ELECTRONICS", label: "Electronica" },
+    { value: "BEAUTY", label: "Belleza" },
+    { value: "BAGS", label: "Bolsos" },
+    { value: "WATCH", label: "Relojes" },
+    { value: "FURNITURE", label: "Muebles" },
+    { value: "TOOLS", label: "Herramientas" },
+    { value: "KIDS", label: "Ninos" },
+  ];
+
+  const { data, loading } = useLocalQuery(GET_PRODUCTS, {
+    variables: { limit: 500 },
+  });
+
+  const allItems = data?.products?.items || [];
+
+  const filteredItems = useMemo(() => {
+    const text = (qParam || "").trim().toLowerCase();
+    const activeCategory = (categoryParam || "all").toUpperCase();
+
+    return allItems.filter((item: any) => {
+      const normalizedTitle = String(item.title || "").toLowerCase();
+      const normalizedType = String(item.type || "").toLowerCase();
+      const normalizedCategory = String(item.category || "").toLowerCase();
+      const normalizedBrand = String(item.brand || "").toLowerCase();
+
+      const matchesText =
+        !text ||
+        normalizedTitle.includes(text) ||
+        normalizedType.includes(text) ||
+        normalizedCategory.includes(text) ||
+        normalizedBrand.includes(text);
+
+      const typeUpper = String(item.type || "").toUpperCase();
+      const categoryUpper = String(item.category || "").toUpperCase();
+      const matchesCategory =
+        activeCategory === "ALL" ||
+        activeCategory === "all" ||
+        typeUpper === activeCategory ||
+        categoryUpper === activeCategory;
+
+      return matchesText && matchesCategory;
+    });
+  }, [allItems, qParam, categoryParam]);
+
+  const triggerSearch = (event?: React.FormEvent) => {
+    if (event) event.preventDefault();
+
+    const params = new URLSearchParams();
+    if (searchTerm.trim()) {
+      params.set("q", searchTerm.trim());
+    }
+    if (selectedCategory !== "all") {
+      params.set("category", selectedCategory);
+    }
+
+    const query = params.toString();
+    router.push(`/pages/search${query ? `?${query}` : ""}`);
+  };
+
   return (
     <>
-      {/* <!-- breadcrumb start --> */}
-      <Breadcrumb title="search" parent="home" />
-      {/* <!-- breadcrumb End --> */}
+      <Breadcrumb title="busqueda" parent="inicio" />
 
-      {/* <!--section start--> */}
       <section className="authentication-page section-big-pt-space bg-light">
         <div className="custom-containe">
           <section className="search-block">
             <Container>
               <Row>
-                <Col lg="6" className="offset-lg-3">
-                  <form className="form-header">
+                <Col lg="8" className="offset-lg-2">
+                  <form className="form-header" onSubmit={triggerSearch}>
                     <div className="input-group">
-                      <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Search Products......" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Buscar productos o categorias"
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                      />
+                      <select className="form-control" style={{ maxWidth: "220px" }} value={selectedCategory} onChange={(event) => setSelectedCategory(event.target.value)}>
+                        {categoryOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
                       <div className="input-group-append">
-                        <button className="btn btn-normal">
-                          <i className="fa fa-search"></i>Search
+                        <button className="btn btn-normal" type="submit">
+                          <i className="fa fa-search"></i> Buscar
                         </button>
                       </div>
                     </div>
@@ -160,14 +138,61 @@ const SearchPage: NextPage = () => {
           </section>
         </div>
       </section>
-      {/* <!-- section end --> */}
 
       <section className="section-big-py-space ratio_asos bg-light">
         <div className="custom-container">
+          <div className="mb-3 text-muted">
+            {loading ? "Buscando productos..." : `Resultados: ${filteredItems.length}`}
+          </div>
+
           <div className="row search-product related-pro1">
-            {productData.map((product, i) => (
-              <ProductList product={product} key={i} />
-            ))}
+            {!loading && filteredItems.length === 0 && (
+              <Col sm="12">
+                <div className="text-center p-4 bg-white border rounded">
+                  <h4>No se encontraron productos</h4>
+                  <p className="mb-0">Prueba con otro texto o cambia la categoria.</p>
+                </div>
+              </Col>
+            )}
+
+            {filteredItems.map((item: any) => {
+              const productSlug = String(item.title || "producto").replace(/\s+/g, "");
+              const imageSrc = item.images?.[0]?.src ? getImagePath(item.images[0].src) : "/images/placeholder.png";
+              const basePrice = Number(item.price) || 0;
+              const rawDiscount = Number(item.discount);
+              const safeDiscount = Number.isFinite(rawDiscount) && rawDiscount > 0 && rawDiscount < 100 ? rawDiscount : 0;
+              const finalPrice = basePrice * (1 - safeDiscount / 100);
+
+              return (
+                <Col xl="3" md="4" sm="6" key={item.id}>
+                  <div className="product">
+                    <div className="product-box">
+                      <div className="product-imgbox">
+                        <div className="product-front">
+                          <Link href={`/product-details/${item.id}-${productSlug}`}>
+                            <img src={imageSrc} className="img-fluid" alt={item.title} />
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="product-detail detail-center">
+                        <div className="detail-title">
+                          <div className="detail-left">
+                            <Link href={`/product-details/${item.id}-${productSlug}`}>
+                              <h6 className="price-title">{item.title}</h6>
+                            </Link>
+                            <small className="text-muted d-block">{item.type || item.category}</small>
+                          </div>
+                          <div className="detail-right">
+                            {safeDiscount > 0 && <div className="check-price">${basePrice.toFixed(2)}</div>}
+                            <div className="price">${(safeDiscount > 0 ? finalPrice : basePrice).toFixed(2)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              );
+            })}
           </div>
         </div>
       </section>
